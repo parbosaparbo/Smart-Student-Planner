@@ -7,11 +7,13 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from gemini_client import call_gemini_text
+from gemini_client import call_gemini_text, call_gemini_stream
 from prompts import daily_briefing_prompt
+from ui_components import render_sidebar_header
 from config import COLORS
 
-st.set_page_config(page_title="Daily Briefing — StudyMind AI", page_icon="🌅", layout="wide")
+st.set_page_config(page_title="Daily Briefing — StudyMind AI", page_icon="🌅", layout="wide", initial_sidebar_state="expanded")
+render_sidebar_header()
 
 st.markdown(f"""
 <div style='background:linear-gradient(135deg,{COLORS["warning"]}22,{COLORS["card_bg"]});
@@ -60,10 +62,15 @@ if not student:
     st.stop()
 
 if st.button("🌅 Generate Today's Briefing", type="primary", use_container_width=True):
-    with st.spinner("Preparing your morning briefing..."):
-        prompt = daily_briefing_prompt(student, today_blocks, mastery_pct, days_left)
-        briefing = call_gemini_text(prompt, temperature=0.8)
-        st.session_state["daily_briefing"] = briefing
+    prompt = daily_briefing_prompt(student, today_blocks, mastery_pct, days_left)
+    st.markdown(f"""
+<div style='background:{COLORS["card_bg"]}; border-radius:16px; padding:2rem;
+            border:1px solid rgba(255,255,255,0.08); margin-top:1rem;'>
+""", unsafe_allow_html=True)
+    stream = call_gemini_stream(prompt, temperature=0.8)
+    briefing = st.write_stream(stream)
+    st.markdown("</div>", unsafe_allow_html=True)
+    st.session_state["daily_briefing"] = briefing
 
 if "daily_briefing" in st.session_state:
     st.divider()

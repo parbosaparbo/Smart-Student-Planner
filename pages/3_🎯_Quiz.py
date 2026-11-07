@@ -10,9 +10,11 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from gemini_client import call_gemini_json
 from prompts import quiz_generator_prompt
+from ui_components import render_sidebar_header
 from config import COLORS, DIFFICULTY_LABELS
 
-st.set_page_config(page_title="Quiz — StudyMind AI", page_icon="🎯", layout="wide")
+st.set_page_config(page_title="Quiz — StudyMind AI", page_icon="🎯", layout="wide", initial_sidebar_state="expanded")
+render_sidebar_header()
 
 st.markdown(f"""
 <div style='background:linear-gradient(135deg,{COLORS["success"]}22,{COLORS["card_bg"]});
@@ -54,7 +56,7 @@ if generate_btn:
     with st.spinner(f"🧠 Generating {num_questions} scenario-based questions on {topic_title}..."):
         try:
             prompt = quiz_generator_prompt(topic_id, topic_title, num_questions, difficulty)
-            quiz   = call_gemini_json(prompt, temperature=0.6)
+            quiz   = call_gemini_json(prompt, temperature=0.4, max_tokens=2048)
             st.session_state["current_quiz"]    = quiz
             st.session_state["quiz_answers"]    = {}
             st.session_state["quiz_submitted"]  = False

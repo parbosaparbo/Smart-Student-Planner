@@ -105,9 +105,12 @@ STUDY PLANNER 7 TH SEM/
     ├── 2_📅_Schedule_Generator.py  # 70/20/10 study plan builder
     ├── 3_🎯_Quiz.py                # Scenario-based active recall quiz
     ├── 4_📊_Weak_Spot_Analyzer.py  # Blind spot detection & auto-rescheduler
-    ├── 5_💬_Doubt_Solver.py        # Socratic tutor chatbot
-    ├── 6_📝_Mock_Exam.py           # Timed full exam with integrity flag
-    └── 7_🌅_Daily_Briefing.py      # Personalized 150-word morning briefing
+    ├── 5_💬_Doubt_Solver.py        # Socratic tutor chatbot (live streaming)
+    ├── 6_📝_Mock_Exam.py           # Timed full exam with integrity flag & parallel generation
+    ├── 7_🌅_Daily_Briefing.py      # Personalized 150-word morning briefing (live streaming)
+    ├── 8_🃏_Flashcards.py          # 3D interactive flashcards with Leitner spaced repetition
+    ├── 9_⏱️_Focus_Timer.py          # Pomodoro focus & flow timer tied to today's schedule
+    └── 10_📈_Student_Progress.py   # Comprehensive Plotly visual progress charts & AI audit
 ```
 
 ---

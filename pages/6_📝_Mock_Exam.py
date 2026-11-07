@@ -10,9 +10,11 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from gemini_client import call_gemini_json
 from prompts import quiz_generator_prompt, mock_exam_evaluator_prompt
+from ui_components import render_sidebar_header
 from config import COLORS, DIFFICULTY_LABELS
 
-st.set_page_config(page_title="Mock Exam — StudyMind AI", page_icon="📝", layout="wide")
+st.set_page_config(page_title="Mock Exam — StudyMind AI", page_icon="📝", layout="wide", initial_sidebar_state="expanded")
+render_sidebar_header()
 
 st.markdown(f"""
 <div style='background:linear-gradient(135deg,{COLORS["danger"]}22,{COLORS["card_bg"]});
@@ -65,21 +67,27 @@ if "mock_exam" not in st.session_state:
         all_questions = []
         q_per_topic = max(1, total_questions // len(selected_topics))
 
-        with st.spinner(f"Generating {total_questions} exam questions..."):
-            for t_title in selected_topics:
-                # Find topic object
+        with st.spinner(f"⚡ Generating {total_questions} exam questions in parallel..."):
+            from concurrent.futures import ThreadPoolExecutor
+
+            def fetch_topic_questions(t_title):
                 t_obj = next((t for t in topics if t["title"] == t_title), None)
                 t_id  = t_obj["id"] if t_obj else "t1"
-
                 try:
                     prompt = quiz_generator_prompt(t_id, t_title, q_per_topic, difficulty=3)
-                    result = call_gemini_json(prompt, temperature=0.6)
-                    for q in result.get("questions", []):
+                    result = call_gemini_json(prompt, temperature=0.4, max_tokens=2048)
+                    qs = result.get("questions", [])
+                    for q in qs:
                         q["topic_id"]    = t_id
                         q["topic_title"] = t_title
-                    all_questions.extend(result.get("questions", []))
+                    return qs
                 except Exception as e:
-                    st.warning(f"Could not generate questions for {t_title}: {e}")
+                    return []
+
+            with ThreadPoolExecutor(max_workers=min(len(selected_topics), 5)) as executor:
+                results = executor.map(fetch_topic_questions, selected_topics)
+                for res in results:
+                    all_questions.extend(res)
 
         if all_questions:
             st.session_state["mock_exam"] = {

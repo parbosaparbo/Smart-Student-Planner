@@ -12,6 +12,7 @@ from config import APP_TITLE, APP_ICON, APP_SUBTITLE, COLORS, GEMINI_API_KEY
 from gemini_client import call_gemini_text, call_gemini_json, get_api_key
 from prompts import daily_briefing_prompt, SYSTEM_PROMPT
 from storage import load_persistent_state, save_persistent_state, clear_persistent_state
+from ui_components import render_sidebar_header
 
 # ── Auto-restore saved session state ──────────────────────────────────────────
 if "state_initialized" not in st.session_state:
@@ -24,7 +25,7 @@ if "state_initialized" not in st.session_state:
 # ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title=f"Dashboard — {APP_TITLE}",
-    page_icon=APP_ICON,
+    page_icon="🏠",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -38,6 +39,30 @@ st.markdown(f"""
     border-radius: 10px; font-weight: 600;
     transition: all 0.2s ease;
   }}
+
+
+
+
+    /* Fix sidebar navigation link alignment */
+    section[data-testid="stSidebar"] .stSidebarNav li a {{
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }}
+    section[data-testid="stSidebar"] .stSidebarNav li a span {{
+        display: inline-flex !important;
+        align-items: center !important;
+        line-height: 1 !important;
+    }}
+
+
+
+
+
+
+
+
+  
   .stButton > button:hover {{ transform: translateY(-1px); }}
 
   /* Metric cards */
@@ -62,97 +87,35 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# ── Sidebar ────────────────────────────────────────────────────────────────────
-with st.sidebar:
-    st.markdown(f"""
-    <div style='text-align:center; padding:1rem 0;'>
-      <h2 style='margin:0; color:{COLORS["primary"]};'>{APP_ICON} {APP_TITLE}</h2>
-      <p style='margin:0; font-size:0.8rem; color:{COLORS["text_muted"]};'>{APP_SUBTITLE}</p>
-    </div>
-    """, unsafe_allow_html=True)
+# ── Sidebar Brand Header ───────────────────────────────────────────────────────
+render_sidebar_header()
 
-    st.divider()
-
-    # API key status
-    active_key = get_api_key()
-    if active_key:
-        st.success("✅ Gemini API Active")
-        with st.expander("🔑 Change API Key"):
-            new_key = st.text_input("Enter new Gemini API Key", type="password", key="sidebar_key_change")
-            if st.button("Update Key"):
-                st.session_state["gemini_api_key"] = new_key.strip()
+# ── API Key Banner (only shows if API key is missing) ──────────────────────────
+if not get_api_key():
+    with st.expander("⚠️ Gemini API Key Needed — Click to configure", expanded=True):
+        st.markdown("Enter your free Google Gemini API key from [Google AI Studio](https://aistudio.google.com/):")
+        k_col1, k_col2 = st.columns([4, 1])
+        with k_col1:
+            input_key = st.text_input("Gemini API Key", type="password", placeholder="AIzaSy...", label_visibility="collapsed", key="banner_api_key")
+        with k_col2:
+            if st.button("Save Key", type="primary", use_container_width=True) and input_key.strip():
+                st.session_state["gemini_api_key"] = input_key.strip()
                 st.rerun()
-    else:
-        st.warning("🔑 Gemini API Key Needed")
-        user_key = st.text_input("Paste Gemini API Key", type="password", placeholder="AIzaSy...", key="sidebar_key_input")
-        if user_key:
-            st.session_state["gemini_api_key"] = user_key.strip()
-            st.rerun()
-        st.caption("Or add `GEMINI_API_KEY` to `.env` file.")
-
-    st.divider()
-
-    # Student status
-    student = st.session_state.get("student_profile", {})
-    if student:
-        exam_date = student.get("exam_date", "")
-        try:
-            days_left = (datetime.strptime(exam_date, "%Y-%m-%d").date() - date.today()).days
-        except Exception:
-            days_left = "?"
-
-        st.markdown(f"""
-<div style='background:{COLORS["primary"]}22; border-radius:10px; padding:1rem;'>
-  <p style='margin:0; font-size:1.1rem; font-weight:600;'>👋 {student.get("student_name","Student")}</p>
-  <p style='margin:0.3rem 0 0; font-size:0.85rem; color:{COLORS["text_muted"]};'>
-    📚 {student.get("subject","—")}<br>
-    📅 {days_left} days to exam<br>
-    ⏱️ {student.get("daily_hours","?")}h/day
-  </p>
-</div>
-""", unsafe_allow_html=True)
-
-        quiz_results = st.session_state.get("quiz_results", [])
-        if quiz_results:
-            mastery = round(sum(r.get("score_pct", 0) for r in quiz_results) / len(quiz_results))
-            mastery_color = (COLORS["success"] if mastery >= 70
-                             else COLORS["warning"] if mastery >= 50
-                             else COLORS["danger"])
-            st.markdown(f"""
-<div style='margin-top:0.5rem; text-align:center;'>
-  <span style='color:{mastery_color}; font-size:1.5rem; font-weight:700;'>{mastery}%</span>
-  <br><small style='color:{COLORS["text_muted"]};'>Overall Mastery</small>
-</div>
-""", unsafe_allow_html=True)
-    else:
-        st.info("👆 Complete onboarding below to get started.")
-
-    st.divider()
-
-    # Quick navigation
-    st.markdown("**🧭 Quick Navigation**")
-    nav_items = [
-        ("📚 Syllabus Parser",    "pages/1_📚_Syllabus_Parser.py"),
-        ("📅 Schedule Generator", "pages/2_📅_Schedule_Generator.py"),
-        ("🎯 Quiz",               "pages/3_🎯_Quiz.py"),
-        ("📊 Weak Spot Analyzer", "pages/4_📊_Weak_Spot_Analyzer.py"),
-        ("💬 Doubt Solver",       "pages/5_💬_Doubt_Solver.py"),
-        ("📝 Mock Exam",          "pages/6_📝_Mock_Exam.py"),
-        ("🌅 Daily Briefing",     "pages/7_🌅_Daily_Briefing.py"),
-        ("🃏 Flashcards",         "pages/8_🃏_Flashcards.py"),
-    ]
-    for label, page in nav_items:
-        if st.button(label, use_container_width=True):
-            st.switch_page(page)
 
 # ── Main content ───────────────────────────────────────────────────────────────
 if not st.session_state.get("student_profile"):
     # ── ONBOARDING ─────────────────────────────────────────────────────────────
     st.markdown(f"""
-<div style='text-align:center; padding:3rem 2rem;'>
-  <h1 style='font-size:3rem; margin:0;'>{APP_ICON}</h1>
-  <h1 style='color:{COLORS["primary"]}; margin:0.5rem 0;'>{APP_TITLE}</h1>
-  <p style='font-size:1.2rem; color:{COLORS["text_muted"]};'>{APP_SUBTITLE}</p>
+<div style='background:linear-gradient(135deg,{COLORS["primary"]}22,{COLORS["card_bg"]});
+            border-left:4px solid {COLORS["primary"]};
+            border-radius:16px; padding:1.6rem 2rem; margin-bottom:1.5rem;'>
+  <h1 style='margin:0 0 0.3rem 0; font-size:2.1rem; color:{COLORS["primary"]}; font-weight:800;'>🏠 Dashboard</h1>
+  <p style='margin:0.2rem 0 0; color:white; font-size:1.15rem; font-weight:600;'>
+    👋 Welcome to StudyMind AI — Your Smart Academic Coach
+  </p>
+  <p style='margin:0.3rem 0 0; color:{COLORS["text_muted"]}; font-size:0.9rem;'>
+    Evidence-based learning: spaced repetition, active recall, Feynman analogies, and personalized schedules.
+  </p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -322,11 +285,14 @@ else:
 
     # Header
     st.markdown(f"""
-<div style='background:linear-gradient(135deg,{COLORS["primary"]}33,{COLORS["card_bg"]});
-            border-radius:16px; padding:2rem; margin-bottom:1.5rem;'>
-  <h1 style='margin:0; font-size:2rem;'>Good {"morning" if datetime.now().hour < 12 else "afternoon" if datetime.now().hour < 17 else "evening"}, {student_name}! 👋</h1>
-  <p style='margin:0.5rem 0 0; color:{COLORS["text_muted"]};'>
-    📚 {student.get("subject","—")} · 📅 {days_left} days to exam · 🎯 {mastery_pct}% mastery
+<div style='background:linear-gradient(135deg,{COLORS["primary"]}22,{COLORS["card_bg"]});
+            border-left:4px solid {COLORS["primary"]};
+            border-radius:16px; padding:1.6rem 2rem; margin-bottom:1.5rem;'>
+  <h1 style='margin:0 0 0.4rem 0; font-size:1.85rem; color:#FFFFFF; font-weight:800;'>
+    Good {"morning" if datetime.now().hour < 12 else "afternoon" if datetime.now().hour < 17 else "evening"}, {student_name}! 👋
+  </h1>
+  <p style='margin:0; color:{COLORS["text_muted"]}; font-size:0.95rem;'>
+    📚 {student.get("subject","—")} · 📅 {days_left} days to exam · 🎯 {mastery_pct}% overall mastery
   </p>
 </div>
 """, unsafe_allow_html=True)
@@ -432,10 +398,59 @@ else:
         if st.button("→ Start Mock", key="btn_mock", use_container_width=True):
             st.switch_page("pages/6_📝_Mock_Exam.py")
 
+    r3c1, r3c2, r3c3 = st.columns(3)
+
+    with r3c1:
+        st.markdown(f"""
+<div style='background:{COLORS["card_bg"]}; border-radius:12px; padding:1.5rem;
+            border-top:3px solid {COLORS["warning"]}; text-align:center;'>
+  <span style='font-size:2.5rem;'>🌅</span>
+  <h3 style='margin:0.5rem 0 0.3rem;'>Daily Briefing</h3>
+  <p style='color:{COLORS["text_muted"]}; font-size:0.9rem;'>
+    150-word morning plan & motivation
+  </p>
+</div>
+""", unsafe_allow_html=True)
+        if st.button("→ Read Briefing", key="btn_briefing", use_container_width=True):
+            st.switch_page("pages/7_🌅_Daily_Briefing.py")
+
+    with r3c2:
+        st.markdown(f"""
+<div style='background:{COLORS["card_bg"]}; border-radius:12px; padding:1.5rem;
+            border-top:3px solid {COLORS["primary"]}; text-align:center;'>
+  <span style='font-size:2.5rem;'>🃏</span>
+  <h3 style='margin:0.5rem 0 0.3rem;'>Flashcards</h3>
+  <p style='color:{COLORS["text_muted"]}; font-size:0.9rem;'>
+    Feynman analogies & spaced repetition
+  </p>
+</div>
+""", unsafe_allow_html=True)
+        if st.button("→ Practice Cards", key="btn_flash", use_container_width=True):
+            st.switch_page("pages/8_🃏_Flashcards.py")
+
+    with r3c3:
+        st.markdown(f"""
+<div style='background:{COLORS["card_bg"]}; border-radius:12px; padding:1.5rem;
+            border-top:3px solid {COLORS["success"]}; text-align:center;'>
+  <span style='font-size:2.5rem;'>⏱️</span>
+  <h3 style='margin:0.5rem 0 0.3rem;'>Focus Timer</h3>
+  <p style='color:{COLORS["text_muted"]}; font-size:0.9rem;'>
+    Pomodoro session linked to schedule
+  </p>
+</div>
+""", unsafe_allow_html=True)
+        if st.button("→ Start Pomodoro", key="btn_focus", use_container_width=True):
+            st.switch_page("pages/9_⏱️_Focus_Timer.py")
+
     # Quick mastery trend (if quiz data)
     if quiz_results:
         st.divider()
-        st.subheader("📈 Topic Mastery Overview")
+        col_hdr, col_btn = st.columns([2, 1])
+        with col_hdr:
+            st.subheader("📈 Topic Mastery Overview")
+        with col_btn:
+            if st.button("📊 Open Full Progress Analytics ↗", use_container_width=True):
+                st.switch_page("pages/10_📈_Student_Progress.py")
         import plotly.graph_objects as go
 
         fig = go.Figure()

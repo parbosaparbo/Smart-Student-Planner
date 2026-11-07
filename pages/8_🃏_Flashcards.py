@@ -11,9 +11,11 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from gemini_client import call_gemini_json
 from prompts import flashcard_generator_prompt
 from storage import save_persistent_state
+from ui_components import render_sidebar_header
 from config import COLORS
 
-st.set_page_config(page_title="Flashcards — StudyMind AI", page_icon="🃏", layout="wide")
+st.set_page_config(page_title="Flashcards — StudyMind AI", page_icon="🃏", layout="wide", initial_sidebar_state="expanded")
+render_sidebar_header()
 
 st.markdown(f"""
 <div style='background:linear-gradient(135deg,{COLORS["primary"]}22,{COLORS["card_bg"]});

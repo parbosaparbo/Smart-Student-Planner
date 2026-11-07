@@ -88,88 +88,96 @@ RAW SYLLABUS TEXT:
 
 def schedule_generator_prompt(student_profile: dict, topic_tree: dict, today: str) -> str:
     exam_date = student_profile.get("exam_date", "")
-    return f"""{SYSTEM_PROMPT}
-
-═══════════════════════════════════════════════════════
-              TASK: STUDY SCHEDULE GENERATOR
-═══════════════════════════════════════════════════════
-
-Generate a day-by-day personalized study schedule.
+    # Optimize payload size for 3x faster generation
+    topics_compact = [
+        {
+            "id": t.get("id", f"t{i+1}"),
+            "title": t.get("title", ""),
+            "difficulty": t.get("difficulty", 3),
+            "hours": t.get("estimated_hours", 4.0),
+            "priority": t.get("priority", 3),
+        }
+        for i, t in enumerate(topic_tree.get("topics", []))
+    ]
+    return f"""You are StudyMind AI, a master exam strategist and scheduler.
+Generate a high-efficiency day-by-day study schedule from {today} to {exam_date}.
 
 STRICT RULES:
-- First 70% of days  → cover all NEW topics in prerequisite order
-- Next  20% of days  → revisit WEAK topics flagged from quiz scores
-- Final 10% of days  → mock tests + revision ONLY. Zero new topics.
-- High difficulty + high priority → morning slots (peak focus time)
-- Max 2 consecutive hours on same topic
-- Minimum 1 full rest day per week
-- Return ONLY valid JSON. No markdown. No explanation. Start with {{
+- First 70% of days: cover all NEW topics in prerequisite order.
+- Next 20% of days: revisit WEAK / high-difficulty topics.
+- Final 10% of days: mock tests & active revision only. Zero new topics.
+- High difficulty (4-5) & high priority: morning slots (peak focus).
+- Max 2 consecutive hours on the same topic.
+- Minimum 1 full rest day per week.
+- Output ONLY valid JSON matching this schema:
 
-STUDENT PROFILE:
-{student_profile}
-
-TOPIC TREE:
-{topic_tree}
-
-TODAY'S DATE: {today}
-EXAM DATE: {exam_date}
-
-OUTPUT SCHEMA:
 {{
   "schedule_summary": {{
-    "total_study_hours": <n>, "rest_days": ["YYYY-MM-DD"],
-    "mock_test_days": ["YYYY-MM-DD"], "revision_start_date": "YYYY-MM-DD"
+    "total_study_hours": <number>,
+    "rest_days": ["YYYY-MM-DD"],
+    "mock_test_days": ["YYYY-MM-DD"],
+    "revision_start_date": "YYYY-MM-DD"
   }},
   "daily_blocks": [
     {{
       "date": "YYYY-MM-DD",
       "day_type": "study | revision | mock_test | rest",
       "blocks": [
-        {{ "topic_id": "t1", "topic_title": "<>", "start_time": "HH:MM",
-           "duration_minutes": <n>, "session_goal": "<exact subtopics to cover>",
-           "resources_tip": "<one specific study tip for this session>" }}
+        {{
+          "topic_id": "t1",
+          "topic_title": "<title>",
+          "start_time": "HH:MM",
+          "duration_minutes": <number>,
+          "session_goal": "<concise subtopics/goal>",
+          "resources_tip": "<practical active study tip>"
+        }}
       ]
     }}
   ]
 }}
+
+STUDENT PROFILE:
+- Name: {student_profile.get('student_name', 'Student')}
+- Daily Study Hours: {student_profile.get('daily_hours', 4.0)}
+- Preferred Times: {student_profile.get('preferred_times', ['morning', 'evening'])}
+- Blocked Days: {student_profile.get('blocked_days', ['sunday'])}
+- Level: {student_profile.get('current_level', 'intermediate')}
+
+TOPICS TO SCHEDULE:
+{topics_compact}
 """
 
 
 def quiz_generator_prompt(topic_id: str, topic_title: str, num_questions: int, difficulty: int) -> str:
-    return f"""{SYSTEM_PROMPT}
-
-═══════════════════════════════════════════════════════
-              TASK: QUIZ GENERATOR
-═══════════════════════════════════════════════════════
-
-Generate {num_questions} unique, high-quality MCQs for the topic below.
+    return f"""You are StudyMind AI, an elite exam strategist and question designer.
+Generate {num_questions} unique, scenario-based active recall MCQs for:
+Topic: {topic_title} (ID: {topic_id}) | Bloom's Difficulty: {difficulty}/5
 
 STRICT RULES:
-- NEVER use questions findable by a simple Google search
-- NO "What is the definition of X" questions — only application + reasoning
-- Use scenario-based framing: "A student is designing X, what happens if..."
-- All 4 options must be plausible. Wrong options = common misconceptions
-- Randomize correct answer position (not always A or B)
-- No two questions test the same concept
-- Per-question time limit: 60-90 seconds
-- Return ONLY valid JSON. No markdown. No explanation. Start with {{
+- NEVER ask definition recall ("What is X?"). Only real-world scenario/problem solving ("A distributed system is experiencing...").
+- All 4 options (A, B, C, D) must be plausible; distractors must reflect common student misconceptions.
+- Randomize correct answer letters (A, B, C, D evenly distributed).
+- Output ONLY valid JSON matching this exact schema:
 
-TOPIC ID: {topic_id}
-TOPIC TITLE: {topic_title}
-TARGET DIFFICULTY: {difficulty}/5
-NUMBER OF QUESTIONS: {num_questions}
-
-OUTPUT SCHEMA:
 {{
-  "topic_id": "{topic_id}", "topic_title": "{topic_title}", "time_limit_seconds": <n>,
+  "topic_id": "{topic_id}",
+  "topic_title": "{topic_title}",
+  "time_limit_seconds": {num_questions * 75},
   "questions": [
     {{
-      "id": "q1", "subtopic_tag": "<subtopic tested>",
-      "question": "<full scenario-based question>",
-      "options": {{ "A": "<>", "B": "<>", "C": "<>", "D": "<>" }},
-      "correct_answer": "A|B|C|D",
-      "explanation": "<why correct + why others are wrong — 2-3 sentences>",
-      "difficulty": <1-5>, "concept_tested": "<one-line description>"
+      "id": "q1",
+      "subtopic_tag": "<subtopic name>",
+      "question": "<scenario-based problem>",
+      "options": {{
+        "A": "<option A>",
+        "B": "<option B>",
+        "C": "<option C>",
+        "D": "<option D>"
+      }},
+      "correct_answer": "A",
+      "explanation": "<2-sentence clear explanation: why correct and why common trap fails>",
+      "difficulty": {difficulty},
+      "concept_tested": "<core concept tested>"
     }}
   ]
 }}

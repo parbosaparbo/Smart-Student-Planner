@@ -12,9 +12,11 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from gemini_client import call_gemini_json
 from prompts import schedule_generator_prompt
 from mcp_tools import push_to_calendar
+from ui_components import render_sidebar_header
 from config import COLORS
 
-st.set_page_config(page_title="Schedule Generator — StudyMind AI", page_icon="📅", layout="wide")
+st.set_page_config(page_title="Schedule Generator — StudyMind AI", page_icon="📅", layout="wide", initial_sidebar_state="expanded")
+render_sidebar_header()
 
 st.markdown(f"""
 <div style='background:linear-gradient(135deg,{COLORS["info"]}22,{COLORS["card_bg"]});
@@ -113,11 +115,13 @@ if submitted:
 
     st.session_state["student_profile"] = student_profile
 
-    with st.spinner("🧠 Building your personalized study plan... (this may take 20–40 seconds)"):
+    with st.spinner("⚡ Assembling high-speed study schedule..."):
         try:
             prompt = schedule_generator_prompt(student_profile, topic_tree, str(date.today()))
-            schedule = call_gemini_json(prompt, temperature=0.3)
+            schedule = call_gemini_json(prompt, temperature=0.3, max_tokens=4096)
             st.session_state["schedule"] = schedule
+            from storage import save_persistent_state
+            save_persistent_state(st.session_state)
             st.success("✅ Study plan generated!")
         except ValueError as e:
             st.error(f"❌ Failed to generate schedule: {e}")
@@ -239,7 +243,7 @@ if "schedule" in st.session_state:
 """, unsafe_allow_html=True)
 
     st.divider()
-    col_a, col_b = st.columns(2)
+    col_a, col_b, col_c = st.columns(3)
     with col_a:
         st.download_button(
             "⬇️ Download Schedule (JSON)",
@@ -249,5 +253,24 @@ if "schedule" in st.session_state:
             use_container_width=True,
         )
     with col_b:
+        md_text = f"# 📅 StudyMind AI — Study Schedule\n\n"
+        md_text += f"**Total Hours:** {summary.get('total_study_hours', 0)}h | **Revision Starts:** {summary.get('revision_start_date', '—')}\n\n---\n\n"
+        for day in daily:
+            md_text += f"### {day.get('date','')} — {day.get('day_type','study').upper()}\n"
+            if not day.get("blocks"):
+                md_text += "- *Rest Day — Recharge!*\n\n"
+            for b in day.get("blocks", []):
+                md_text += f"- **{b.get('start_time','')}** ({b.get('duration_minutes', 60)}m): {b.get('topic_title','')}\n"
+                md_text += f"  - 🎯 Goal: {b.get('session_goal','')}\n"
+                md_text += f"  - 💡 Tip: {b.get('resources_tip','')}\n"
+            md_text += "\n"
+        st.download_button(
+            "📄 Export Printable Plan (.md)",
+            data=md_text,
+            file_name="printable_study_plan.md",
+            mime="text/markdown",
+            use_container_width=True,
+        )
+    with col_c:
         if st.button("➡️ Take a Quiz Now", use_container_width=True):
             st.switch_page("pages/3_🎯_Quiz.py")

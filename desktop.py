@@ -50,12 +50,13 @@ def start_streamlit_server(port):
     if not python_exe.exists():
         python_exe = sys.executable
 
+    entry_file = "Dashboard.py"
     cmd = [
         str(python_exe),
         "-m",
         "streamlit",
         "run",
-        "Dashboard.py",
+        entry_file,
         f"--server.port={port}",
         "--server.headless=true",
         "--server.enableCORS=false",

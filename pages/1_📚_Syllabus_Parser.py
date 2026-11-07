@@ -17,9 +17,11 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from gemini_client import call_gemini_json
 from prompts import syllabus_parser_prompt
 from storage import save_persistent_state
+from ui_components import render_sidebar_header
 from config import COLORS, DIFFICULTY_LABELS
 
-st.set_page_config(page_title="Syllabus Parser — StudyMind AI", page_icon="📚", layout="wide")
+st.set_page_config(page_title="Syllabus Parser — StudyMind AI", page_icon="📚", layout="wide", initial_sidebar_state="expanded")
+render_sidebar_header()
 
 # ── Header ─────────────────────────────────────────────────────────────────────
 st.markdown(f"""

@@ -22,19 +22,23 @@ def get_api_key() -> str:
     return (DEFAULT_KEY or "").strip()
 
 
-def _init_model(temperature: float = 0.7, json_mode: bool = False):
-    """Initialize and return a Gemini model instance."""
+def _init_model(temperature: float = 0.7, json_mode: bool = False, max_tokens: int = 4096):
+    """Initialize and return a fast Gemini model instance."""
     api_key = get_api_key()
     if not api_key:
         raise ValueError("GEMINI_API_KEY is not set. Enter your key in the sidebar or add it to .env.")
     
     genai.configure(api_key=api_key)
-    generation_config = genai.GenerationConfig(
-        temperature=temperature,
-        top_p=0.95,
-        top_k=40,
-        max_output_tokens=8192,
-    )
+    config_dict = {
+        "temperature": temperature,
+        "top_p": 0.9,
+        "top_k": 32,
+        "max_output_tokens": max_tokens,
+    }
+    if json_mode:
+        config_dict["response_mime_type"] = "application/json"
+
+    generation_config = genai.GenerationConfig(**config_dict)
     return genai.GenerativeModel(
         model_name=GEMINI_MODEL,
         generation_config=generation_config,
@@ -66,13 +70,11 @@ def _strip_to_json(text: str) -> str:
     return text
 
 
-def call_gemini_json(prompt: str, temperature: float = 0.4) -> dict:
+def call_gemini_json(prompt: str, temperature: float = 0.3, max_tokens: int = 4096) -> dict:
     """
-    Call Gemini and return a parsed JSON dict.
-    Uses low temperature for structured outputs.
-    Raises ValueError if response is not valid JSON.
+    Call Gemini in native constrained JSON mode for maximum speed and zero parsing errors.
     """
-    model = _init_model(temperature=temperature)
+    model = _init_model(temperature=temperature, json_mode=True, max_tokens=max_tokens)
     try:
         response = model.generate_content(prompt)
         raw = response.text
@@ -140,3 +142,25 @@ def call_gemini_chat(messages: list, system_prompt: str = "", temperature: float
     last_msg = messages[-1]["content"] if messages else ""
     response = chat.send_message(last_msg)
     return response.text
+
+
+def call_gemini_stream(prompt: str, temperature: float = 0.8):
+    """
+    Call Gemini with stream=True. Yields text chunks live as they arrive.
+    Compatible with Streamlit's st.write_stream().
+    """
+    model = _init_model(temperature=temperature)
+    try:
+        response = model.generate_content(prompt, stream=True)
+        for chunk in response:
+            if chunk.text:
+                yield chunk.text
+    except Exception as e:
+        err_msg = str(e)
+        if "API_KEY_INVALID" in err_msg or "400" in err_msg or "403" in err_msg:
+            raise ValueError(
+                f"Gemini API Key Error: {err_msg}\n\n"
+                "💡 Please verify your API key at https://aistudio.google.com/ "
+                "(Google AI Studio keys typically begin with 'AIzaSy...')."
+            )
+        raise ValueError(f"Gemini API error: {err_msg}")
