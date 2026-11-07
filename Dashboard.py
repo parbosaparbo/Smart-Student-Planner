@@ -23,7 +23,7 @@ if "state_initialized" not in st.session_state:
 
 # ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title=f"{APP_TITLE}",
+    page_title=f"Dashboard — {APP_TITLE}",
     page_icon=APP_ICON,
     layout="wide",
     initial_sidebar_state="expanded",
@@ -139,6 +139,7 @@ with st.sidebar:
         ("💬 Doubt Solver",       "pages/5_💬_Doubt_Solver.py"),
         ("📝 Mock Exam",          "pages/6_📝_Mock_Exam.py"),
         ("🌅 Daily Briefing",     "pages/7_🌅_Daily_Briefing.py"),
+        ("🃏 Flashcards",         "pages/8_🃏_Flashcards.py"),
     ]
     for label, page in nav_items:
         if st.button(label, use_container_width=True):

@@ -363,3 +363,38 @@ RECENT CHAT HISTORY:
 
 STUDENT'S QUESTION: {question}
 """
+
+
+def flashcard_generator_prompt(topic_id: str, topic_title: str, num_cards: int = 5) -> str:
+    return f"""{SYSTEM_PROMPT}
+
+═══════════════════════════════════════════════════════
+          TASK: ACTIVE RECALL FLASHCARDS
+═══════════════════════════════════════════════════════
+
+Generate {num_cards} high-impact active recall flashcards for the topic below.
+
+RULES:
+- Front: A thought-provoking conceptual question or scenario (active recall, NO simple definitions).
+- Back: A concise explanation using the Feynman technique (clear analogy + core mechanism).
+- Key takeaway: 1 punchy rule or formula to remember.
+- Return ONLY valid JSON. No markdown. No explanation. Start with {{
+
+TOPIC ID: {topic_id}
+TOPIC TITLE: {topic_title}
+NUMBER OF CARDS: {num_cards}
+
+OUTPUT SCHEMA:
+{{
+  "topic_id": "{topic_id}",
+  "topic_title": "{topic_title}",
+  "cards": [
+    {{
+      "id": "c1",
+      "front": "<question or scenario>",
+      "back": "<Feynman analogy and explanation>",
+      "key_takeaway": "<1-line memorable insight>"
+    }}
+  ]
+}}
+"""

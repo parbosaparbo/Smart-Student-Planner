@@ -10,5 +10,5 @@ if (-not (Test-Path $streamlit)) {
 }
 
 Start-Process "http://localhost:8501"
-& $streamlit run app.py
+& $streamlit run Dashboard.py
 

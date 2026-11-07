@@ -54,7 +54,9 @@ if student.get("exam_date"):
         pass
 
 if not student:
-    st.info("👋 Set up your profile first! Go to the main page to onboard.")
+    st.info("👋 Set up your profile first on the Dashboard!")
+    if st.button("🏠 Go to Dashboard"):
+        st.switch_page("Dashboard.py")
     st.stop()
 
 if st.button("🌅 Generate Today's Briefing", type="primary", use_container_width=True):

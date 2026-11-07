@@ -55,7 +55,7 @@ def start_streamlit_server(port):
         "-m",
         "streamlit",
         "run",
-        "app.py",
+        "Dashboard.py",
         f"--server.port={port}",
         "--server.headless=true",
         "--server.enableCORS=false",

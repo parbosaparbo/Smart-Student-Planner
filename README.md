@@ -81,7 +81,7 @@ python desktop.py
 
 **Option C (Standard Browser Mode):**
 ```bash
-streamlit run app.py
+streamlit run Dashboard.py
 ```
 
 ---
@@ -90,7 +90,7 @@ streamlit run app.py
 
 ```
 STUDY PLANNER 7 TH SEM/
-├── app.py                      # Main entry point & student dashboard
+├── Dashboard.py                # Main entry point & student dashboard
 ├── config.py                   # App constants, colors, thresholds, labels
 ├── prompts.py                  # All 8 Gemini prompt builders (strict JSON rules)
 ├── gemini_client.py            # Gemini API client with JSON stripping & validation

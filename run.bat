@@ -20,5 +20,5 @@ if %ERRORLEVEL% NEQ 0 (
     echo.
     echo Fallback: starting in standard browser mode...
     start http://localhost:8501
-    ".venv\Scripts\streamlit.exe" run app.py
+    ".venv\Scripts\streamlit.exe" run Dashboard.py
 )
