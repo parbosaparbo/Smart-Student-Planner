@@ -183,68 +183,128 @@ if not st.session_state.get("student_profile"):
 
     st.divider()
 
-    # ── Quick Setup Form ────────────────────────────────────────────────────────
-    st.subheader("🚀 Quick Setup — Tell me about yourself")
-    st.caption("Fill in the basics to get your personalized study plan in minutes.")
+    demo_col1, demo_col2 = st.columns([2, 1])
+    with demo_col1:
+        st.subheader("🚀 Student Setup — Get Started")
+        st.caption("Fill in your details, or load a complete 7th Semester sample setup in 1 click.")
+    with demo_col2:
+        if st.button("✨ Load 7th Sem Demo Setup", use_container_width=True):
+            from demo_data import get_demo_state
+            demo = get_demo_state()
+            for k, v in demo.items():
+                st.session_state[k] = v
+            save_persistent_state(st.session_state)
+            st.success("✅ 7th Sem Demo Setup loaded!")
+            st.rerun()
 
-    with st.form("onboarding_form"):
-        c1, c2 = st.columns(2)
-        with c1:
-            name         = st.text_input("Your Name *", placeholder="e.g. Priya")
-            subject      = st.text_input("Subject / Course *", placeholder="e.g. Data Structures & Algorithms")
-            exam_date    = st.date_input("Exam Date *", min_value=date.today())
-            current_lvl  = st.selectbox("Your Current Level",
-                                        ["beginner", "intermediate", "advanced"])
-        with c2:
-            daily_hours  = st.slider("Daily Study Hours", 1.0, 12.0, 4.0, 0.5)
-            pref_times   = st.multiselect(
-                "Preferred Study Times",
-                ["early_morning", "morning", "afternoon", "evening", "night"],
-                default=["morning", "evening"]
-            )
-            blocked_days = st.multiselect(
-                "Blocked Days (can't study)",
-                ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],
-                default=["sunday"]
-            )
-            learning_style = st.selectbox(
-                "Learning Style",
-                ["visual", "reading/writing", "auditory", "kinesthetic", "mixed"]
-            )
-            known_topics = st.text_input("Topics you already know (optional)",
-                                         placeholder="e.g. Arrays, Linked Lists")
+    tab_quick, tab_chat = st.tabs(["⚡ 1-Minute Quick Form", "💬 Conversational AI Interview"])
 
-        submit = st.form_submit_button(f"✅ Let's Start Studying!", type="primary",
-                                       use_container_width=True)
+    with tab_quick:
+        with st.form("onboarding_form"):
+            c1, c2 = st.columns(2)
+            with c1:
+                name         = st.text_input("Your Name *", placeholder="e.g. Priya")
+                subject      = st.text_input("Subject / Course *", placeholder="e.g. Computer Networks")
+                exam_date    = st.date_input("Exam Date *", min_value=date.today())
+                current_lvl  = st.selectbox("Your Current Level",
+                                            ["beginner", "intermediate", "advanced"])
+            with c2:
+                daily_hours  = st.slider("Daily Study Hours", 1.0, 12.0, 4.0, 0.5)
+                pref_times   = st.multiselect(
+                    "Preferred Study Times",
+                    ["early_morning", "morning", "afternoon", "evening", "night"],
+                    default=["morning", "evening"]
+                )
+                blocked_days = st.multiselect(
+                    "Blocked Days (can't study)",
+                    ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],
+                    default=["sunday"]
+                )
+                learning_style = st.selectbox(
+                    "Learning Style",
+                    ["visual", "reading/writing", "auditory", "kinesthetic", "mixed"]
+                )
+                known_topics = st.text_input("Topics you already know (optional)",
+                                             placeholder="e.g. OSI Model, Subnetting")
 
-    if submit and name and subject:
-        days_left = (exam_date - date.today()).days
-        profile = {
-            "student_name":   name,
-            "subject":        subject,
-            "exam_date":      str(exam_date),
-            "daily_hours":    daily_hours,
-            "preferred_times": pref_times,
-            "blocked_days":   blocked_days,
-            "current_level":  current_lvl,
-            "known_topics":   [t.strip() for t in known_topics.split(",") if t.strip()],
-            "learning_style": learning_style,
-        }
-        st.session_state["student_profile"] = profile
-        save_persistent_state(st.session_state)
+            submit = st.form_submit_button("✅ Start Studying Now!", type="primary", use_container_width=True)
 
-        if days_left < 7:
-            st.warning(
-                f"⚠️ That's very tight — only **{days_left} days** until your exam! "
-                "We'll prioritize ruthlessly. Ready for an intense plan?"
-            )
+        if submit and name and subject:
+            days_left = (exam_date - date.today()).days
+            profile = {
+                "student_name":   name,
+                "subject":        subject,
+                "exam_date":      str(exam_date),
+                "daily_hours":    daily_hours,
+                "preferred_times": pref_times,
+                "blocked_days":   blocked_days,
+                "current_level":  current_lvl,
+                "known_topics":   [t.strip() for t in known_topics.split(",") if t.strip()],
+                "learning_style": learning_style,
+            }
+            st.session_state["student_profile"] = profile
+            save_persistent_state(st.session_state)
 
-        st.success(f"✅ Welcome, {name}! Your profile is set up.")
-        st.balloons()
-        st.rerun()
+            if days_left < 7:
+                st.warning(
+                    f"⚠️ That's very tight — only **{days_left} days** until your exam! "
+                    "We'll prioritize ruthlessly. Ready for an intense plan?"
+                )
 
-    elif submit:
-        st.error("Please fill in at least your Name and Subject.")
+            st.success(f"✅ Welcome, {name}! Your profile is set up.")
+            st.balloons()
+            st.rerun()
+
+        elif submit:
+            st.error("Please fill in at least your Name and Subject.")
+
+    with tab_chat:
+        st.markdown("""
+        **💬 AI Interview Mode (Feature 9)**  
+        *StudyMind AI asks one question at a time to build your profile conversationally.*
+        """)
+        # Initialize onboarding question step
+        if "onboard_step" not in st.session_state:
+            st.session_state["onboard_step"] = 0
+            st.session_state["onboard_data"] = {}
+
+        questions = [
+            ("student_name", "👋 Hi! I'm StudyMind AI, your personal academic coach. What is your name?"),
+            ("subject", "Great! What subject or course are you preparing for? (e.g. Computer Networks)"),
+            ("exam_date", "When is your exam date? (YYYY-MM-DD format, e.g. 2026-12-01)"),
+            ("daily_hours", "How many hours per day can you realistically dedicate to studying? (e.g. 4)"),
+            ("preferred_times", "What are your preferred study times? (e.g. morning, evening, night)"),
+            ("current_level", "How would you rate your current preparation level? (beginner, intermediate, or advanced)"),
+        ]
+
+        step = st.session_state["onboard_step"]
+        if step < len(questions):
+            field, q_text = questions[step]
+            st.info(f"🧠 **StudyMind AI:** {q_text}")
+            user_ans = st.text_input(f"Your Answer for Step {step+1}:", key=f"onboard_ans_{step}")
+            if st.button("Submit Answer ➡️", key=f"onboard_btn_{step}") and user_ans.strip():
+                st.session_state["onboard_data"][field] = user_ans.strip()
+                st.session_state["onboard_step"] += 1
+                st.rerun()
+        else:
+            data = st.session_state["onboard_data"]
+            st.success("🎉 All questions answered! Here is your profile summary:")
+            st.json(data)
+            if st.button("🚀 Confirm & Go to Dashboard", type="primary"):
+                profile = {
+                    "student_name":   data.get("student_name", "Student"),
+                    "subject":        data.get("subject", "General"),
+                    "exam_date":      data.get("exam_date", str(date.today() + timedelta(days=21))),
+                    "daily_hours":    float(data.get("daily_hours", 4.0)),
+                    "preferred_times": [t.strip() for t in data.get("preferred_times", "morning, evening").split(",")],
+                    "blocked_days":   ["sunday"],
+                    "current_level":  data.get("current_level", "intermediate"),
+                    "known_topics":   [],
+                    "learning_style": "visual",
+                }
+                st.session_state["student_profile"] = profile
+                save_persistent_state(st.session_state)
+                st.rerun()
 
 else:
     # ── DASHBOARD ──────────────────────────────────────────────────────────────

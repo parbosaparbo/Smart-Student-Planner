@@ -1,0 +1,517 @@
+{
+  "topic_tree": {
+    "subject": "Computer Science and Information Technology",
+    "total_estimated_hours": 420.0,
+    "exam_type": "competitive",
+    "topics": [
+      {
+        "id": "t1",
+        "title": "Engineering Mathematics",
+        "difficulty": 4,
+        "estimated_hours": 60.0,
+        "priority": 5,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t1_s1",
+            "title": "Discrete Mathematics",
+            "estimated_hours": 22.0,
+            "key_concepts": [
+              "Propositional and First Order Logic",
+              "Sets, Relations, and Functions",
+              "Lattices and Groups",
+              "Graph Connectivity and Coloring",
+              "Combinatorics and Recurrence Relations"
+            ]
+          },
+          {
+            "id": "t1_s2",
+            "title": "Linear Algebra",
+            "estimated_hours": 14.0,
+            "key_concepts": [
+              "Matrices and Determinants",
+              "System of Linear Equations",
+              "Eigenvalues and Eigenvectors",
+              "LU Decomposition"
+            ]
+          },
+          {
+            "id": "t1_s3",
+            "title": "Calculus",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Limits, Continuity, and Differentiability",
+              "Maxima and Minima",
+              "Mean Value Theorem",
+              "Definite and Indefinite Integration"
+            ]
+          },
+          {
+            "id": "t1_s4",
+            "title": "Probability and Statistics",
+            "estimated_hours": 14.0,
+            "key_concepts": [
+              "Random Variables and Distributions",
+              "Mean, Median, Mode, Standard Deviation",
+              "Conditional Probability",
+              "Bayes Theorem"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t2",
+        "title": "Digital Logic",
+        "difficulty": 2,
+        "estimated_hours": 25.0,
+        "priority": 3,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t2_s1",
+            "title": "Boolean Algebra and Minimization",
+            "estimated_hours": 8.0,
+            "key_concepts": [
+              "Boolean Algebra Theorems",
+              "Karnaugh Maps",
+              "Quine-McCluskey Tabular Method"
+            ]
+          },
+          {
+            "id": "t2_s2",
+            "title": "Combinational Circuit Design",
+            "estimated_hours": 8.0,
+            "key_concepts": [
+              "Multiplexers and Demultiplexers",
+              "Decoders and Encoders",
+              "Adders and Subtractors"
+            ]
+          },
+          {
+            "id": "t2_s3",
+            "title": "Sequential Circuit Design",
+            "estimated_hours": 5.0,
+            "key_concepts": [
+              "Latches and Flip-Flops",
+              "Counters and Registers",
+              "Finite State Machines"
+            ]
+          },
+          {
+            "id": "t2_s4",
+            "title": "Number Representation and Computer Arithmetic",
+            "estimated_hours": 4.0,
+            "key_concepts": [
+              "Fixed Point Representation",
+              "IEEE 754 Floating Point",
+              "Signed and Unsigned Arithmetic"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t3",
+        "title": "Computer Organization and Architecture",
+        "difficulty": 4,
+        "estimated_hours": 45.0,
+        "priority": 4,
+        "prerequisites": [
+          "t2"
+        ],
+        "subtopics": [
+          {
+            "id": "t3_s1",
+            "title": "Machine Instructions and Addressing Modes",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Instruction Formats",
+              "Addressing Modes",
+              "ALU Design"
+            ]
+          },
+          {
+            "id": "t3_s2",
+            "title": "Control Unit Design",
+            "estimated_hours": 8.0,
+            "key_concepts": [
+              "Hardwired Control Unit",
+              "Microprogrammed Control Unit",
+              "Micro-instruction Sequencing"
+            ]
+          },
+          {
+            "id": "t3_s3",
+            "title": "Memory Hierarchy and Cache Design",
+            "estimated_hours": 14.0,
+            "key_concepts": [
+              "Cache Mapping Techniques",
+              "Cache Performance and Miss Penalties",
+              "Virtual Memory Interfacing"
+            ]
+          },
+          {
+            "id": "t3_s4",
+            "title": "Pipelining and I/O Interface",
+            "estimated_hours": 13.0,
+            "key_concepts": [
+              "Pipeline Hazards and Stalls",
+              "Branch Prediction",
+              "Interrupts and Direct Memory Access (DMA)"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t4",
+        "title": "Programming and Data Structures",
+        "difficulty": 3,
+        "estimated_hours": 45.0,
+        "priority": 5,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t4_s1",
+            "title": "C Programming and Recursion",
+            "estimated_hours": 12.0,
+            "key_concepts": [
+              "Pointers and Memory Allocation",
+              "Function Call Stack",
+              "Recursion Analysis",
+              "Scope and Binding"
+            ]
+          },
+          {
+            "id": "t4_s2",
+            "title": "Linear Data Structures",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Arrays",
+              "Linked Lists",
+              "Stacks and Applications",
+              "Queues and Circular Queues"
+            ]
+          },
+          {
+            "id": "t4_s3",
+            "title": "Trees and Binary Search Trees",
+            "estimated_hours": 13.0,
+            "key_concepts": [
+              "Binary Tree Traversals",
+              "BST Operations and Properties",
+              "Threaded Binary Trees",
+              "Balanced Trees Concept"
+            ]
+          },
+          {
+            "id": "t4_s4",
+            "title": "Heaps and Graph Structures",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Binary Min/Max Heaps",
+              "Priority Queues",
+              "Graph Representation Matrices and Lists"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t5",
+        "title": "Algorithms",
+        "difficulty": 4,
+        "estimated_hours": 50.0,
+        "priority": 5,
+        "prerequisites": [
+          "t1",
+          "t4"
+        ],
+        "subtopics": [
+          {
+            "id": "t5_s1",
+            "title": "Asymptotic Analysis and Hashing",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Big-O, Omega, Theta Notations",
+              "Recurrence Relations Solving",
+              "Hash Tables and Collision Resolution"
+            ]
+          },
+          {
+            "id": "t5_s2",
+            "title": "Searching and Sorting",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Comparison-based Sorts",
+              "Non-comparison Sorts",
+              "Divide-and-Conquer Recurrences"
+            ]
+          },
+          {
+            "id": "t5_s3",
+            "title": "Design Paradigms: Greedy and Dynamic Programming",
+            "estimated_hours": 16.0,
+            "key_concepts": [
+              "Greedy Choice Property",
+              "Optimal Substructure",
+              "Overlapping Subproblems",
+              "DP Memoization and Tabulation"
+            ]
+          },
+          {
+            "id": "t5_s4",
+            "title": "Graph Algorithms",
+            "estimated_hours": 14.0,
+            "key_concepts": [
+              "Breadth-First and Depth-First Search",
+              "Minimum Spanning Trees (Kruskal, Prim)",
+              "Single-Source Shortest Paths (Dijkstra, Bellman-Ford)"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t6",
+        "title": "Theory of Computation",
+        "difficulty": 4,
+        "estimated_hours": 45.0,
+        "priority": 5,
+        "prerequisites": [
+          "t1"
+        ],
+        "subtopics": [
+          {
+            "id": "t6_s1",
+            "title": "Finite Automata and Regular Languages",
+            "estimated_hours": 14.0,
+            "key_concepts": [
+              "DFA and NFA Equivalence",
+              "Regular Expressions",
+              "Minimization of DFA",
+              "Pumping Lemma for Regular Languages"
+            ]
+          },
+          {
+            "id": "t6_s2",
+            "title": "Context-Free Grammars and Pushdown Automata",
+            "estimated_hours": 14.0,
+            "key_concepts": [
+              "Context-Free Languages",
+              "Ambiguity in Grammars",
+              "Pushdown Automata (DPDA and NPDA)",
+              "Pumping Lemma for CFLs"
+            ]
+          },
+          {
+            "id": "t6_s3",
+            "title": "Turing Machines and Decidability",
+            "estimated_hours": 17.0,
+            "key_concepts": [
+              "Turing Machine Construction",
+              "Chomsky Hierarchy",
+              "Recursive and Recursively Enumerable Languages",
+              "Halting Problem and Undecidability"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t7",
+        "title": "Compiler Design",
+        "difficulty": 4,
+        "estimated_hours": 30.0,
+        "priority": 3,
+        "prerequisites": [
+          "t4",
+          "t6"
+        ],
+        "subtopics": [
+          {
+            "id": "t7_s1",
+            "title": "Lexical Analysis and Syntax Analysis",
+            "estimated_hours": 12.0,
+            "key_concepts": [
+              "Lexical Tokens and Lexer Generation",
+              "Top-down Parsing (LL(1))",
+              "Bottom-up Parsing (LR(0), SLR, CLR, LALR)"
+            ]
+          },
+          {
+            "id": "t7_s2",
+            "title": "Syntax-Directed Translation and Intermediate Code",
+            "estimated_hours": 8.0,
+            "key_concepts": [
+              "Synthesized and Inherited Attributes",
+              "Three-Address Code",
+              "Quadruples and Triples"
+            ]
+          },
+          {
+            "id": "t7_s3",
+            "title": "Code Optimization and Data Flow Analysis",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Local Optimization and Basic Blocks",
+              "Constant Propagation",
+              "Liveness Analysis",
+              "Common Subexpression Elimination"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t8",
+        "title": "Operating Systems",
+        "difficulty": 3,
+        "estimated_hours": 45.0,
+        "priority": 4,
+        "prerequisites": [
+          "t3",
+          "t4"
+        ],
+        "subtopics": [
+          {
+            "id": "t8_s1",
+            "title": "Processes, Threads, and CPU Scheduling",
+            "estimated_hours": 12.0,
+            "key_concepts": [
+              "Process State Models",
+              "Threads and Multithreading",
+              "System Calls",
+              "Preemptive and Non-Preemptive Scheduling"
+            ]
+          },
+          {
+            "id": "t8_s2",
+            "title": "Concurrency, Synchronization, and Deadlocks",
+            "estimated_hours": 14.0,
+            "key_concepts": [
+              "Critical Section Problem",
+              "Semaphores and Mutexes",
+              "Deadlock Characterization and Prevention",
+              "Banker's Algorithm"
+            ]
+          },
+          {
+            "id": "t8_s3",
+            "title": "Memory Management and Virtual Memory",
+            "estimated_hours": 12.0,
+            "key_concepts": [
+              "Paging and Segmentation",
+              "Page Replacement Algorithms",
+              "Thrashing and Working Set Model"
+            ]
+          },
+          {
+            "id": "t8_s4",
+            "title": "Storage and File Systems",
+            "estimated_hours": 7.0,
+            "key_concepts": [
+              "File Allocation Methods",
+              "Free Space Management",
+              "Disk Scheduling Algorithms"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t9",
+        "title": "Databases",
+        "difficulty": 3,
+        "estimated_hours": 35.0,
+        "priority": 4,
+        "prerequisites": [
+          "t1",
+          "t4"
+        ],
+        "subtopics": [
+          {
+            "id": "t9_s1",
+            "title": "Data Modeling and Relational Algebra",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Entity-Relationship (ER) Model",
+              "Relational Model",
+              "Relational Algebra",
+              "Tuple Relational Calculus"
+            ]
+          },
+          {
+            "id": "t9_s2",
+            "title": "SQL and Normalization",
+            "estimated_hours": 12.0,
+            "key_concepts": [
+              "Complex SQL Queries and Joins",
+              "Integrity Constraints",
+              "Functional Dependencies",
+              "Normal Forms (1NF, 2NF, 3NF, BCNF)"
+            ]
+          },
+          {
+            "id": "t9_s3",
+            "title": "Indexing and Transactions",
+            "estimated_hours": 13.0,
+            "key_concepts": [
+              "B and B+ Trees Indexing",
+              "ACID Properties",
+              "Serializability",
+              "Concurrency Control Protocols"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t10",
+        "title": "Computer Networks",
+        "difficulty": 4,
+        "estimated_hours": 45.0,
+        "priority": 4,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t10_s1",
+            "title": "Layering, Switching, and Data Link Layer",
+            "estimated_hours": 12.0,
+            "key_concepts": [
+              "OSI and TCP/IP Reference Models",
+              "Packet and Circuit Switching",
+              "Error Detection (CRC, Checksum)",
+              "Medium Access Control and Ethernet"
+            ]
+          },
+          {
+            "id": "t10_s2",
+            "title": "Network Layer and Routing",
+            "estimated_hours": 14.0,
+            "key_concepts": [
+              "IPv4 Addressing and Subnetting (CIDR)",
+              "IP Packet Fragmentation",
+              "NAT",
+              "Distance Vector and Link State Routing"
+            ]
+          },
+          {
+            "id": "t10_s3",
+            "title": "Transport Layer",
+            "estimated_hours": 12.0,
+            "key_concepts": [
+              "TCP Handshake and Termination",
+              "Flow Control (Sliding Window)",
+              "Congestion Control Mechanisms",
+              "Socket Programming Basics"
+            ]
+          },
+          {
+            "id": "t10_s4",
+            "title": "Application Layer Protocols",
+            "estimated_hours": 7.0,
+            "key_concepts": [
+              "Domain Name System (DNS)",
+              "HTTP and HTTPS",
+              "Client-Server Architecture"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "subject": "Computer Science and Information Technology"
+}

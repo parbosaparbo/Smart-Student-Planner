@@ -77,8 +77,15 @@ def call_gemini_json(prompt: str, temperature: float = 0.4) -> dict:
         response = model.generate_content(prompt)
         raw = response.text
     except Exception as e:
-        # If model quota or error, provide clean feedback
-        raise ValueError(f"Gemini API error: {e}")
+        err_msg = str(e)
+        if "API_KEY_INVALID" in err_msg or "400" in err_msg or "403" in err_msg:
+            raise ValueError(
+                f"Gemini API Key Error: {err_msg}\n\n"
+                "💡 Please verify your API key at https://aistudio.google.com/ "
+                "(Google AI Studio keys typically begin with 'AIzaSy...'). "
+                "You can also change your key anytime in the sidebar!"
+            )
+        raise ValueError(f"Gemini API error: {err_msg}")
 
     cleaned = _strip_to_json(raw)
     try:
@@ -99,7 +106,14 @@ def call_gemini_text(prompt: str, temperature: float = 0.8) -> str:
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
-        raise ValueError(f"Gemini API error: {e}")
+        err_msg = str(e)
+        if "API_KEY_INVALID" in err_msg or "400" in err_msg or "403" in err_msg:
+            raise ValueError(
+                f"Gemini API Key Error: {err_msg}\n\n"
+                "💡 Please verify your API key at https://aistudio.google.com/ "
+                "(Google AI Studio keys typically begin with 'AIzaSy...')."
+            )
+        raise ValueError(f"Gemini API error: {err_msg}")
 
 
 def call_gemini_chat(messages: list, system_prompt: str = "", temperature: float = 0.8) -> str:

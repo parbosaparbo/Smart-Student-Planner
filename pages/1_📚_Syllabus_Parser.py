@@ -6,7 +6,10 @@ import json
 try:
     import pymupdf as fitz
 except ImportError:
-    import fitz
+    try:
+        import fitz
+    except ImportError:
+        fitz = None
 from pathlib import Path
 import sys
 
@@ -41,12 +44,15 @@ with col1:
     if input_method == "📄 Upload PDF":
         uploaded = st.file_uploader("Upload your syllabus PDF", type=["pdf"])
         if uploaded:
-            with st.spinner("Extracting text from PDF..."):
-                doc = fitz.open(stream=uploaded.read(), filetype="pdf")
-                raw_text = "\n".join(page.get_text() for page in doc)
-            st.success(f"✅ Extracted {len(raw_text)} characters from {len(doc)} pages")
-            with st.expander("Preview extracted text"):
-                st.text(raw_text[:2000] + ("..." if len(raw_text) > 2000 else ""))
+            if fitz is None:
+                st.error("⚠️ PyMuPDF is not installed in the currently active Python. Please launch via `run.bat` or install it with: `pip install pymupdf`")
+            else:
+                with st.spinner("Extracting text from PDF..."):
+                    doc = fitz.open(stream=uploaded.read(), filetype="pdf")
+                    raw_text = "\n".join(page.get_text() for page in doc)
+                st.success(f"✅ Extracted {len(raw_text)} characters from {len(doc)} pages")
+                with st.expander("Preview extracted text"):
+                    st.text(raw_text[:2000] + ("..." if len(raw_text) > 2000 else ""))
     else:
         if st.button("💡 Load Sample 7th Sem Syllabus"):
             try:
