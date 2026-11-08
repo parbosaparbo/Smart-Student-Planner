@@ -39,14 +39,67 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 # ── Constants ──────────────────────────────────────────────────────────────────
 SCOPES = [
-    "https://www.googleapis.com/auth/calendar.events",  # only events, not full calendar
-    "https://www.googleapis.com/auth/userinfo.email",   # to display connected account email
+    "openid",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/calendar.events",
 ]
 STUDYMIND_SOURCE_TAG = "StudyMindAI"
 TOKEN_DIR = Path(__file__).parent / "data" / "gcal_tokens"
 VERIFIER_FILE = TOKEN_DIR / "_verifier.json"
 CREDENTIALS_FILE = Path(__file__).parent / "credentials.json"
 REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI", "http://localhost:8501")
+
+
+def check_token_scopes(token_data: dict) -> Tuple[bool, List[str]]:
+    """
+    Checks if a saved token has all current REQUIRED SCOPES:
+    - openid
+    - userinfo.email
+    - calendar.events
+    Returns (has_all_scopes: bool, missing_scopes: List[str]).
+    """
+    granted = set(token_data.get("scopes", []))
+    normalized = set()
+    for s in granted:
+        s_clean = s.strip()
+        normalized.add(s_clean)
+        if s_clean in ("email", "https://www.googleapis.com/auth/userinfo.email"):
+            normalized.add("email")
+            normalized.add("https://www.googleapis.com/auth/userinfo.email")
+        if s_clean == "openid":
+            normalized.add("openid")
+
+    missing = [req for req in SCOPES if req not in normalized]
+    return (len(missing) == 0, missing)
+
+
+def has_scope_mismatch(student_key: str = "") -> Tuple[bool, List[str]]:
+    """
+    Checks if an existing saved token has outdated/missing scopes compared to current SCOPES.
+    Returns (mismatch_detected, missing_scopes).
+    """
+    TOKEN_DIR.mkdir(parents=True, exist_ok=True)
+    paths_to_check = []
+    if student_key:
+        paths_to_check.append(_token_path(student_key))
+    paths_to_check.append(_token_path("default"))
+    if TOKEN_DIR.exists():
+        for f in TOKEN_DIR.glob("*.json"):
+            if not f.name.startswith("_"):
+                paths_to_check.append(f)
+
+    for p in paths_to_check:
+        if p.exists():
+            try:
+                with open(p, "r", encoding="utf-8") as jf:
+                    data = json.load(jf)
+                valid, missing = check_token_scopes(data)
+                if not valid and missing:
+                    return True, missing
+            except Exception:
+                pass
+
+    return False, []
 
 
 def _save_code_verifier(student_key: str, verifier: str) -> None:
@@ -130,6 +183,10 @@ def _token_path(student_key: str) -> Path:
 def load_token(student_key: str = "") -> Optional[Credentials]:
     """
     Load persisted credentials for a student.
+    Enforces strict OAuth scope consistency:
+    - Validates that the token has all required SCOPES (openid, userinfo.email, calendar.events).
+    - If scopes are outdated or missing, invalidates the old token and returns None
+      so that the application prompts the user to re-authenticate and regenerate the token.
     Fallback chain:
     1. Check specific student_key
     2. Check default token
@@ -137,37 +194,44 @@ def load_token(student_key: str = "") -> Optional[Credentials]:
     """
     TOKEN_DIR.mkdir(parents=True, exist_ok=True)
 
-    # 1. Try student_key if provided
-    if student_key:
-        path = _token_path(student_key)
-        if path.exists():
-            try:
-                with open(path, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                return Credentials.from_authorized_user_info(data, SCOPES)
-            except Exception:
-                pass
-
-    # 2. Try default token
-    def_path = _token_path("default")
-    if def_path.exists():
+    def _validate_and_load(file_path: Path) -> Optional[Credentials]:
+        if not file_path.exists():
+            return None
         try:
-            with open(def_path, "r", encoding="utf-8") as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
+
+            # Strict scope check: if scopes changed, invalidate outdated token
+            has_scopes, missing = check_token_scopes(data)
+            if not has_scopes:
+                try:
+                    file_path.unlink()
+                except Exception:
+                    pass
+                return None
+
             return Credentials.from_authorized_user_info(data, SCOPES)
         except Exception:
-            pass
+            return None
+
+    # 1. Try student_key if provided
+    if student_key:
+        creds = _validate_and_load(_token_path(student_key))
+        if creds:
+            return creds
+
+    # 2. Try default token
+    creds = _validate_and_load(_token_path("default"))
+    if creds:
+        return creds
 
     # 3. Try any saved token in data/gcal_tokens/
     if TOKEN_DIR.exists():
         for f in TOKEN_DIR.glob("*.json"):
             if not f.name.startswith("_"):
-                try:
-                    with open(f, "r", encoding="utf-8") as jf:
-                        data = json.load(jf)
-                    return Credentials.from_authorized_user_info(data, SCOPES)
-                except Exception:
-                    pass
+                creds = _validate_and_load(f)
+                if creds:
+                    return creds
 
     return None
 
@@ -563,16 +627,31 @@ def get_connected_account_email(student_key: str = "") -> Optional[str]:
     """
     Returns the Google account email of the connected user, or None.
     Uses multi-tier fallback:
-    1. Primary Calendar ID (always available with calendar.events scope)
-    2. Google OAuth2 userinfo endpoint
-    3. Token id_token payload
+    1. Direct from OpenID id_token payload (instant, zero network latency)
+    2. Primary Calendar ID (always available with calendar.events scope)
+    3. Google OAuth2 userinfo endpoint
     """
     try:
         creds = get_valid_credentials(student_key)
         if not creds:
             return None
 
-        # 1. Primary Calendar ID is always the user's Google email
+        # 1. OpenID id_token claims (zero latency)
+        try:
+            if hasattr(creds, "id_token") and creds.id_token:
+                if isinstance(creds.id_token, dict) and creds.id_token.get("email"):
+                    return creds.id_token["email"]
+                elif isinstance(creds.id_token, str) and "." in creds.id_token:
+                    import base64
+                    part = creds.id_token.split(".")[1]
+                    part += "=" * (-len(part) % 4)
+                    claims = json.loads(base64.urlsafe_b64decode(part).decode("utf-8"))
+                    if claims.get("email"):
+                        return claims["email"]
+        except Exception:
+            pass
+
+        # 2. Primary Calendar ID is always the user's Google email
         try:
             service = build("calendar", "v3", credentials=creds, cache_discovery=False)
             cal = service.calendars().get(calendarId="primary").execute()
@@ -582,19 +661,12 @@ def get_connected_account_email(student_key: str = "") -> Optional[str]:
         except Exception:
             pass
 
-        # 2. OAuth2 userinfo
+        # 3. OAuth2 userinfo
         try:
             oauth2_service = build("oauth2", "v2", credentials=creds, cache_discovery=False)
             info = oauth2_service.userinfo().get().execute()
             if info.get("email"):
                 return info.get("email")
-        except Exception:
-            pass
-
-        # 3. id_token if present in creds
-        try:
-            if hasattr(creds, "id_token") and isinstance(creds.id_token, dict):
-                return creds.id_token.get("email")
         except Exception:
             pass
 

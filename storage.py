@@ -38,10 +38,14 @@ def save_persistent_state(session_state: Dict[str, Any]) -> bool:
         "subject",
         "schedule",
         "quiz_results",
+        "mock_evaluation",
+        "mock_results",
         "daily_briefing",
         "weak_analysis",
         "flashcards",
         "gcal_event_map",
+        "completed_revisions",
+        "revision_history",
     ]
     data = {}
     for k in keys_to_persist:

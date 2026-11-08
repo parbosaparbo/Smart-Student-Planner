@@ -165,15 +165,36 @@ def push_to_calendar(study_block: dict) -> Dict[str, Any]:
 
 @server.tool(
     name="analyze_weak_spots",
-    description="Audits student quiz history to detect critical gaps (<50%) and dangerous blind spots (high confidence, low score).",
+    description="Audits student quiz and mock exam history to detect critical gaps (<50%), repeated mistakes, and dangerous blind spots.",
 )
-def analyze_weak_spots(quiz_results: list, student_name: str = "Student") -> Dict[str, Any]:
-    """MCP Tool: Analyzes mastery breakdown and blind spots."""
+def analyze_weak_spots(quiz_results: list, student_name: str = "Student", mock_evaluation: dict = None) -> Dict[str, Any]:
+    """MCP Tool: Analyzes mastery breakdown, repeated mistakes, and blind spots."""
     from prompts import weak_spot_analyzer_prompt
     from gemini_client import call_gemini_json
+    from core.weak_topic_manager import extract_topic_performance
+
+    # Compute deterministic topic metrics
+    metrics = extract_topic_performance(quiz_results, mock_evaluation)
 
     prompt = weak_spot_analyzer_prompt(quiz_results, student_name)
-    return call_gemini_json(prompt, temperature=0.3)
+    analysis = call_gemini_json(prompt, temperature=0.3)
+    if isinstance(analysis, dict):
+        analysis["topic_metrics"] = metrics
+    return analysis
+
+
+@server.tool(
+    name="reschedule_spaced_revisions",
+    description="Surgically generates priority-based spaced revisions (R1: 1-2 days, R2: 4-6 days) for weak topics, preserving completed sessions and student availability.",
+)
+def reschedule_spaced_revisions(
+    current_schedule: dict,
+    weak_topics: list,
+    student_profile: dict,
+) -> Dict[str, Any]:
+    """MCP Tool: Priority-based spaced revision scheduler."""
+    from core.weak_topic_manager import schedule_spaced_revisions
+    return schedule_spaced_revisions(current_schedule, weak_topics, student_profile)
 
 
 @server.tool(

@@ -57,10 +57,11 @@ def run_tests():
         "extract_pdf_structured",
         "extract_pdf_ocr",
         "parse_syllabus_structure",
+        "reschedule_spaced_revisions",
     ]
     for expected in expected_tools:
         assert expected in tool_names, f"Missing MCP Tool: {expected}"
-    print("✅ All 11 MCP Tools verified!")
+    print(f"✅ All {len(expected_tools)} MCP Tools verified!")
 
     # ─────────────────────────────────────────────────────────────────────────
     # TEST 2: Existing MCP Tools Backward Compatibility
@@ -182,6 +183,69 @@ def run_tests():
             assert not any(w in t_title for w in ["reference book", "textbook", "tmh", "pearson", "edition"]), f"Reference book detected as topic: {t_title}"
 
         print("✅ B.Tech 7th Sem CSE parsing with Electives & Reference book filtering verified!")
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # TEST 5: Weak Topic Analysis & Spaced Revision Rescheduling
+    # ─────────────────────────────────────────────────────────────────────────
+    print("\n[TEST 5] Verifying Weak Topic Analysis & Spaced Revision Rescheduling...")
+    from core.weak_topic_manager import (
+        extract_topic_performance,
+        identify_weak_topics,
+        schedule_spaced_revisions,
+    )
+    from mcp_tools import reschedule_spaced_revisions
+
+    mock_quizzes = [
+        {"topic_id": "t1", "topic_title": "Sorting Algorithms", "score_pct": 40},
+        {"topic_id": "t1", "topic_title": "Sorting Algorithms", "score_pct": 55},  # Repeated mistake
+        {"topic_id": "t2", "topic_title": "Binary Trees", "score_pct": 85},
+    ]
+    mock_eval = {
+        "topic_performance": [
+            {"topic_id": "t1", "score_pct": 45, "verdict": "critical", "priority_action": "Fix QuickSort partitioning"},
+            {"topic_id": "t3", "score_pct": 60, "verdict": "weak", "priority_action": "Review Graph DFS"},
+        ]
+    }
+
+    # 5a. Performance & repeated mistakes extraction
+    perf = extract_topic_performance(mock_quizzes, mock_eval)
+    assert "t1" in perf, "Expected t1 in performance metrics"
+    assert perf["t1"]["repeated_mistakes_count"] >= 2, f"Expected repeated mistakes for t1, got {perf['t1']['repeated_mistakes_count']}"
+    assert perf["t1"]["urgency"] == "critical"
+    print(f"   t1 accuracy: {perf['t1']['recent_accuracy']}%, repeated mistakes: {perf['t1']['repeated_mistakes_count']}, urgency: {perf['t1']['urgency']}")
+
+    # 5b. Prioritized weak topics
+    weaks = identify_weak_topics(mock_quizzes, mock_eval)
+    assert len(weaks) >= 2, "Expected at least 2 weak topics"
+    assert weaks[0]["topic_id"] == "t1", "Lowest score + repeated mistakes should be prioritized first"
+    print(f"   Priority weak topics ordered correctly: {[w['topic_id'] for w in weaks]}")
+
+    # 5c. Spaced revision scheduling (preserving past sessions)
+    from datetime import date
+    test_today = date(2026, 11, 10)
+    current_schedule = {
+        "daily_blocks": [
+            {"date": "2026-11-09", "day_type": "study", "blocks": [{"topic_id": "t_past", "topic_title": "Past Session"}]},
+            {"date": "2026-11-10", "day_type": "study", "blocks": [{"topic_id": "t_today", "topic_title": "Today Session"}]},
+        ]
+    }
+    student_profile = {
+        "student_name": "Aman",
+        "daily_hours": 3.0,
+        "blocked_days": ["sunday"],
+        "preferred_times": ["morning", "evening"],
+    }
+
+    resched_res = reschedule_spaced_revisions(current_schedule, weaks, student_profile)
+    assert resched_res["blocks_added"] >= 2, "Spaced revisions must add at least 2 sessions (Round 1 & Round 2)"
+    updated_daily = resched_res["updated_schedule"]["daily_blocks"]
+
+    # Verify past session was NOT disturbed
+    past_day = next((d for d in updated_daily if d.get("date") == "2026-11-09"), None)
+    assert past_day is not None and past_day["blocks"][0]["topic_id"] == "t_past", "Past session was disturbed!"
+    print(f"   Non-disturbance verified: past session intact ({past_day['blocks'][0]['topic_title']})")
+    print(f"   Spaced revision blocks successfully inserted: {resched_res['blocks_added']}")
+    print("✅ Weak Topic Analysis & Spaced Revision Rescheduling verified successfully!")
 
     print("\n" + "=" * 70)
     print("🎉 ALL TESTS PASSED! MCP INTEGRATION FULLY VERIFIED.")

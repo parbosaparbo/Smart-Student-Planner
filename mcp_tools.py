@@ -6,6 +6,7 @@ the complete Model Context Protocol (MCP) tool registry.
 from mcp_server import (
     generate_quiz,
     reschedule_weak_topic,
+    reschedule_spaced_revisions,
     search_syllabus,
     push_to_calendar,
     analyze_weak_spots,
@@ -22,6 +23,7 @@ from mcp_client import mcp_client, MCPClient
 __all__ = [
     "generate_quiz",
     "reschedule_weak_topic",
+    "reschedule_spaced_revisions",
     "search_syllabus",
     "push_to_calendar",
     "analyze_weak_spots",

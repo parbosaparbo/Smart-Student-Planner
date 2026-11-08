@@ -389,6 +389,14 @@ if "schedule" in st.session_state:
                 ls3.metric("Skipped", last_sync.get("skipped", 0))
                 ls4.metric("Total Blocks", last_sync.get("total_blocks", 0))
     else:
+        # Not connected — check if scopes changed on existing token
+        has_mismatch, missing_s = gcal.has_scope_mismatch(student_key)
+        if has_mismatch:
+            st.warning(
+                f"⚠️ **Google Calendar permissions updated:** StudyMind AI now requires updated scopes "
+                f"(`{', '.join(missing_s)}`). Please click Connect below to re-authenticate and regenerate your token with the new scopes."
+            )
+
         # Not connected — show connect buttons & authorization flows
         _muted = COLORS['text_muted']
         st.markdown(
