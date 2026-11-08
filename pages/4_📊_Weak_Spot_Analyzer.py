@@ -56,7 +56,7 @@ for i, r in enumerate(quiz_results):
 """, unsafe_allow_html=True)
 
 # ── Analyze button ─────────────────────────────────────────────────────────────
-if st.button("🧠 Analyze My Weak Spots", type="primary", use_container_width=True):
+if st.button("🧠 Analyze My Weak Spots", type="primary", width="stretch"):
     with st.spinner("🔍 Analyzing your performance patterns..."):
         try:
             prompt = weak_spot_analyzer_prompt(quiz_results, student_name)
@@ -91,7 +91,7 @@ if "weak_analysis" in st.session_state:
     ))
     fig.update_layout(height=250, margin=dict(t=40, b=0, l=0, r=0),
                       paper_bgcolor="rgba(0,0,0,0)", font_color="white")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     # Coach message
     coach_msg = analysis.get("coach_message", "")
@@ -174,7 +174,7 @@ if "weak_analysis" in st.session_state:
 
         c1, c2 = st.columns(2)
         with c1:
-            if st.button("✅ Approve Changes", type="primary", use_container_width=True):
+            if st.button("✅ Approve Changes", type="primary", width="stretch"):
                 if "schedule" in st.session_state and "changes" in rp:
                     st.session_state["schedule"] = apply_schedule_changes(
                         st.session_state["schedule"], rp["changes"]
@@ -183,6 +183,6 @@ if "weak_analysis" in st.session_state:
                 del st.session_state["reschedule_proposal"]
                 st.rerun()
         with c2:
-            if st.button("❌ Reject Changes", use_container_width=True):
+            if st.button("❌ Reject Changes", width="stretch"):
                 st.info("No changes made.")
                 del st.session_state["reschedule_proposal"]

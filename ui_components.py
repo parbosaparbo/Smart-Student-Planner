@@ -65,6 +65,27 @@ def render_sidebar_header():
         """, unsafe_allow_html=True)
 
 
+def render_gcal_sidebar_status():
+    """Show Google Calendar connection status in the sidebar."""
+    try:
+        import google_calendar as gcal
+        if not gcal.is_configured():
+            return
+        student = st.session_state.get("student_profile", {})
+        student_key = student.get("student_name", "")
+        with st.sidebar:
+            if gcal.is_connected(student_key):
+                email = gcal.get_connected_account_email(student_key)
+                if email and "@" in email:
+                    st.caption(f"📅 Google Calendar: ✅ Connected ({email})")
+                else:
+                    st.caption("📅 Google Calendar: ✅ Connected")
+            else:
+                st.caption("📅 Google Calendar: 🔗 Not connected")
+    except Exception:
+        pass
+
+
 def nav_to_dashboard():
     """Safely navigates to the main Dashboard."""
     st.switch_page("Dashboard.py")

@@ -47,7 +47,7 @@ with ctrl_col1:
     msg_count = len([m for m in st.session_state["chat_history"] if m.get("role") == "user"])
     st.caption(f"🧠 Socratic Guidance Active · {msg_count} question{'s' if msg_count != 1 else ''} asked in this session")
 with ctrl_col2:
-    if st.button("🗑️ Clear Chat", use_container_width=True):
+    if st.button("🗑️ Clear Chat", width="stretch"):
         st.session_state["chat_history"] = []
         st.rerun()
 
@@ -80,7 +80,7 @@ if not st.session_state["chat_history"]:
     ]
     for col, prompt_text in zip([c1, c2, c3], preset_prompts):
         with col:
-            if st.button(prompt_text, key=f"preset_{prompt_text[:12]}", use_container_width=True):
+            if st.button(prompt_text, key=f"preset_{prompt_text[:12]}", width="stretch"):
                 st.session_state["chat_history"].append({"role": "user", "content": prompt_text})
                 st.rerun()
 

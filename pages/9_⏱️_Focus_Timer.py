@@ -120,25 +120,25 @@ with col_timer:
 
     with btn_c1:
         if not st.session_state["timer_running"]:
-            if st.button("▶️ Start Focus", type="primary", use_container_width=True):
+            if st.button("▶️ Start Focus", type="primary", width="stretch"):
                 st.session_state["timer_running"] = True
                 st.session_state["timer_mode"] = "Focus"
                 st.session_state["timer_seconds"] = study_duration * 60
                 st.rerun()
         else:
-            if st.button("⏸️ Pause", use_container_width=True):
+            if st.button("⏸️ Pause", width="stretch"):
                 st.session_state["timer_running"] = False
                 st.rerun()
 
     with btn_c2:
-        if st.button("☕ Take Break", use_container_width=True):
+        if st.button("☕ Take Break", width="stretch"):
             st.session_state["timer_mode"] = "Break"
             st.session_state["timer_seconds"] = break_duration * 60
             st.session_state["timer_running"] = True
             st.rerun()
 
     with btn_c3:
-        if st.button("🔄 Reset Timer", use_container_width=True):
+        if st.button("🔄 Reset Timer", width="stretch"):
             st.session_state["timer_running"] = False
             st.session_state["timer_seconds"] = study_duration * 60
             st.rerun()

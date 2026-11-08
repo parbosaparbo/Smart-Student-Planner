@@ -61,7 +61,7 @@ if not student:
         st.switch_page("Dashboard.py")
     st.stop()
 
-if st.button("🌅 Generate Today's Briefing", type="primary", use_container_width=True):
+if st.button("🌅 Generate Today's Briefing", type="primary", width="stretch"):
     prompt = daily_briefing_prompt(student, today_blocks, mastery_pct, days_left)
     st.markdown(f"""
 <div style='background:{COLORS["card_bg"]}; border-radius:16px; padding:2rem;

@@ -60,7 +60,7 @@ if "mock_exam" not in st.session_state:
 - Results saved for weak spot analysis
             """)
 
-        start_btn = st.form_submit_button("🚀 Start Mock Exam", type="primary", use_container_width=True)
+        start_btn = st.form_submit_button("🚀 Start Mock Exam", type="primary", width="stretch")
 
     if start_btn and selected_topics:
         # Generate questions for all selected topics
@@ -135,7 +135,7 @@ elif not st.session_state.get("mock_submitted", False):
             st.session_state["mock_answers"][q.get("id", f"q{i}")] = answer
             st.divider()
 
-        submitted = st.form_submit_button("📤 Submit Exam", type="primary", use_container_width=True)
+        submitted = st.form_submit_button("📤 Submit Exam", type="primary", width="stretch")
 
     if submitted:
         st.session_state["mock_submitted"] = True
@@ -243,7 +243,7 @@ if "mock_evaluation" in st.session_state:
             f"**{tp.get('verdict','').upper()}** — {tp.get('priority_action','')}"
         )
 
-    if st.button("🔄 Take Another Mock Exam", use_container_width=True):
+    if st.button("🔄 Take Another Mock Exam", width="stretch"):
         for k in ["mock_exam","mock_answers","mock_submitted","mock_time_taken","mock_evaluation"]:
             st.session_state.pop(k, None)
         st.rerun()

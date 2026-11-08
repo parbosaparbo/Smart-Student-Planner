@@ -12,7 +12,7 @@ from config import APP_TITLE, APP_ICON, APP_SUBTITLE, COLORS, GEMINI_API_KEY
 from gemini_client import call_gemini_text, call_gemini_json, get_api_key
 from prompts import daily_briefing_prompt, SYSTEM_PROMPT
 from storage import load_persistent_state, save_persistent_state, clear_persistent_state
-from ui_components import render_sidebar_header
+from ui_components import render_sidebar_header, render_gcal_sidebar_status
 
 # ── Auto-restore saved session state ──────────────────────────────────────────
 if "state_initialized" not in st.session_state:
@@ -29,6 +29,21 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# ── Google OAuth Callback Handler (if redirected to Dashboard root) ────────────
+_oauth_code = st.query_params.get("code")
+_oauth_state = st.query_params.get("state")
+if _oauth_code:
+    try:
+        import google_calendar as gcal
+        student_key = _oauth_state or st.session_state.get("student_profile", {}).get("student_name", "Student")
+        gcal.exchange_code_for_token(_oauth_code, student_key)
+        st.query_params.clear()
+        st.session_state["gcal_just_connected"] = True
+        st.switch_page("pages/2_📅_Schedule_Generator.py")
+    except Exception as e:
+        st.query_params.clear()
+        st.error(f"❌ Google Calendar connection failed: {e}")
 
 # ── Global CSS ─────────────────────────────────────────────────────────────────
 st.markdown(f"""
@@ -89,6 +104,7 @@ st.markdown(f"""
 
 # ── Sidebar Brand Header ───────────────────────────────────────────────────────
 render_sidebar_header()
+render_gcal_sidebar_status()
 
 # ── API Key Banner (only shows if API key is missing) ──────────────────────────
 if not get_api_key():
@@ -98,7 +114,7 @@ if not get_api_key():
         with k_col1:
             input_key = st.text_input("Gemini API Key", type="password", placeholder="AIzaSy...", label_visibility="collapsed", key="banner_api_key")
         with k_col2:
-            if st.button("Save Key", type="primary", use_container_width=True) and input_key.strip():
+            if st.button("Save Key", type="primary", width="stretch") and input_key.strip():
                 st.session_state["gemini_api_key"] = input_key.strip()
                 st.rerun()
 
@@ -146,19 +162,8 @@ if not st.session_state.get("student_profile"):
 
     st.divider()
 
-    demo_col1, demo_col2 = st.columns([2, 1])
-    with demo_col1:
-        st.subheader("🚀 Student Setup — Get Started")
-        st.caption("Fill in your details, or load a complete 7th Semester sample setup in 1 click.")
-    with demo_col2:
-        if st.button("✨ Load 7th Sem Demo Setup", use_container_width=True):
-            from demo_data import get_demo_state
-            demo = get_demo_state()
-            for k, v in demo.items():
-                st.session_state[k] = v
-            save_persistent_state(st.session_state)
-            st.success("✅ 7th Sem Demo Setup loaded!")
-            st.rerun()
+    st.subheader("🚀 Student Setup — Get Started")
+    st.caption("Fill in your details below so StudyMind AI can craft your personalized study plan.")
 
     tab_quick, tab_chat = st.tabs(["⚡ 1-Minute Quick Form", "💬 Conversational AI Interview"])
 
@@ -190,7 +195,7 @@ if not st.session_state.get("student_profile"):
                 known_topics = st.text_input("Topics you already know (optional)",
                                              placeholder="e.g. OSI Model, Subnetting")
 
-            submit = st.form_submit_button("✅ Start Studying Now!", type="primary", use_container_width=True)
+            submit = st.form_submit_button("✅ Start Studying Now!", type="primary", width="stretch")
 
         if submit and name and subject:
             days_left = (exam_date - date.today()).days
@@ -323,7 +328,7 @@ else:
   </p>
 </div>
 """, unsafe_allow_html=True)
-        if st.button("→ Open Syllabus Parser", key="btn_syllabus", use_container_width=True):
+        if st.button("→ Open Syllabus Parser", key="btn_syllabus", width="stretch"):
             st.switch_page("pages/1_📚_Syllabus_Parser.py")
 
     with r1c2:
@@ -337,7 +342,7 @@ else:
   </p>
 </div>
 """, unsafe_allow_html=True)
-        if st.button("→ Build Schedule", key="btn_schedule", use_container_width=True):
+        if st.button("→ Build Schedule", key="btn_schedule", width="stretch"):
             st.switch_page("pages/2_📅_Schedule_Generator.py")
 
     with r1c3:
@@ -351,7 +356,7 @@ else:
   </p>
 </div>
 """, unsafe_allow_html=True)
-        if st.button("→ Start Quiz", key="btn_quiz", use_container_width=True):
+        if st.button("→ Start Quiz", key="btn_quiz", width="stretch"):
             st.switch_page("pages/3_🎯_Quiz.py")
 
     r2c1, r2c2, r2c3 = st.columns(3)
@@ -367,7 +372,7 @@ else:
   </p>
 </div>
 """, unsafe_allow_html=True)
-        if st.button("→ Analyze", key="btn_analyze", use_container_width=True):
+        if st.button("→ Analyze", key="btn_analyze", width="stretch"):
             st.switch_page("pages/4_📊_Weak_Spot_Analyzer.py")
 
     with r2c2:
@@ -381,7 +386,7 @@ else:
   </p>
 </div>
 """, unsafe_allow_html=True)
-        if st.button("→ Open Chatbot", key="btn_chat", use_container_width=True):
+        if st.button("→ Open Chatbot", key="btn_chat", width="stretch"):
             st.switch_page("pages/5_💬_Doubt_Solver.py")
 
     with r2c3:
@@ -395,7 +400,7 @@ else:
   </p>
 </div>
 """, unsafe_allow_html=True)
-        if st.button("→ Start Mock", key="btn_mock", use_container_width=True):
+        if st.button("→ Start Mock", key="btn_mock", width="stretch"):
             st.switch_page("pages/6_📝_Mock_Exam.py")
 
     r3c1, r3c2, r3c3 = st.columns(3)
@@ -411,7 +416,7 @@ else:
   </p>
 </div>
 """, unsafe_allow_html=True)
-        if st.button("→ Read Briefing", key="btn_briefing", use_container_width=True):
+        if st.button("→ Read Briefing", key="btn_briefing", width="stretch"):
             st.switch_page("pages/7_🌅_Daily_Briefing.py")
 
     with r3c2:
@@ -425,7 +430,7 @@ else:
   </p>
 </div>
 """, unsafe_allow_html=True)
-        if st.button("→ Practice Cards", key="btn_flash", use_container_width=True):
+        if st.button("→ Practice Cards", key="btn_flash", width="stretch"):
             st.switch_page("pages/8_🃏_Flashcards.py")
 
     with r3c3:
@@ -439,7 +444,7 @@ else:
   </p>
 </div>
 """, unsafe_allow_html=True)
-        if st.button("→ Start Pomodoro", key="btn_focus", use_container_width=True):
+        if st.button("→ Start Pomodoro", key="btn_focus", width="stretch"):
             st.switch_page("pages/9_⏱️_Focus_Timer.py")
 
     # Quick mastery trend (if quiz data)
@@ -449,7 +454,7 @@ else:
         with col_hdr:
             st.subheader("📈 Topic Mastery Overview")
         with col_btn:
-            if st.button("📊 Open Full Progress Analytics ↗", use_container_width=True):
+            if st.button("📊 Open Full Progress Analytics ↗", width="stretch"):
                 st.switch_page("pages/10_📈_Student_Progress.py")
         import plotly.graph_objects as go
 
@@ -478,11 +483,19 @@ else:
             font_color="white",
             margin=dict(t=20, b=20),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     # Reset button
     st.divider()
     if st.button("🔄 Reset Profile (Start Over)", type="secondary"):
+        # Disconnect Google Calendar if connected
+        try:
+            import google_calendar as gcal
+            s_key = student.get("student_name", "Student")
+            if gcal.is_connected(s_key):
+                gcal.delete_token(s_key)
+        except Exception:
+            pass
         clear_persistent_state()
         for key in list(st.session_state.keys()):
             del st.session_state[key]

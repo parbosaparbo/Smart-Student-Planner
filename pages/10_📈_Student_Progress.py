@@ -103,7 +103,7 @@ with g_col1:
         paper_bgcolor="rgba(0,0,0,0)",
         font=dict(color="white")
     )
-    st.plotly_chart(fig_gauge, use_container_width=True)
+    st.plotly_chart(fig_gauge, width="stretch")
 
 with g_col2:
     st.subheader("📊 Topic-by-Topic Performance")
@@ -137,7 +137,7 @@ with g_col2:
             plot_bgcolor="rgba(0,0,0,0)",
             font=dict(color="white")
         )
-        st.plotly_chart(fig_bar, use_container_width=True)
+        st.plotly_chart(fig_bar, width="stretch")
     else:
         st.info("📝 Take at least 1 quiz to populate your topic performance graph!")
 
@@ -170,7 +170,7 @@ with row2_c1:
             font=dict(color="white"),
             showlegend=False
         )
-        st.plotly_chart(fig_donut, use_container_width=True)
+        st.plotly_chart(fig_donut, width="stretch")
     else:
         st.info("Parse your syllabus to view your study hours breakdown.")
 
@@ -200,7 +200,7 @@ with row2_c2:
             plot_bgcolor="rgba(0,0,0,0)",
             font=dict(color="white")
         )
-        st.plotly_chart(fig_line, use_container_width=True)
+        st.plotly_chart(fig_line, width="stretch")
     elif quiz_results:
         st.info("Take 1 more quiz to generate your progress timeline graph!")
     else:
@@ -212,7 +212,7 @@ st.divider()
 st.subheader("🧠 StudyMind AI Diagnostic Audit")
 st.caption("Get an honest, evidence-based performance review from your academic coach.")
 
-if st.button("🔍 Generate AI Progress Diagnostic", type="primary", use_container_width=True):
+if st.button("🔍 Generate AI Progress Diagnostic", type="primary", width="stretch"):
     with st.spinner("Analyzing your preparation velocity and mastery curves..."):
         audit_prompt = f"""You are StudyMind AI, an elite academic strategist.
 Analyze this student's progress and write a 3-paragraph diagnostic audit:

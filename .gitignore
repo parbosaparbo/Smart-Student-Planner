@@ -8,4 +8,6 @@ __pycache__/
 venv/
 .venv/
 env/
+data/gcal_tokens/
+credentials.json
 

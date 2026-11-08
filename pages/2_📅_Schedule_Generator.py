@@ -10,13 +10,35 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from gemini_client import call_gemini_json
+from core.scheduler import generate_fast_schedule
 from prompts import schedule_generator_prompt
 from mcp_tools import push_to_calendar
-from ui_components import render_sidebar_header
+from ui_components import render_sidebar_header, render_gcal_sidebar_status
+from storage import save_persistent_state
 from config import COLORS
+import google_calendar as gcal
 
 st.set_page_config(page_title="Schedule Generator — StudyMind AI", page_icon="📅", layout="wide", initial_sidebar_state="expanded")
 render_sidebar_header()
+render_gcal_sidebar_status()
+
+# ── OAuth callback handler ──────────────────────────────────────────────────────
+# When Google redirects back with ?code=...&state=..., exchange the code for a token.
+_oauth_code = st.query_params.get("code")
+_oauth_state = st.query_params.get("state")
+if _oauth_code:
+    try:
+        _student_key = _oauth_state or st.session_state.get("student_profile", {}).get("student_name", "Student")
+        gcal.exchange_code_for_token(_oauth_code, _student_key)
+        st.query_params.clear()
+        st.session_state["gcal_just_connected"] = True
+        st.rerun()
+    except Exception as e:
+        st.query_params.clear()
+        st.error(f"❌ Google Calendar connection failed: {e}")
+
+if st.session_state.pop("gcal_just_connected", False):
+    st.toast("✅ Google Calendar connected successfully!", icon="📅")
 
 st.markdown(f"""
 <div style='background:linear-gradient(135deg,{COLORS["info"]}22,{COLORS["card_bg"]});
@@ -91,7 +113,7 @@ with st.form("student_profile_form"):
             index=style_idx
         )
 
-    submitted = st.form_submit_button("🚀 Generate My Study Plan", type="primary", use_container_width=True)
+    submitted = st.form_submit_button("🚀 Generate My Study Plan", type="primary", width="stretch")
 
 if submitted:
     days_left = (exam_date - date.today()).days
@@ -115,15 +137,25 @@ if submitted:
 
     st.session_state["student_profile"] = student_profile
 
-    with st.spinner("⚡ Assembling high-speed study schedule..."):
+    with st.spinner("⚡ Assembling sub-2.5s hybrid study schedule..."):
         try:
-            prompt = schedule_generator_prompt(student_profile, topic_tree, str(date.today()))
-            schedule = call_gemini_json(prompt, temperature=0.3, max_tokens=4096)
+            schedule = generate_fast_schedule(student_profile, topic_tree, str(date.today()))
             st.session_state["schedule"] = schedule
-            from storage import save_persistent_state
             save_persistent_state(st.session_state)
-            st.success("✅ Study plan generated!")
-        except ValueError as e:
+            st.success("✅ Study plan generated in under 2.5s!")
+
+            # ── Automatically sync to Google Calendar if connected ─────────────
+            s_key = student_profile.get("student_name", "Student")
+            if gcal.is_connected(s_key):
+                try:
+                    sync_res = gcal.sync_schedule_to_calendar(schedule, s_key, s_key)
+                    st.session_state["gcal_event_map"] = sync_res
+                    save_persistent_state(st.session_state)
+                    total_synced = sync_res.get("created", 0) + sync_res.get("updated", 0)
+                    st.toast(f"📅 Auto-synced {total_synced} sessions to Google Calendar!", icon="📅")
+                except Exception as sync_err:
+                    st.info(f"💡 Schedule generated! Google Calendar notice: {sync_err}")
+        except Exception as e:
             st.error(f"❌ Failed to generate schedule: {e}")
             st.stop()
 
@@ -250,7 +282,7 @@ if "schedule" in st.session_state:
             data=json.dumps(schedule, indent=2),
             file_name="study_schedule.json",
             mime="application/json",
-            use_container_width=True,
+            width="stretch",
         )
     with col_b:
         md_text = f"# 📅 StudyMind AI — Study Schedule\n\n"
@@ -269,8 +301,149 @@ if "schedule" in st.session_state:
             data=md_text,
             file_name="printable_study_plan.md",
             mime="text/markdown",
-            use_container_width=True,
+            width="stretch",
         )
     with col_c:
-        if st.button("➡️ Take a Quiz Now", use_container_width=True):
+        if st.button("➡️ Take a Quiz Now", width="stretch"):
             st.switch_page("pages/3_🎯_Quiz.py")
+
+    # ── Google Calendar Sync Section ────────────────────────────────────────────
+    st.divider()
+    st.subheader("📅 Google Calendar Sync")
+
+    student_key = st.session_state.get("student_profile", {}).get("student_name", "Student")
+    student_name = student_key
+
+    if not gcal.is_configured():
+        st.info(
+            "**Google Calendar sync is not configured yet.**\n\n"
+            "To enable it:\n"
+            "1. Go to [Google Cloud Console](https://console.cloud.google.com/) → Create a project\n"
+            "2. Enable the **Google Calendar API**\n"
+            "3. Create **OAuth 2.0 Credentials** (Web application)\n"
+            "4. Add `http://localhost:8501` as an **Authorized redirect URI**\n"
+            "5. Copy the Client ID and Client Secret into your `.env` file:\n"
+            "   ```\n"
+            "   GOOGLE_CLIENT_ID=your_client_id\n"
+            "   GOOGLE_CLIENT_SECRET=your_client_secret\n"
+            "   ```\n"
+            "6. Restart the app.\n\n"
+            "💡 *You can still use the per-block \"Add to Google Calendar ↗\" links above without OAuth.*"
+        )
+    elif gcal.is_connected(student_key):
+        # Connected — show status and Sync Now / Disconnect buttons
+        gcal_col1, gcal_col2 = st.columns([3, 1])
+        with gcal_col1:
+            email = gcal.get_connected_account_email(student_key)
+            if email:
+                st.success(f"✅ Connected to Google Calendar as **{email}**")
+            else:
+                st.success("✅ Google Calendar connected")
+            st.caption("🔔 Reminders: 10-minute popup & email notifications will alert you on Android, iPhone & Desktop.")
+        with gcal_col2:
+            if st.button("🔌 Disconnect", width="stretch", key="gcal_disconnect"):
+                gcal.delete_token(student_key)
+                st.toast("Disconnected from Google Calendar.", icon="🔌")
+                st.rerun()
+
+        sync_col1, sync_col2 = st.columns(2)
+        with sync_col1:
+            if st.button("⚡ Sync Now", type="primary", width="stretch", key="gcal_sync_now"):
+                with st.spinner("Syncing schedule with 10-minute reminders to Google Calendar..."):
+                    try:
+                        result = gcal.sync_schedule_to_calendar(schedule, student_key, student_name)
+                        st.session_state["gcal_event_map"] = result
+                        save_persistent_state(st.session_state)
+                        if result["errors"]:
+                            st.warning(
+                                f"⚠️ Synced with {len(result['errors'])} error(s):\n"
+                                + "\n".join(f"- {e}" for e in result["errors"][:5])
+                            )
+                        else:
+                            st.success(
+                                f"✅ Synced! **{result['created']}** created, "
+                                f"**{result['updated']}** updated, "
+                                f"**{result['skipped']}** rest days skipped."
+                            )
+                            st.balloons()
+                    except ValueError as e:
+                        st.error(f"❌ {e}")
+                    except Exception as e:
+                        st.error(f"❌ Sync failed: {e}")
+        with sync_col2:
+            if st.button("🗑️ Remove All Synced Events", width="stretch", key="gcal_delete_all"):
+                with st.spinner("Removing StudyMind events from Google Calendar..."):
+                    try:
+                        count = gcal.delete_all_synced_events(student_key)
+                        st.success(f"✅ Removed {count} events from Google Calendar.")
+                    except Exception as e:
+                        st.error(f"❌ Failed to remove events: {e}")
+
+        # Show last sync summary if available
+        last_sync = st.session_state.get("gcal_event_map")
+        if last_sync and isinstance(last_sync, dict):
+            with st.expander("📊 Last Sync Summary"):
+                ls1, ls2, ls3, ls4 = st.columns(4)
+                ls1.metric("Created", last_sync.get("created", 0))
+                ls2.metric("Updated", last_sync.get("updated", 0))
+                ls3.metric("Skipped", last_sync.get("skipped", 0))
+                ls4.metric("Total Blocks", last_sync.get("total_blocks", 0))
+    else:
+        # Not connected — show connect buttons & authorization flows
+        _muted = COLORS['text_muted']
+        st.markdown(
+            f"<p style='color:{_muted};'>Connect your Google account to automatically "
+            f"sync study sessions with <b>10-minute reminders</b> that work on Android &amp; iPhone even when your laptop is turned off.</p>",
+            unsafe_allow_html=True,
+        )
+
+        c_btn1, c_btn2 = st.columns(2)
+        with c_btn1:
+            if st.button("🔗 Connect Google Calendar (Instant)", type="primary", width="stretch", key="gcal_connect_local"):
+                with st.spinner("Opening browser for Google authorization... Please grant permission in the opened tab."):
+                    success, msg = gcal.connect_via_local_server(student_key)
+                    if success:
+                        st.session_state["gcal_just_connected"] = True
+                        st.rerun()
+                    else:
+                        st.error(f"❌ Connection error: {msg}")
+        with c_btn2:
+            if st.button("🌐 Browser Link / Paste Code", width="stretch", key="gcal_toggle_manual"):
+                st.session_state["show_gcal_auth"] = not st.session_state.get("show_gcal_auth", False)
+
+        if st.session_state.get("show_gcal_auth", False):
+            try:
+                auth_url, state = gcal.build_auth_url(student_key)
+                st.markdown(
+                    f"""
+                    <div style='background:{COLORS["card_bg"]}; border-radius:10px; padding:1.2rem; border:1px solid rgba(255,255,255,0.1); margin:1rem 0;'>
+                      <h4 style='margin:0 0 0.5rem;'>Sign in with Google</h4>
+                      <p style='color:{COLORS["text_muted"]}; font-size:0.9rem;'>
+                        Click the button below to sign in. After authorizing, if the tab redirects to localhost, copy the URL or code and paste it below.
+                      </p>
+                      <a href='{auth_url}' target='_blank' style='display:inline-block; padding:0.6rem 1.5rem; 
+                         background:{COLORS["primary"]}; color:white; border-radius:8px; 
+                         text-decoration:none; font-weight:600; margin-bottom:1rem;'>🔐 Open Google Sign-In ↗</a>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+                
+                st.caption("Paste the redirected URL or authorization code here:")
+                manual_code_input = st.text_input("Authorization Code or URL", placeholder="Paste code or http://localhost:8501/?code=...", key="manual_gcal_code")
+                if st.button("Verify & Connect", type="primary", key="manual_gcal_submit") and manual_code_input.strip():
+                    raw_code = manual_code_input.strip()
+                    if "code=" in raw_code:
+                        import urllib.parse
+                        parsed = urllib.parse.urlparse(raw_code)
+                        q = urllib.parse.parse_qs(parsed.query)
+                        raw_code = q.get("code", [raw_code])[0]
+                    try:
+                        gcal.exchange_code_for_token(raw_code, student_key)
+                        st.session_state["show_gcal_auth"] = False
+                        st.session_state["gcal_just_connected"] = True
+                        st.rerun()
+                    except Exception as auth_err:
+                        st.error(f"❌ Failed to verify code: {auth_err}")
+            except Exception as e:
+                st.error(f"❌ Could not start Google authorization: {e}")

@@ -45,44 +45,21 @@ You respond in whatever language the student uses (Hindi, English, Hinglish — 
 
 
 def syllabus_parser_prompt(raw_text: str) -> str:
-    return f"""{SYSTEM_PROMPT}
+    return f"""Extract only the core academic Units and major Topics from this syllabus text. 
+Ignore rules, college info, and grading policies.
+Output ONLY a raw JSON object with maximum 5-8 major topics.
+Keep titles short (under 6 words each).
 
-═══════════════════════════════════════════════════════
-              TASK: SYLLABUS PARSER
-═══════════════════════════════════════════════════════
-
-Parse the following raw syllabus text and return a structured topic tree.
-
-RULES:
-- Return ONLY a valid JSON object. No markdown. No explanation. No code fences.
-- Start your response with {{ and end with }}
-- If subtopics are missing — infer 2-4 logical ones yourself
-- Difficulty: 1=recall, 2=understand, 3=apply, 4=analyze, 5=synthesize
-- Priority 5 = most important for exam
-
-OUTPUT SCHEMA (return ONLY this structure, nothing else):
+Schema:
 {{
-  "subject": "<name>",
-  "total_estimated_hours": <number>,
-  "exam_type": "semester | competitive | certification | other",
+  "subject": "Subject Name",
   "topics": [
-    {{
-      "id": "t1",
-      "title": "<topic>",
-      "difficulty": <1-5>,
-      "estimated_hours": <float>,
-      "priority": <1-5>,
-      "prerequisites": ["t0"],
-      "subtopics": [
-        {{ "id": "t1_s1", "title": "<subtopic>", "estimated_hours": <float>,
-           "key_concepts": ["concept1", "concept2"] }}
-      ]
-    }}
+    {{"id": "t1", "title": "Topic Name", "difficulty": 3, "estimated_hours": 4}}
   ]
 }}
 
-RAW SYLLABUS TEXT:
-{raw_text}
+SYLLABUS TEXT:
+{raw_text[:4000]}
 """
 
 
@@ -148,26 +125,27 @@ TOPICS TO SCHEDULE:
 """
 
 
-def quiz_generator_prompt(topic_id: str, topic_title: str, num_questions: int, difficulty: int) -> str:
+def quiz_generator_prompt(topic_id: str, topic_title: str, num_questions: int = 5, difficulty: int = 3) -> str:
     return f"""You are StudyMind AI, an elite exam strategist and question designer.
-Generate {num_questions} unique, scenario-based active recall MCQs for:
+Generate exactly {num_questions} high-yield, scenario-based active recall MCQs for:
 Topic: {topic_title} (ID: {topic_id}) | Bloom's Difficulty: {difficulty}/5
 
-STRICT RULES:
-- NEVER ask definition recall ("What is X?"). Only real-world scenario/problem solving ("A distributed system is experiencing...").
-- All 4 options (A, B, C, D) must be plausible; distractors must reflect common student misconceptions.
-- Randomize correct answer letters (A, B, C, D evenly distributed).
+STRICT RULES (SPEED & QUALITY CONSTRAINTS):
+- Exactly {num_questions} questions. No more, no less.
+- ULTRA-CONCISE QUESTIONS: Every question stem MUST be under 25 words. Focus purely on realistic engineering or technical scenarios.
+- 4 plausible options (A, B, C, D) reflecting common student misconceptions.
+- SINGLE-SENTENCE EXPLANATION: The explanation MUST be exactly 1 concise sentence stating why the correct answer is right.
 - Output ONLY valid JSON matching this exact schema:
 
 {{
   "topic_id": "{topic_id}",
   "topic_title": "{topic_title}",
-  "time_limit_seconds": {num_questions * 75},
+  "time_limit_seconds": {num_questions * 60},
   "questions": [
     {{
       "id": "q1",
       "subtopic_tag": "<subtopic name>",
-      "question": "<scenario-based problem>",
+      "question": "<scenario problem under 25 words>",
       "options": {{
         "A": "<option A>",
         "B": "<option B>",
@@ -175,9 +153,9 @@ STRICT RULES:
         "D": "<option D>"
       }},
       "correct_answer": "A",
-      "explanation": "<2-sentence clear explanation: why correct and why common trap fails>",
+      "explanation": "<single sentence explanation>",
       "difficulty": {difficulty},
-      "concept_tested": "<core concept tested>"
+      "concept_tested": "<core concept>"
     }}
   ]
 }}

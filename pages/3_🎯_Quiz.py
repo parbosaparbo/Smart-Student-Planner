@@ -9,8 +9,10 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from gemini_client import call_gemini_json
+from core.quiz_engine import generate_fast_quiz
 from prompts import quiz_generator_prompt
 from ui_components import render_sidebar_header
+from storage import save_persistent_state
 from config import COLORS, DIFFICULTY_LABELS
 
 st.set_page_config(page_title="Quiz — StudyMind AI", page_icon="🎯", layout="wide", initial_sidebar_state="expanded")
@@ -45,24 +47,29 @@ with col1:
         topic_title = st.text_input("Topic Title", placeholder="e.g. Data Structures — Arrays")
 
 with col2:
-    num_questions = st.slider("Number of Questions", 3, 15, 5)
-    difficulty    = st.slider("Difficulty Level", 1, 5, 3,
-                              help="\n".join(f"{k}={v}" for k,v in DIFFICULTY_LABELS.items()))
+    st.caption("⚡ **Fast Sprint Mode**: Exactly 5 high-yield MCQs (< 2s generation).")
+    difficulty = st.slider("Difficulty Level", 1, 5, 3,
+                           help="\n".join(f"{k}={v}" for k,v in DIFFICULTY_LABELS.items()))
 
-generate_btn = st.button("⚡ Generate Quiz", type="primary", use_container_width=True,
+generate_btn = st.button("⚡ Generate Quiz (< 2s)", type="primary", width="stretch",
                           disabled=not (topic_id and topic_title))
 
 if generate_btn:
-    with st.spinner(f"🧠 Generating {num_questions} scenario-based questions on {topic_title}..."):
+    with st.spinner(f"🧠 Generating 5 high-yield questions on {topic_title}..."):
         try:
-            prompt = quiz_generator_prompt(topic_id, topic_title, num_questions, difficulty)
-            quiz   = call_gemini_json(prompt, temperature=0.4, max_tokens=2048)
+            quiz = generate_fast_quiz(
+                topic_id=topic_id,
+                topic_title=topic_title,
+                num_questions=5,
+                difficulty=difficulty,
+            )
             st.session_state["current_quiz"]    = quiz
             st.session_state["quiz_answers"]    = {}
             st.session_state["quiz_submitted"]  = False
             st.session_state["quiz_start_time"] = time.time()
+            save_persistent_state(st.session_state)
             st.rerun()
-        except ValueError as e:
+        except Exception as e:
             st.error(f"❌ Quiz generation failed: {e}")
 
 # ── Display Quiz ───────────────────────────────────────────────────────────────
@@ -101,7 +108,7 @@ if "current_quiz" in st.session_state and not st.session_state.get("quiz_submitt
             )
             answers[q.get("id", f"q{i+1}")] = choice
 
-        submit_quiz = st.form_submit_button("✅ Submit Quiz", type="primary", use_container_width=True)
+        submit_quiz = st.form_submit_button("✅ Submit Quiz", type="primary", width="stretch")
 
     if submit_quiz:
         st.session_state["quiz_answers"]   = answers
@@ -182,10 +189,10 @@ if st.session_state.get("quiz_submitted", False):
 
     col_a, col_b = st.columns(2)
     with col_a:
-        if st.button("🔄 Retake Quiz", use_container_width=True):
+        if st.button("🔄 Retake Quiz", width="stretch"):
             st.session_state["quiz_submitted"] = False
             st.session_state["quiz_answers"]   = {}
             st.rerun()
     with col_b:
-        if st.button("📊 Analyze Weak Spots", use_container_width=True):
+        if st.button("📊 Analyze Weak Spots", width="stretch"):
             st.switch_page("pages/4_📊_Weak_Spot_Analyzer.py")

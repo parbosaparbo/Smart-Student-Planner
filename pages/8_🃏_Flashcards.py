@@ -46,7 +46,7 @@ with col1:
 with col2:
     num_cards = st.slider("Number of Flashcards", 3, 10, 5)
 
-if st.button("✨ Generate Flashcards", type="primary", use_container_width=True, disabled=not topic_title):
+if st.button("✨ Generate Flashcards", type="primary", width="stretch", disabled=not topic_title):
     with st.spinner(f"Creating Feynman-style flashcards for {topic_title}..."):
         try:
             prompt = flashcard_generator_prompt(topic_id, topic_title, num_cards)
@@ -110,19 +110,19 @@ if "flashcards" in st.session_state and st.session_state["flashcards"].get("card
     # Card Control Buttons
     c_prev, c_flip, c_next = st.columns([1, 2, 1])
     with c_prev:
-        if st.button("⬅️ Previous", disabled=(idx == 0), use_container_width=True):
+        if st.button("⬅️ Previous", disabled=(idx == 0), width="stretch"):
             st.session_state["card_index"] = max(0, idx - 1)
             st.session_state["show_answer"] = False
             st.rerun()
 
     with c_flip:
         flip_label = "🔄 Flip to Question" if show_back else "👁️ Reveal Explanation"
-        if st.button(flip_label, type="primary", use_container_width=True):
+        if st.button(flip_label, type="primary", width="stretch"):
             st.session_state["show_answer"] = not show_back
             st.rerun()
 
     with c_next:
-        if st.button("Next ➡️", disabled=(idx == len(cards) - 1), use_container_width=True):
+        if st.button("Next ➡️", disabled=(idx == len(cards) - 1), width="stretch"):
             st.session_state["card_index"] = min(len(cards) - 1, idx + 1)
             st.session_state["show_answer"] = False
             st.rerun()
@@ -133,19 +133,19 @@ if "flashcards" in st.session_state and st.session_state["flashcards"].get("card
         st.markdown("<p style='text-align:center; color:#aaa; font-size:0.9rem;'>How well did you know this concept?</p>", unsafe_allow_html=True)
         r1, r2, r3 = st.columns(3)
         with r1:
-            if st.button("🔴 Hard (Review Soon)", use_container_width=True):
+            if st.button("🔴 Hard (Review Soon)", width="stretch"):
                 if idx < len(cards) - 1:
                     st.session_state["card_index"] += 1
                     st.session_state["show_answer"] = False
                 st.rerun()
         with r2:
-            if st.button("🟡 Good (Understood)", use_container_width=True):
+            if st.button("🟡 Good (Understood)", width="stretch"):
                 if idx < len(cards) - 1:
                     st.session_state["card_index"] += 1
                     st.session_state["show_answer"] = False
                 st.rerun()
         with r3:
-            if st.button("🟢 Easy (Mastered)", use_container_width=True):
+            if st.button("🟢 Easy (Mastered)", width="stretch"):
                 if idx < len(cards) - 1:
                     st.session_state["card_index"] += 1
                     st.session_state["show_answer"] = False
