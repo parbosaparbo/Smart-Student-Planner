@@ -1,0 +1,1657 @@
+{
+  "d400598a107af1fb": {
+    "schedule_summary": {
+      "total_study_hours": 246.0,
+      "rest_days": [
+        "2026-11-08",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-12-05",
+        "2026-12-06",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-26",
+        "2026-12-27",
+        "2027-01-02",
+        "2027-01-03"
+      ],
+      "mock_test_days": [
+        "2027-01-01",
+        "2027-01-04",
+        "2027-01-05",
+        "2027-01-06"
+      ],
+      "revision_start_date": "2026-12-21",
+      "execution_time_seconds": 0.001
+    },
+    "daily_blocks": [
+      {
+        "date": "2026-11-08",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-09",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Computer Organization and Architecture",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Organization and Architecture",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-10",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Algorithms",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-11",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Engineering Mathematics",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Engineering Mathematics",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-12",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t4",
+            "topic_title": "Programming and Data Structures",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Programming and Data Structures",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t4",
+            "topic_title": "Programming and Data Structures",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Programming and Data Structures",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-13",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t6",
+            "topic_title": "Theory of Computation",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Theory of Computation",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t6",
+            "topic_title": "Theory of Computation",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Theory of Computation",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-14",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-15",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-16",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t10",
+            "topic_title": "Computer Networks",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Computer Networks",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t10",
+            "topic_title": "Computer Networks",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Networks",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-17",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t8",
+            "topic_title": "Operating System",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Operating System",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t8",
+            "topic_title": "Operating System",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Operating System",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-18",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t9",
+            "topic_title": "Databases",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Databases",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t9",
+            "topic_title": "Databases",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Databases",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-19",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t2",
+            "topic_title": "Digital Logic",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Digital Logic",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t2",
+            "topic_title": "Digital Logic",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Digital Logic",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-20",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t7",
+            "topic_title": "Compiler Design",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Compiler Design",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t7",
+            "topic_title": "Compiler Design",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Compiler Design",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-21",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-22",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-23",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Computer Organization and Architecture",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Organization and Architecture",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-24",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Algorithms",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-25",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Engineering Mathematics",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Engineering Mathematics",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-26",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t4",
+            "topic_title": "Programming and Data Structures",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Programming and Data Structures",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t4",
+            "topic_title": "Programming and Data Structures",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Programming and Data Structures",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-27",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t6",
+            "topic_title": "Theory of Computation",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Theory of Computation",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t6",
+            "topic_title": "Theory of Computation",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Theory of Computation",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-28",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-29",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-30",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t10",
+            "topic_title": "Computer Networks",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Computer Networks",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t10",
+            "topic_title": "Computer Networks",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Networks",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-01",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t8",
+            "topic_title": "Operating System",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Operating System",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t8",
+            "topic_title": "Operating System",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Operating System",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-02",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t9",
+            "topic_title": "Databases",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Databases",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t9",
+            "topic_title": "Databases",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Databases",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-03",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t2",
+            "topic_title": "Digital Logic",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Digital Logic",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t2",
+            "topic_title": "Digital Logic",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Digital Logic",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-04",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t7",
+            "topic_title": "Compiler Design",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Compiler Design",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t7",
+            "topic_title": "Compiler Design",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Compiler Design",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-05",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-12-06",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-12-07",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Computer Organization and Architecture",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Organization and Architecture",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-08",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Algorithms",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-09",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Engineering Mathematics",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Engineering Mathematics",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-10",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t4",
+            "topic_title": "Programming and Data Structures",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Programming and Data Structures",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t4",
+            "topic_title": "Programming and Data Structures",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Programming and Data Structures",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-11",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t6",
+            "topic_title": "Theory of Computation",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Theory of Computation",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t6",
+            "topic_title": "Theory of Computation",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Theory of Computation",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-12",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-12-13",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-12-14",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t10",
+            "topic_title": "Computer Networks",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Computer Networks",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t10",
+            "topic_title": "Computer Networks",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Networks",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-15",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t8",
+            "topic_title": "Operating System",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Operating System",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t8",
+            "topic_title": "Operating System",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Operating System",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-16",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t9",
+            "topic_title": "Databases",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Databases",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t9",
+            "topic_title": "Databases",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Databases",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-17",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t2",
+            "topic_title": "Digital Logic",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Digital Logic",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t2",
+            "topic_title": "Digital Logic",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Digital Logic",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-18",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t7",
+            "topic_title": "Compiler Design",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Compiler Design",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t7",
+            "topic_title": "Compiler Design",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Compiler Design",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-19",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-12-20",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-12-21",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Algorithms",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-22",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Engineering Mathematics",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Engineering Mathematics",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-23",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t4",
+            "topic_title": "Programming and Data Structures",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Programming and Data Structures",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t4",
+            "topic_title": "Programming and Data Structures",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Programming and Data Structures",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-24",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t6",
+            "topic_title": "Theory of Computation",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Theory of Computation",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t6",
+            "topic_title": "Theory of Computation",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Theory of Computation",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-25",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t10",
+            "topic_title": "Computer Networks",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Computer Networks",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t10",
+            "topic_title": "Computer Networks",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Networks",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-26",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-12-27",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-12-28",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t2",
+            "topic_title": "Digital Logic",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Digital Logic",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t2",
+            "topic_title": "Digital Logic",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Digital Logic",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-29",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t7",
+            "topic_title": "Compiler Design",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Compiler Design",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t7",
+            "topic_title": "Compiler Design",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Compiler Design",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-30",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Computer Organization and Architecture",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Organization and Architecture",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-12-31",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Algorithms",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "11:30",
+            "duration_minutes": 180,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2027-01-01",
+        "day_type": "mock_test",
+        "blocks": [
+          {
+            "topic_id": "all",
+            "topic_title": "Full Exam Simulation",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Full timed mock test under strict exam conditions",
+            "resources_tip": "Do not look at notes. Flag questions where confidence was shaky."
+          }
+        ]
+      },
+      {
+        "date": "2027-01-02",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2027-01-03",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2027-01-04",
+        "day_type": "mock_test",
+        "blocks": [
+          {
+            "topic_id": "all",
+            "topic_title": "Full Exam Simulation",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Full timed mock test under strict exam conditions",
+            "resources_tip": "Do not look at notes. Flag questions where confidence was shaky."
+          }
+        ]
+      },
+      {
+        "date": "2027-01-05",
+        "day_type": "mock_test",
+        "blocks": [
+          {
+            "topic_id": "all",
+            "topic_title": "Full Exam Simulation",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Full timed mock test under strict exam conditions",
+            "resources_tip": "Do not look at notes. Flag questions where confidence was shaky."
+          }
+        ]
+      },
+      {
+        "date": "2027-01-06",
+        "day_type": "mock_test",
+        "blocks": [
+          {
+            "topic_id": "all",
+            "topic_title": "Full Exam Simulation",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Full timed mock test under strict exam conditions",
+            "resources_tip": "Do not look at notes. Flag questions where confidence was shaky."
+          }
+        ]
+      }
+    ]
+  },
+  "286c400ba360af0a": {
+    "schedule_summary": {
+      "total_study_hours": 39.0,
+      "rest_days": [
+        "2026-11-08",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-21"
+      ],
+      "mock_test_days": [
+        "2026-11-20"
+      ],
+      "revision_start_date": "2026-11-17",
+      "execution_time_seconds": 0.001
+    },
+    "daily_blocks": [
+      {
+        "date": "2026-11-08",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-09",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Computer Organization and Architecture",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Organization and Architecture",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-10",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Algorithms",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-11",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Engineering Mathematics",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Engineering Mathematics",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-12",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t4",
+            "topic_title": "Programming and Data Structures",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Programming and Data Structures",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t4",
+            "topic_title": "Programming and Data Structures",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Programming and Data Structures",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-13",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t6",
+            "topic_title": "Theory of Computation",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Theory of Computation",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t6",
+            "topic_title": "Theory of Computation",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Theory of Computation",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-14",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-15",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-16",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t10",
+            "topic_title": "Computer Networks",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Computer Networks",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t10",
+            "topic_title": "Computer Networks",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Networks",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-17",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Computer Organization and Architecture",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Organization and Architecture",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-18",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Algorithms",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-19",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Engineering Mathematics",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Engineering Mathematics",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-20",
+        "day_type": "mock_test",
+        "blocks": [
+          {
+            "topic_id": "all",
+            "topic_title": "Full Exam Simulation",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Full timed mock test under strict exam conditions",
+            "resources_tip": "Do not look at notes. Flag questions where confidence was shaky."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-21",
+        "day_type": "rest",
+        "blocks": []
+      }
+    ]
+  },
+  "8c602e81b806f22d": {
+    "schedule_summary": {
+      "total_study_hours": 59.0,
+      "rest_days": [
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-29",
+        "2026-11-30"
+      ],
+      "mock_test_days": [
+        "2026-11-28"
+      ],
+      "revision_start_date": "2026-11-24",
+      "execution_time_seconds": 0.017
+    },
+    "daily_blocks": [
+      {
+        "date": "2026-11-10",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Data Structures",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Data Structures",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Data Structures",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Data Structures",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-11",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t2",
+            "topic_title": "Algorithms",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Algorithms",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t2",
+            "topic_title": "Algorithms",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-12",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t3",
+            "topic_title": "Operating Systems",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Operating Systems",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t3",
+            "topic_title": "Operating Systems",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Operating Systems",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-13",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t4",
+            "topic_title": "Database Systems",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Database Systems",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t4",
+            "topic_title": "Database Systems",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Database Systems",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-14",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Data Structures",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Data Structures",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Data Structures",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Data Structures",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-15",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-16",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-17",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t2",
+            "topic_title": "Algorithms",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Algorithms",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t2",
+            "topic_title": "Algorithms",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-18",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t3",
+            "topic_title": "Operating Systems",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Operating Systems",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t3",
+            "topic_title": "Operating Systems",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Operating Systems",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-19",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t4",
+            "topic_title": "Database Systems",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Database Systems",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t4",
+            "topic_title": "Database Systems",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Database Systems",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-20",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Data Structures",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Data Structures",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Data Structures",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Data Structures",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-21",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t2",
+            "topic_title": "Algorithms",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Algorithms",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t2",
+            "topic_title": "Algorithms",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-22",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-23",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-24",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Data Structures",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Data Structures",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Data Structures",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Data Structures",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-25",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t2",
+            "topic_title": "Algorithms",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Algorithms",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t2",
+            "topic_title": "Algorithms",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-26",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t3",
+            "topic_title": "Operating Systems",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Operating Systems",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t3",
+            "topic_title": "Operating Systems",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Operating Systems",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-27",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t4",
+            "topic_title": "Database Systems",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Database Systems",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t4",
+            "topic_title": "Database Systems",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Database Systems",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-28",
+        "day_type": "mock_test",
+        "blocks": [
+          {
+            "topic_id": "all",
+            "topic_title": "Full Exam Simulation",
+            "start_time": "09:00",
+            "duration_minutes": 180,
+            "session_goal": "Full timed mock test under strict exam conditions",
+            "resources_tip": "Do not look at notes. Flag questions where confidence was shaky."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-29",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-30",
+        "day_type": "rest",
+        "blocks": []
+      }
+    ]
+  }
+}

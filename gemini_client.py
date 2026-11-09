@@ -186,7 +186,7 @@ def call_gemini_json(prompt: str, temperature: float = 0.3, max_tokens: int = 40
     """
     def _call(model_name: str):
         model = _init_model(temperature=temperature, json_mode=True, max_tokens=max_tokens, preferred_model=model_name)
-        response = model.generate_content(prompt)
+        response = model.generate_content(prompt, request_options={"timeout": 20})
         raw = response.text
         cleaned = _strip_to_json(raw)
         try:
@@ -208,7 +208,7 @@ def call_gemini_text(prompt: str, temperature: float = 0.8) -> str:
     """
     def _call(model_name: str):
         model = _init_model(temperature=temperature, preferred_model=model_name)
-        response = model.generate_content(prompt)
+        response = model.generate_content(prompt, request_options={"timeout": 20})
         return response.text
 
     return _execute_with_model_fallback(_call)

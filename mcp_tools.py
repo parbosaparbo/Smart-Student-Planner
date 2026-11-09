@@ -5,6 +5,8 @@ the complete Model Context Protocol (MCP) tool registry.
 """
 from mcp_server import (
     generate_quiz,
+    generate_study_schedule,
+    generate_mock_exam,
     reschedule_weak_topic,
     reschedule_spaced_revisions,
     search_syllabus,
@@ -22,6 +24,8 @@ from mcp_client import mcp_client, MCPClient
 
 __all__ = [
     "generate_quiz",
+    "generate_study_schedule",
+    "generate_mock_exam",
     "reschedule_weak_topic",
     "reschedule_spaced_revisions",
     "search_syllabus",

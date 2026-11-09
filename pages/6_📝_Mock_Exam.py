@@ -10,6 +10,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from gemini_client import call_gemini_json
 from prompts import quiz_generator_prompt, mock_exam_evaluator_prompt
+from mcp_tools import generate_mock_exam
 from ui_components import render_sidebar_header
 from config import COLORS, DIFFICULTY_LABELS
 
@@ -63,42 +64,37 @@ if "mock_exam" not in st.session_state:
         start_btn = st.form_submit_button("🚀 Start Mock Exam", type="primary", width="stretch")
 
     if start_btn and selected_topics:
-        # Generate questions for all selected topics
-        all_questions = []
-        q_per_topic = max(1, total_questions // len(selected_topics))
+        # Build topic objects list
+        chosen_topic_objs = []
+        for t_title in selected_topics:
+            t_match = next((t for t in topics if t.get("title") == t_title), None)
+            chosen_topic_objs.append({
+                "id": t_match.get("id", f"t{len(chosen_topic_objs)+1}") if t_match else f"t{len(chosen_topic_objs)+1}",
+                "title": t_title,
+            })
 
-        with st.spinner(f"⚡ Generating {total_questions} exam questions in parallel..."):
-            from concurrent.futures import ThreadPoolExecutor
-
-            def fetch_topic_questions(t_title):
-                t_obj = next((t for t in topics if t["title"] == t_title), None)
-                t_id  = t_obj["id"] if t_obj else "t1"
-                try:
-                    prompt = quiz_generator_prompt(t_id, t_title, q_per_topic, difficulty=3)
-                    result = call_gemini_json(prompt, temperature=0.4, max_tokens=2048)
-                    qs = result.get("questions", [])
-                    for q in qs:
-                        q["topic_id"]    = t_id
-                        q["topic_title"] = t_title
-                    return qs
-                except Exception as e:
-                    return []
-
-            with ThreadPoolExecutor(max_workers=min(len(selected_topics), 5)) as executor:
-                results = executor.map(fetch_topic_questions, selected_topics)
-                for res in results:
-                    all_questions.extend(res)
+        with st.spinner(f"⚡ Assembling {total_questions} syllabus-grounded questions via MCP..."):
+            t0 = time.time()
+            mock_res = generate_mock_exam(
+                selected_topics=chosen_topic_objs,
+                total_questions=total_questions,
+                difficulty=3,
+            )
+            all_questions = mock_res.get("questions", [])
+            elapsed = round(time.time() - t0, 3)
 
         if all_questions:
             st.session_state["mock_exam"] = {
                 "questions":  all_questions[:total_questions],
                 "start_time": time.time(),
+                "execution_time_seconds": elapsed,
             }
             st.session_state["mock_answers"]   = {}
             st.session_state["mock_submitted"] = False
+            st.toast(f"⚡ Exam ready in {elapsed}s!", icon="📝")
             st.rerun()
         else:
-            st.error("Failed to generate exam questions.")
+            st.error("Failed to generate exam questions. Please try again.")
 
 # ── Running Exam ───────────────────────────────────────────────────────────────
 elif not st.session_state.get("mock_submitted", False):

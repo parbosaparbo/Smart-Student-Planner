@@ -42,29 +42,55 @@ server = MCPServer("StudyMind-AI-MCP")
 
 @server.tool(
     name="generate_quiz",
-    description="Generates scenario-based active recall quiz MCQs with plausible distractors for a topic.",
+    description="Generates scenario-based active recall quiz MCQs accepting syllabus context, topic, difficulty, and question count with caching and schema validation.",
 )
 def generate_quiz(
-    topic_id: str,
-    num_questions: int = 5,
+    topic: str = "",
+    topic_id: str = "t1",
     difficulty: int = 3,
+    question_count: int = 5,
+    syllabus_context: str = "",
     topic_title: str = "",
+    num_questions: int = 5,
+    bypass_cache: bool = False,
 ) -> Dict[str, Any]:
-    """MCP Tool: Creates a fresh scenario-based AI quiz for a topic."""
-    from prompts import quiz_generator_prompt
-    from gemini_client import call_gemini_json
-
-    target_q = min(max(num_questions, 3), 5)
-    prompt = quiz_generator_prompt(
+    """MCP Tool: Fast cached scenario-based AI quiz generation using Gemini + Python schema validation."""
+    from core.quiz_engine import generate_fast_quiz
+    actual_title = topic_title or topic or topic_id
+    actual_count = question_count if question_count != 5 or num_questions == 5 else num_questions
+    return generate_fast_quiz(
         topic_id=topic_id,
-        topic_title=topic_title or topic_id,
-        num_questions=target_q,
+        topic_title=actual_title,
+        num_questions=actual_count,
         difficulty=difficulty,
+        syllabus_context=syllabus_context,
+        bypass_cache=bypass_cache,
+        topic=actual_title,
+        question_count=actual_count,
     )
-    data = call_gemini_json(prompt, temperature=0.2, max_tokens=1024)
-    if "time_limit_seconds" not in data:
-        data["time_limit_seconds"] = len(data.get("questions", [])) * 60
-    return data
+
+
+@server.tool(
+    name="generate_study_schedule",
+    description="Generates an optimized day-by-day study schedule adhering to the 70/20/10 rule with Python-first speed.",
+)
+def generate_study_schedule(student_profile: dict, topic_tree: dict, today_str: str = "") -> Dict[str, Any]:
+    """MCP Tool: Sub-second deterministic hybrid study planner."""
+    from core.scheduler import generate_fast_schedule
+    from datetime import date
+    if not today_str:
+        today_str = str(date.today())
+    return generate_fast_schedule(student_profile, topic_tree, today_str)
+
+
+@server.tool(
+    name="generate_mock_exam",
+    description="Generates syllabus-grounded, timed mock exam MCQs across multiple topics with strict schema validation.",
+)
+def generate_mock_exam(selected_topics: list, total_questions: int = 10, difficulty: int = 3) -> Dict[str, Any]:
+    """MCP Tool: Multi-topic mock exam generator."""
+    from core.mock_engine import generate_mock_exam_questions
+    return generate_mock_exam_questions(selected_topics, total_questions, difficulty)
 
 
 @server.tool(
@@ -93,10 +119,16 @@ def reschedule_weak_topic(
 
 @server.tool(
     name="search_syllabus",
-    description="Performs semantic/RAG keyword search across the student's loaded syllabus topics, subtopics, and concepts.",
+    description="Context-aware RAG engine retrieving high-relevance syllabus chunks for chatbot and question generation.",
 )
 def search_syllabus(query: str, topic_tree: dict) -> List[Dict[str, Any]]:
-    """MCP Tool: RAG-style search over syllabus topic hierarchy."""
+    """MCP Tool: High-performance RAG retriever over syllabus topic hierarchy."""
+    from core.rag_engine import get_syllabus_rag
+    rag = get_syllabus_rag(topic_tree)
+    chunks = rag.retrieve(query, top_k=4)
+    if chunks:
+        return chunks
+
     query_lower = query.lower().strip()
     if not query_lower:
         return []
@@ -126,6 +158,7 @@ def search_syllabus(query: str, topic_tree: dict) -> List[Dict[str, Any]]:
                 "difficulty": topic.get("difficulty"),
                 "priority": topic.get("priority"),
                 "relevance": score,
+                "text": f"{topic.get('title')}: {', '.join(s.get('title','') for s in sub_matches)}",
                 "matched_subtopics": sub_matches,
                 "is_elective": topic.get("is_elective", False),
             })

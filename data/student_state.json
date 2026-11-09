@@ -1,8 +1,8 @@
 {
   "student_profile": {
-    "student_name": "dd",
+    "student_name": "Student",
     "subject": "GATE 2027 Computer Science and Information Technology",
-    "exam_date": "2026-11-24",
+    "exam_date": "2026-11-22",
     "daily_hours": 4.0,
     "preferred_times": [
       "morning",
@@ -472,7 +472,7 @@
       }
     ],
     "total_estimated_hours": 245.0,
-    "execution_time_seconds": 0.0015,
+    "execution_time_seconds": 0.0028,
     "cache_hit": true,
     "sha256": "81b23f40417bc1c2069782db7ad5ea0182175c9acb4766ebfdeefbe071a70bc0",
     "tier_used": "Tier 2: PyMuPDF4LLM Structured Table Extraction",
@@ -486,18 +486,18 @@
   "subject": "GATE 2027 Computer Science and Information Technology",
   "schedule": {
     "schedule_summary": {
-      "total_study_hours": 43.0,
+      "total_study_hours": 39.0,
       "rest_days": [
         "2026-11-08",
         "2026-11-14",
         "2026-11-15",
-        "2026-11-21",
-        "2026-11-22"
+        "2026-11-21"
       ],
       "mock_test_days": [
-        "2026-11-23"
+        "2026-11-20"
       ],
-      "revision_start_date": "2026-11-19"
+      "revision_start_date": "2026-11-17",
+      "execution_time_seconds": 0.001
     },
     "daily_blocks": [
       {
@@ -510,19 +510,19 @@
         "day_type": "study",
         "blocks": [
           {
-            "topic_id": "t1",
-            "topic_title": "Engineering Mathematics",
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
             "start_time": "09:00",
             "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts of Engineering Mathematics",
-            "resources_tip": "Work through 2 practice problems without looking at solutions."
+            "session_goal": "Part 1: Master core concepts and problem patterns of Computer Organization and Architecture",
+            "resources_tip": "Work through practice problems without looking at solutions."
           },
           {
-            "topic_id": "t1",
-            "topic_title": "Engineering Mathematics",
+            "topic_id": "t3",
+            "topic_title": "Computer Organization and Architecture",
             "start_time": "11:30",
             "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Engineering Mathematics",
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Organization and Architecture",
             "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
           }
         ]
@@ -532,19 +532,19 @@
         "day_type": "study",
         "blocks": [
           {
-            "topic_id": "t2",
-            "topic_title": "Digital Logic",
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
             "start_time": "09:00",
             "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts of Digital Logic",
-            "resources_tip": "Work through 2 practice problems without looking at solutions."
+            "session_goal": "Part 1: Master core concepts and problem patterns of Algorithms",
+            "resources_tip": "Work through practice problems without looking at solutions."
           },
           {
-            "topic_id": "t2",
-            "topic_title": "Digital Logic",
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
             "start_time": "11:30",
             "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Digital Logic",
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
             "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
           }
         ]
@@ -554,19 +554,19 @@
         "day_type": "study",
         "blocks": [
           {
-            "topic_id": "t3",
-            "topic_title": "Computer Organization and Architecture",
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
             "start_time": "09:00",
             "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts of Computer Organization and Architecture",
-            "resources_tip": "Work through 2 practice problems without looking at solutions."
+            "session_goal": "Part 1: Master core concepts and problem patterns of Engineering Mathematics",
+            "resources_tip": "Work through practice problems without looking at solutions."
           },
           {
-            "topic_id": "t3",
-            "topic_title": "Computer Organization and Architecture",
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
             "start_time": "11:30",
             "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Organization and Architecture",
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Engineering Mathematics",
             "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
           }
         ]
@@ -580,8 +580,8 @@
             "topic_title": "Programming and Data Structures",
             "start_time": "09:00",
             "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts of Programming and Data Structures",
-            "resources_tip": "Work through 2 practice problems without looking at solutions."
+            "session_goal": "Part 1: Master core concepts and problem patterns of Programming and Data Structures",
+            "resources_tip": "Work through practice problems without looking at solutions."
           },
           {
             "topic_id": "t4",
@@ -598,19 +598,19 @@
         "day_type": "study",
         "blocks": [
           {
-            "topic_id": "t5",
-            "topic_title": "Algorithms",
+            "topic_id": "t6",
+            "topic_title": "Theory of Computation",
             "start_time": "09:00",
             "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts of Algorithms",
-            "resources_tip": "Work through 2 practice problems without looking at solutions."
+            "session_goal": "Part 1: Master core concepts and problem patterns of Theory of Computation",
+            "resources_tip": "Work through practice problems without looking at solutions."
           },
           {
-            "topic_id": "t5",
-            "topic_title": "Algorithms",
+            "topic_id": "t6",
+            "topic_title": "Theory of Computation",
             "start_time": "11:30",
             "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Theory of Computation",
             "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
           }
         ]
@@ -630,91 +630,25 @@
         "day_type": "study",
         "blocks": [
           {
-            "topic_id": "t6",
-            "topic_title": "Theory of Computation",
+            "topic_id": "t10",
+            "topic_title": "Computer Networks",
             "start_time": "09:00",
             "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts of Theory of Computation",
-            "resources_tip": "Work through 2 practice problems without looking at solutions."
+            "session_goal": "Part 1: Master core concepts and problem patterns of Computer Networks",
+            "resources_tip": "Work through practice problems without looking at solutions."
           },
           {
-            "topic_id": "t6",
-            "topic_title": "Theory of Computation",
+            "topic_id": "t10",
+            "topic_title": "Computer Networks",
             "start_time": "11:30",
             "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Theory of Computation",
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Networks",
             "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
           }
         ]
       },
       {
         "date": "2026-11-17",
-        "day_type": "study",
-        "blocks": [
-          {
-            "topic_id": "t7",
-            "topic_title": "Compiler Design",
-            "start_time": "09:00",
-            "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts of Compiler Design",
-            "resources_tip": "Work through 2 practice problems without looking at solutions."
-          },
-          {
-            "topic_id": "t7",
-            "topic_title": "Compiler Design",
-            "start_time": "11:30",
-            "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Compiler Design",
-            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
-          }
-        ]
-      },
-      {
-        "date": "2026-11-18",
-        "day_type": "study",
-        "blocks": [
-          {
-            "topic_id": "t8",
-            "topic_title": "Operating System",
-            "start_time": "09:00",
-            "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts of Operating System",
-            "resources_tip": "Work through 2 practice problems without looking at solutions."
-          },
-          {
-            "topic_id": "t8",
-            "topic_title": "Operating System",
-            "start_time": "11:30",
-            "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Operating System",
-            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
-          }
-        ]
-      },
-      {
-        "date": "2026-11-19",
-        "day_type": "revision",
-        "blocks": [
-          {
-            "topic_id": "t2",
-            "topic_title": "Digital Logic",
-            "start_time": "09:00",
-            "duration_minutes": 120,
-            "session_goal": "Part 1: Active recall and weak spot reinforcement",
-            "resources_tip": "Work through 2 practice problems without looking at solutions."
-          },
-          {
-            "topic_id": "t2",
-            "topic_title": "Digital Logic",
-            "start_time": "11:30",
-            "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Digital Logic",
-            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
-          }
-        ]
-      },
-      {
-        "date": "2026-11-20",
         "day_type": "revision",
         "blocks": [
           {
@@ -722,8 +656,8 @@
             "topic_title": "Computer Organization and Architecture",
             "start_time": "09:00",
             "duration_minutes": 120,
-            "session_goal": "Part 1: Active recall and weak spot reinforcement",
-            "resources_tip": "Work through 2 practice problems without looking at solutions."
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Computer Organization and Architecture",
+            "resources_tip": "Work through practice problems without looking at solutions."
           },
           {
             "topic_id": "t3",
@@ -736,17 +670,51 @@
         ]
       },
       {
-        "date": "2026-11-21",
-        "day_type": "rest",
-        "blocks": []
+        "date": "2026-11-18",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Algorithms",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t5",
+            "topic_title": "Algorithms",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
       },
       {
-        "date": "2026-11-22",
-        "day_type": "rest",
-        "blocks": []
+        "date": "2026-11-19",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "09:00",
+            "duration_minutes": 120,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Engineering Mathematics",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Engineering Mathematics",
+            "start_time": "11:30",
+            "duration_minutes": 120,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Engineering Mathematics",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
       },
       {
-        "date": "2026-11-23",
+        "date": "2026-11-20",
         "day_type": "mock_test",
         "blocks": [
           {
@@ -758,36 +726,39 @@
             "resources_tip": "Do not look at notes. Flag questions where confidence was shaky."
           }
         ]
+      },
+      {
+        "date": "2026-11-21",
+        "day_type": "rest",
+        "blocks": []
       }
     ]
   },
   "gcal_event_map": {
     "created": 0,
     "updated": 0,
-    "skipped": 5,
+    "skipped": 4,
     "errors": [
-      "2026-11-09 09:00 t1: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-09 11:30 t1: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-10 09:00 t2: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-10 11:30 t2: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-11 09:00 t3: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-11 11:30 t3: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-12 09:00 t4: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-12 11:30 t4: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-13 09:00 t5: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-13 11:30 t5: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-16 09:00 t6: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-16 11:30 t6: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-17 09:00 t7: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-17 11:30 t7: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-18 09:00 t8: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-18 11:30 t8: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-19 09:00 t2: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-19 11:30 t2: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-20 09:00 t3: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-20 11:30 t3: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})",
-      "2026-11-23 09:00 all: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})"
+      "2026-11-09 09:00 t3: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-09 11:30 t3: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-10 09:00 t5: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-10 11:30 t5: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-11 09:00 t1: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-11 11:30 t1: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-12 09:00 t4: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-12 11:30 t4: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-13 09:00 t6: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-13 11:30 t6: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-16 09:00 t10: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-16 11:30 t10: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-17 09:00 t3: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-17 11:30 t3: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-18 09:00 t5: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-18 11:30 t5: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-19 09:00 t1: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-19 11:30 t1: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
+      "2026-11-20 09:00 all: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">"
     ],
-    "total_blocks": 21
+    "total_blocks": 19
   }
 }

@@ -47,6 +47,8 @@ def run_tests():
 
     expected_tools = [
         "generate_quiz",
+        "generate_study_schedule",
+        "generate_mock_exam",
         "reschedule_weak_topic",
         "search_syllabus",
         "push_to_calendar",
@@ -246,6 +248,77 @@ def run_tests():
     print(f"   Non-disturbance verified: past session intact ({past_day['blocks'][0]['topic_title']})")
     print(f"   Spaced revision blocks successfully inserted: {resched_res['blocks_added']}")
     print("✅ Weak Topic Analysis & Spaced Revision Rescheduling verified successfully!")
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # TEST 6: Benchmarking the 4 Optimized Features
+    # ─────────────────────────────────────────────────────────────────────────
+    print("\n[TEST 6] Benchmarking the 4 Optimized Features...")
+    from core.quiz_engine import generate_fast_quiz
+    from core.scheduler import generate_fast_schedule
+    from core.rag_engine import get_syllabus_rag
+    from core.mock_engine import generate_mock_exam_questions
+
+    # 6a. Benchmark Quiz Generation via FastMCP
+    t_q0 = time.time()
+    quiz_out = mcp_client.call_tool("generate_quiz", {
+        "topic": "Operating Systems",
+        "topic_id": "t1",
+        "difficulty": 3,
+        "question_count": 5,
+        "syllabus_context": "Process scheduling, virtual memory, paging, and deadlocks"
+    })
+    quiz_time1 = round(time.time() - t_q0, 4)
+    t_q1 = time.time()
+    quiz_out_cached = mcp_client.call_tool("generate_quiz", {
+        "topic": "Operating Systems",
+        "topic_id": "t1",
+        "difficulty": 3,
+        "question_count": 5,
+        "syllabus_context": "Process scheduling, virtual memory, paging, and deadlocks"
+    })
+    quiz_time2 = round(time.time() - t_q1, 4)
+    assert len(quiz_out["questions"]) == 5, "Expected 5 quiz questions"
+    assert "A" in quiz_out["questions"][0]["options"], "Valid options schema required"
+    print(f"   1. Quiz Generation via FastMCP: Fresh={quiz_time1}s | Cached={quiz_time2}s (Speedup: {round(quiz_time1/max(quiz_time2, 0.0001), 1)}x)")
+
+    # 6b. Benchmark Study Schedule
+    sample_profile = {
+        "student_name": "Aman",
+        "daily_hours": 4.0,
+        "preferred_times": ["morning", "evening"],
+        "blocked_days": ["sunday"],
+        "exam_date": "2026-12-01",
+    }
+    sample_tree = {
+        "subject": "Computer Science",
+        "topics": [
+            {"id": "t1", "title": "Data Structures", "priority": 5, "difficulty": 4, "subtopics": [{"title": "Trees and Graphs", "key_concepts": ["traversal", "balancing"]}]},
+            {"id": "t2", "title": "Algorithms", "priority": 5, "difficulty": 4, "subtopics": [{"title": "Sorting and Searching", "key_concepts": ["binary search", "quicksort"]}]},
+            {"id": "t3", "title": "Operating Systems", "priority": 4, "difficulty": 3, "subtopics": [{"title": "Memory Management", "key_concepts": ["paging", "segmentation", "virtual memory"]}]},
+            {"id": "t4", "title": "Database Systems", "priority": 3, "difficulty": 2, "subtopics": [{"title": "SQL and Normalization", "key_concepts": ["joins", "3NF", "BCNF"]}]},
+        ]
+    }
+    t_s0 = time.time()
+    sched_out = generate_fast_schedule(sample_profile, sample_tree, "2026-11-10")
+    sched_time = round(time.time() - t_s0, 4)
+    assert len(sched_out["daily_blocks"]) >= 20, "Expected at least 20 daily blocks"
+    print(f"   2. Study Schedule: {len(sched_out['daily_blocks'])}-day plan generated in {sched_time}s")
+
+    # 6c. Benchmark Syllabus Chatbot RAG Retrieval
+    rag = get_syllabus_rag(sample_tree)
+    t_r0 = time.time()
+    chunks = rag.retrieve("How does paging and segmentation work in memory management?", top_k=3)
+    rag_time = round((time.time() - t_r0) * 1000, 2)
+    assert len(chunks) > 0, "RAG should retrieve matching syllabus chunks"
+    print(f"   3. Syllabus Chatbot RAG: Retrieved {len(chunks)} relevant chunks in {rag_time}ms (Top match: {chunks[0]['topic_title']})")
+
+    # 6d. Benchmark Mock Exam
+    t_m0 = time.time()
+    mock_out = generate_mock_exam_questions(sample_tree["topics"][:2], total_questions=6, difficulty=3)
+    mock_time = round(time.time() - t_m0, 4)
+    assert len(mock_out["questions"]) == 6, "Expected 6 mock questions"
+    print(f"   4. Mock Exam Generator: {len(mock_out['questions'])} questions generated across 2 topics in {mock_time}s")
+    print("✅ All 4 Optimized Features Benchmarked Successfully!")
 
     print("\n" + "=" * 70)
     print("🎉 ALL TESTS PASSED! MCP INTEGRATION FULLY VERIFIED.")

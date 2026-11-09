@@ -1,5 +1,6 @@
 """
 StudyMind AI — Page 3: AI Quiz Generator
+Powered entirely via FastMCP Architecture (generate_quiz tool).
 """
 import streamlit as st
 import json
@@ -8,9 +9,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from gemini_client import call_gemini_json
-from core.quiz_engine import generate_fast_quiz
-from prompts import quiz_generator_prompt
+from mcp_client import mcp_client
 from ui_components import render_sidebar_header
 from storage import save_persistent_state
 from config import COLORS, DIFFICULTY_LABELS
@@ -24,7 +23,7 @@ st.markdown(f"""
             padding:1.5rem 2rem; border-radius:12px; margin-bottom:1.5rem;'>
   <h1 style='margin:0; color:{COLORS["success"]}'>🎯 AI Quiz Generator</h1>
   <p style='margin:0.3rem 0 0; color:{COLORS["text_muted"]}'>
-    Scenario-based, application-level questions — no Googleable fluff.
+    Scenario-based, active recall questions powered by FastMCP and Gemini with instant caching.
   </p>
 </div>
 """, unsafe_allow_html=True)
@@ -32,6 +31,7 @@ st.markdown(f"""
 # ── Topic Selection ────────────────────────────────────────────────────────────
 topic_tree = st.session_state.get("topic_tree", {})
 topics     = topic_tree.get("topics", [])
+selected_topic = None
 
 col1, col2 = st.columns([2, 1])
 
@@ -47,30 +47,53 @@ with col1:
         topic_title = st.text_input("Topic Title", placeholder="e.g. Data Structures — Arrays")
 
 with col2:
-    st.caption("⚡ **Fast Sprint Mode**: Exactly 5 high-yield MCQs (< 2s generation).")
+    question_count = st.slider("Question Count", min_value=3, max_value=10, value=5, help="Select number of scenario questions (3 to 10)")
     difficulty = st.slider("Difficulty Level", 1, 5, 3,
                            help="\n".join(f"{k}={v}" for k,v in DIFFICULTY_LABELS.items()))
 
-generate_btn = st.button("⚡ Generate Quiz (< 2s)", type="primary", width="stretch",
+generate_btn = st.button("⚡ Generate Quiz via FastMCP", type="primary", width="stretch",
                           disabled=not (topic_id and topic_title))
 
 if generate_btn:
-    with st.spinner(f"🧠 Generating 5 high-yield questions on {topic_title}..."):
+    # Build syllabus context from topic tree subtopics
+    syllabus_ctx = ""
+    if isinstance(selected_topic, dict):
+        subtopics = selected_topic.get("subtopics", [])
+        if subtopics:
+            sub_strs = []
+            for s in subtopics:
+                title = s.get("title", "")
+                concepts = ", ".join(s.get("key_concepts", []))
+                sub_strs.append(f"{title}: {concepts}" if concepts else title)
+            syllabus_ctx = f"Subject: {topic_tree.get('subject', '')} | Subtopics: " + "; ".join(sub_strs)
+
+    with st.spinner(f"🧠 FastMCP: Generating {question_count} scenario questions on {topic_title}..."):
         try:
-            quiz = generate_fast_quiz(
-                topic_id=topic_id,
-                topic_title=topic_title,
-                num_questions=5,
-                difficulty=difficulty,
+            t0 = time.time()
+            # Invoke generate_quiz entirely through FastMCP Client
+            quiz = mcp_client.call_tool(
+                "generate_quiz",
+                {
+                    "topic": topic_title,
+                    "topic_id": topic_id,
+                    "topic_title": topic_title,
+                    "difficulty": difficulty,
+                    "question_count": question_count,
+                    "num_questions": question_count,
+                    "syllabus_context": syllabus_ctx,
+                }
             )
+            elapsed = round(time.time() - t0, 3)
             st.session_state["current_quiz"]    = quiz
             st.session_state["quiz_answers"]    = {}
             st.session_state["quiz_submitted"]  = False
             st.session_state["quiz_start_time"] = time.time()
             save_persistent_state(st.session_state)
+            cached_str = " (cached)" if quiz.get("cached") else ""
+            st.toast(f"⚡ FastMCP Quiz ready in {elapsed}s{cached_str}!", icon="🎯")
             st.rerun()
         except Exception as e:
-            st.error(f"❌ Quiz generation failed: {e}")
+            st.error(f"❌ FastMCP Quiz generation failed: {e}")
 
 # ── Display Quiz ───────────────────────────────────────────────────────────────
 if "current_quiz" in st.session_state and not st.session_state.get("quiz_submitted", False):

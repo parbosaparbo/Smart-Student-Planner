@@ -99,12 +99,19 @@ if user_input:
         st.markdown(user_input)
 
     with st.chat_message("assistant", avatar="🧠"):
-        with st.spinner("Consulting syllabus & preparing Socratic guidance..."):
+        import time
+        t0 = time.time()
+        with st.spinner("Consulting syllabus RAG index & preparing Socratic guidance..."):
             rag_context = ""
+            retrieved_chunks = []
             if topic_tree:
-                matched_topics = search_syllabus(user_input, topic_tree)
-                if matched_topics:
-                    rag_context = f"RELEVANT SYLLABUS TOPICS MATCHED:\n{matched_topics[:3]}"
+                retrieved_chunks = search_syllabus(user_input, topic_tree)
+                if retrieved_chunks:
+                    context_snippets = []
+                    for c in retrieved_chunks[:3]:
+                        sub_tag = f" > {c.get('subtopic_title')}" if c.get('subtopic_title') else ""
+                        context_snippets.append(f"• [{c.get('topic_title')}{sub_tag}]:\n  {c.get('text', '')}")
+                    rag_context = "RELEVANT SYLLABUS CONTEXT:\n" + "\n\n".join(context_snippets)
                 else:
                     rag_context = f"NOTE: The student's query did not match any topics in their uploaded syllabus ({topic_tree.get('subject','')}). Ask if they want bonus off-syllabus help."
 
@@ -114,8 +121,20 @@ if user_input:
                 chat_history=st.session_state["chat_history"][:-1],
                 syllabus_context=rag_context,
             )
+
+        rag_ms = round((time.time() - t0) * 1000, 2)
+        print(f"[RAG CHATBOT] Query: '{user_input[:40]}...' retrieved {len(retrieved_chunks)} chunks in {rag_ms}ms")
+
         # Live streaming typewriter response
-        stream = call_gemini_stream(prompt, temperature=0.8)
+        stream = call_gemini_stream(prompt, temperature=0.7)
         response = st.write_stream(stream)
+
+        # Show retrieved syllabus context preview if matches found
+        if retrieved_chunks:
+            with st.expander(f"📚 Connected Syllabus Context (Retrieved in {rag_ms}ms)"):
+                for c in retrieved_chunks[:3]:
+                    sub_tag = f" — {c.get('subtopic_title')}" if c.get('subtopic_title') else ""
+                    st.caption(f"**{c.get('topic_title')}{sub_tag}** (Relevance score: {c.get('score', 0)})")
+                    st.text(c.get('text', '')[:250] + "...")
 
     st.session_state["chat_history"].append({"role": "assistant", "content": response})

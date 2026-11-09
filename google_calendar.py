@@ -583,6 +583,15 @@ def sync_schedule_to_calendar(
                 else:
                     result["updated"] += 1
             except Exception as e:
+                err_msg = str(e)
+                if "invalid_client" in err_msg.lower():
+                    # Stop loop immediately and alert user
+                    delete_token(student_key)
+                    raise ValueError(
+                        "Google OAuth client not found. The Client ID in credentials.json "
+                        "is invalid or was deleted from Google Cloud Console. Please update credentials.json "
+                        "with valid OAuth credentials from Google Cloud Console."
+                    )
                 result["errors"].append(f"{date_str} {start_time} {topic_id}: {e}")
 
     return result

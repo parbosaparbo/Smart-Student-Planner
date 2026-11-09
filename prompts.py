@@ -125,10 +125,17 @@ TOPICS TO SCHEDULE:
 """
 
 
-def quiz_generator_prompt(topic_id: str, topic_title: str, num_questions: int = 5, difficulty: int = 3) -> str:
+def quiz_generator_prompt(
+    topic_id: str,
+    topic_title: str,
+    num_questions: int = 5,
+    difficulty: int = 3,
+    syllabus_context: str = "",
+) -> str:
+    ctx_block = f"\nSYLLABUS CONTEXT & RELEVANT TOPICS:\n{syllabus_context.strip()}\n" if syllabus_context else ""
     return f"""You are StudyMind AI, an elite exam strategist and question designer.
 Generate exactly {num_questions} high-yield, scenario-based active recall MCQs for:
-Topic: {topic_title} (ID: {topic_id}) | Bloom's Difficulty: {difficulty}/5
+Topic: {topic_title} (ID: {topic_id}) | Bloom's Difficulty: {difficulty}/5{ctx_block}
 
 STRICT RULES (SPEED & QUALITY CONSTRAINTS):
 - Exactly {num_questions} questions. No more, no less.

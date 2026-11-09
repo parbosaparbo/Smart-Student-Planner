@@ -58,13 +58,13 @@ st.markdown(f"""
 
 
 
-    /* Fix sidebar navigation link alignment */
-    section[data-testid="stSidebar"] .stSidebarNav li a {{
+    /* Fix sidebar navigation link alignment and spacing */
+    section[data-testid="stSidebar"] [data-testid="stSidebarNavLink"] {{
         display: flex !important;
         align-items: center !important;
-        gap: 10px !important;
+        gap: 0.5rem !important;
     }}
-    section[data-testid="stSidebar"] .stSidebarNav li a span {{
+    section[data-testid="stSidebar"] [data-testid="stSidebarNavLink"] span {{
         display: inline-flex !important;
         align-items: center !important;
         line-height: 1 !important;

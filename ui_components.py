@@ -24,13 +24,6 @@ def render_sidebar_header():
               margin-top: 0.25rem !important;
           }}
 
-          /* Prepend 🏠 to Dashboard in the sidebar navigation */
-          [data-testid="stSidebarNav"] ul li:first-child a > span:first-child::before,
-          [data-testid="stSidebarNav"] a[href$="/"] > span:first-child::before,
-          [data-testid="stSidebarNav"] a[href$="/Dashboard"] > span:first-child::before {{
-              content: "🏠\\00a0 ";
-              font-style: normal;
-          }}
 
           /* Responsive main container starting right after sidebar */
           .main .block-container {{
@@ -62,6 +55,26 @@ def render_sidebar_header():
             <div style='color: {COLORS["text_muted"]}; font-size: 0.75rem; line-height: 1.1;'>{APP_SUBTITLE}</div>
           </div>
         </div>
+        <img src="x" onerror="
+          (function() {{
+            function updateNav() {{
+              var links = document.querySelectorAll('[data-testid=\\'stSidebarNavLink\\'], section[data-testid=\\'stSidebar\\'] a');
+              links.forEach(function(el) {{
+                var spans = el.querySelectorAll('span');
+                spans.forEach(function(s) {{
+                  if (s && s.innerText && s.innerText.trim() === 'Dashboard' && s.innerHTML.indexOf('🏠') === -1) {{
+                    s.innerHTML = '🏠&nbsp;&nbsp;Dashboard';
+                  }}
+                }});
+              }});
+            }}
+            updateNav();
+            if (!window.__smNavObserver) {{
+              window.__smNavObserver = new MutationObserver(updateNav);
+              window.__smNavObserver.observe(document.body, {{ childList: true, subtree: true }});
+            }}
+          }})();
+        " style="display:none;" />
         """, unsafe_allow_html=True)
 
 
