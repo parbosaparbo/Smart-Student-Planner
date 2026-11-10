@@ -582,6 +582,21 @@ def sync_schedule_to_calendar(
                     result["created"] += 1
                 else:
                     result["updated"] += 1
+
+                # Record in SQLite database
+                try:
+                    import storage
+                    student_prof = storage.get_student_profile(student_name=student_name)
+                    s_id = student_prof["id"] if student_prof else 1
+                    storage.save_calendar_event(
+                        gcal_event_id=event_id,
+                        event_title=event_body.get("summary", "Study Session"),
+                        start_time_iso=event_body.get("start", {}).get("dateTime", ""),
+                        end_time_iso=event_body.get("end", {}).get("dateTime", ""),
+                        student_id=s_id,
+                    )
+                except Exception as db_err:
+                    logger.debug(f"Calendar event SQLite tracking warning: {db_err}")
             except Exception as e:
                 err_msg = str(e)
                 if "invalid_client" in err_msg.lower():

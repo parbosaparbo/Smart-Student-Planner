@@ -51,3 +51,12 @@ URGENCY_COLORS = {
     "high":     COLORS["warning"],
     "medium":   COLORS["info"],
 }
+
+# ── Database & Hybrid Storage ──────────────────────────────────────────────────
+from pathlib import Path
+
+BASE_DIR = Path(__file__).parent
+DATA_DIR = Path(os.getenv("DATA_DIR", str(BASE_DIR / "data")))
+DATABASE_PATH = Path(os.getenv("DATABASE_PATH", str(DATA_DIR / "studymind.db")))
+BACKUP_DIR = Path(os.getenv("BACKUP_DIR", str(DATA_DIR / "backups")))
+DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{DATABASE_PATH.as_posix()}")

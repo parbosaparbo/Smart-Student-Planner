@@ -238,3 +238,22 @@ if "progress_diagnostic" in st.session_state:
 </div>
 """, unsafe_allow_html=True)
 
+# ── Recent Database Activity History ──────────────────────────────────────────
+st.divider()
+st.subheader("📋 Recent Activity & Database Audit Trail")
+st.caption("Chronological record of study sessions, quizzes, exams, and automatic schedule recalculations stored in SQLite.")
+
+try:
+    import storage
+    activities = storage.load_recent_activities(limit=10)
+    if activities:
+        for act in activities:
+            a_type = act.get("activity_type", "activity")
+            icon = "🎯" if "quiz" in a_type else "📝" if "mock" in a_type else "🔄" if "reschedule" in a_type or "migrated" in a_type else "⏱️"
+            st.markdown(f"**{icon} {act.get('title')}** · `<small style='color:{COLORS['text_muted']}'>{act.get('timestamp')}</small>`", unsafe_allow_html=True)
+    else:
+        st.info("No recorded activity yet. Complete study blocks or quizzes to build your activity audit log.")
+except Exception as e:
+    st.caption(f"Activity log unavailable: {e}")
+
+

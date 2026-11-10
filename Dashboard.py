@@ -575,6 +575,43 @@ else:
         )
         st.plotly_chart(fig, width="stretch")
 
+    # ── Database & Backup Controls ────────────────────────────────────────────────
+    st.divider()
+    with st.expander("🗄️ Database Management & Backups", expanded=False):
+        col_db_info, col_db_actions = st.columns([2, 1])
+        with col_db_info:
+            try:
+                import storage
+                v = storage.verify_migration()
+                st.markdown(f"**Database Status:** `SQLite (WAL mode)` · **Integrity:** `{'✅ Healthy (' + v.get('database_integrity', 'ok') + ')' if v.get('is_healthy') else '⚠️ Check'}`")
+                st.caption(f"Tables: {', '.join([f'{k}: {cnt}' for k, cnt in v.get('table_row_counts', {}).items() if cnt > 0])}")
+            except Exception as d_err:
+                st.caption(f"Database status error: {d_err}")
+
+        with col_db_actions:
+            if st.button("💾 Create Backup Now", width="stretch"):
+                try:
+                    import storage
+                    res = storage.create_backup(backup_type="manual")
+                    if res.get("success"):
+                        st.success(f"Backup created: {res.get('filename')} ({res.get('file_size_bytes')} bytes)")
+                    else:
+                        st.error(f"Backup failed: {res.get('error')}")
+                except Exception as b_err:
+                    st.error(f"Error creating backup: {b_err}")
+
+        # List existing backups
+        try:
+            import storage
+            b_list = storage.list_backups()
+            if b_list:
+                st.markdown("<small><b>Recent Backups:</b></small>", unsafe_allow_html=True)
+                for bk in b_list[:3]:
+                    valid_str = "✅ Valid" if bk.get("valid") else "⚠️ Corrupted"
+                    st.caption(f"• `{bk.get('filename')}` ({bk.get('size_bytes')} bytes) · {bk.get('modified')[:19]} · {valid_str}")
+        except Exception:
+            pass
+
     # Reset button
     st.divider()
     if st.button("🔄 Reset Profile (Start Over)", type="secondary"):

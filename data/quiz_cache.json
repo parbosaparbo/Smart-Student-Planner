@@ -847,5 +847,131 @@
     "execution_time_seconds": 9.955,
     "validation_time_seconds": 0.0,
     "cached": false
+  },
+  "4048465ea6fbe146": {
+    "topic_id": "t1",
+    "topic_title": "Data Structures",
+    "difficulty": 3,
+    "syllabus_context": "Subject: Computer Science\nTopic: Data Structures (ID: t1)\nDifficulty: 4/5 | Priority: 5/5\nSubtopics: Trees and Graphs\nKey Concepts: traversal, balancing\nSubject: Computer Science > Topic: Data Structures > Subtopic: Trees and Graphs\nEstimated Hours: 2.0h\nCore Concepts to Master: traversal, balancing",
+    "questions": [
+      {
+        "id": "q1",
+        "question": "Which core principle is fundamental to Data Structures (Scenario 1)?",
+        "options": {
+          "A": "Optimal resource management in Data Structures",
+          "B": "Unbounded linear complexity in Data Structures",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Data Structures.",
+        "difficulty": 3,
+        "subtopic_tag": "Data Structures",
+        "concept_tested": "Data Structures",
+        "topic_id": "t1",
+        "topic_title": "Data Structures"
+      },
+      {
+        "id": "q2",
+        "question": "Which core principle is fundamental to Data Structures (Scenario 2)?",
+        "options": {
+          "A": "Optimal resource management in Data Structures",
+          "B": "Unbounded linear complexity in Data Structures",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Data Structures.",
+        "difficulty": 3,
+        "subtopic_tag": "Data Structures",
+        "concept_tested": "Data Structures",
+        "topic_id": "t1",
+        "topic_title": "Data Structures"
+      },
+      {
+        "id": "q3",
+        "question": "Which core principle is fundamental to Data Structures (Scenario 3)?",
+        "options": {
+          "A": "Optimal resource management in Data Structures",
+          "B": "Unbounded linear complexity in Data Structures",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Data Structures.",
+        "difficulty": 3,
+        "subtopic_tag": "Data Structures",
+        "concept_tested": "Data Structures",
+        "topic_id": "t1",
+        "topic_title": "Data Structures"
+      }
+    ],
+    "time_limit_seconds": 225,
+    "execution_time_seconds": 0.222,
+    "validation_time_seconds": 0.0,
+    "cached": false
+  },
+  "44f1f27eb670071b": {
+    "topic_id": "t2",
+    "topic_title": "Algorithms",
+    "difficulty": 3,
+    "syllabus_context": "Subject: Computer Science\nTopic: Algorithms (ID: t2)\nDifficulty: 4/5 | Priority: 5/5\nSubtopics: Sorting and Searching\nKey Concepts: binary search, quicksort\nSubject: Computer Science > Topic: Algorithms > Subtopic: Sorting and Searching\nEstimated Hours: 2.0h\nCore Concepts to Master: binary search, quicksort",
+    "questions": [
+      {
+        "id": "q1",
+        "question": "Which core principle is fundamental to Algorithms (Scenario 1)?",
+        "options": {
+          "A": "Optimal resource management in Algorithms",
+          "B": "Unbounded linear complexity in Algorithms",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Algorithms.",
+        "difficulty": 3,
+        "subtopic_tag": "Algorithms",
+        "concept_tested": "Algorithms",
+        "topic_id": "t2",
+        "topic_title": "Algorithms"
+      },
+      {
+        "id": "q2",
+        "question": "Which core principle is fundamental to Algorithms (Scenario 2)?",
+        "options": {
+          "A": "Optimal resource management in Algorithms",
+          "B": "Unbounded linear complexity in Algorithms",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Algorithms.",
+        "difficulty": 3,
+        "subtopic_tag": "Algorithms",
+        "concept_tested": "Algorithms",
+        "topic_id": "t2",
+        "topic_title": "Algorithms"
+      },
+      {
+        "id": "q3",
+        "question": "Which core principle is fundamental to Algorithms (Scenario 3)?",
+        "options": {
+          "A": "Optimal resource management in Algorithms",
+          "B": "Unbounded linear complexity in Algorithms",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Algorithms.",
+        "difficulty": 3,
+        "subtopic_tag": "Algorithms",
+        "concept_tested": "Algorithms",
+        "topic_id": "t2",
+        "topic_title": "Algorithms"
+      }
+    ],
+    "time_limit_seconds": 225,
+    "execution_time_seconds": 0.009,
+    "validation_time_seconds": 0.0,
+    "cached": false
   }
 }
