@@ -706,6 +706,115 @@ def get_weak_topics(
 
 # ── Calendar Events & Spaced Revision ────────────────────────────────────────
 
+def save_oauth_token(
+    student_id: int,
+    provider: str,
+    account_email: str,
+    encrypted_token: str,
+    scopes: Optional[List[str]] = None,
+    conn: Optional[sqlite3.Connection] = None
+) -> int:
+    """Save or update encrypted OAuth token for a student in SQLite."""
+    def _op(c: sqlite3.Connection) -> int:
+        cur = c.cursor()
+        scopes_json = json.dumps(scopes or [])
+        cur.execute(
+            """
+            INSERT INTO oauth_tokens (student_id, provider, account_email, encrypted_token, scopes, updated_at)
+            VALUES (?, ?, ?, ?, ?, datetime('now', 'localtime'))
+            ON CONFLICT(student_id, provider) DO UPDATE SET
+                account_email = excluded.account_email,
+                encrypted_token = excluded.encrypted_token,
+                scopes = excluded.scopes,
+                updated_at = datetime('now', 'localtime')
+            """,
+            (student_id, provider, account_email or "", encrypted_token, scopes_json)
+        )
+        return cur.lastrowid
+
+    if conn is not None:
+        return _op(conn)
+    with get_db_connection() as c:
+        return _op(c)
+
+
+def load_oauth_token(
+    student_id: int,
+    provider: str = "google_calendar",
+    conn: Optional[sqlite3.Connection] = None
+) -> Optional[Dict[str, Any]]:
+    """Retrieve encrypted OAuth token for a student from SQLite."""
+    def _op(c: sqlite3.Connection):
+        cur = c.cursor()
+        cur.execute(
+            """
+            SELECT * FROM oauth_tokens
+            WHERE student_id = ? AND provider = ?
+            LIMIT 1
+            """,
+            (student_id, provider)
+        )
+        row = cur.fetchone()
+        if not row:
+            return None
+        return {
+            "id": row["id"],
+            "student_id": row["student_id"],
+            "provider": row["provider"],
+            "account_email": row["account_email"],
+            "encrypted_token": row["encrypted_token"],
+            "scopes": json.loads(row["scopes"] or "[]"),
+            "created_at": row["created_at"],
+            "updated_at": row["updated_at"]
+        }
+
+    if conn is not None:
+        return _op(conn)
+    with get_db_connection() as c:
+        return _op(c)
+
+
+def delete_oauth_token(
+    student_id: int,
+    provider: str = "google_calendar",
+    conn: Optional[sqlite3.Connection] = None
+) -> bool:
+    """Delete OAuth token record for a student."""
+    def _op(c: sqlite3.Connection) -> bool:
+        cur = c.cursor()
+        cur.execute("DELETE FROM oauth_tokens WHERE student_id = ? AND provider = ?", (student_id, provider))
+        return cur.rowcount > 0
+
+    if conn is not None:
+        return _op(conn)
+    with get_db_connection() as c:
+        return _op(c)
+
+
+def delete_calendar_event(
+    gcal_event_id: str,
+    student_id: int = 1,
+    conn: Optional[sqlite3.Connection] = None
+) -> bool:
+    """Mark or delete calendar event record from SQLite."""
+    def _op(c: sqlite3.Connection) -> bool:
+        cur = c.cursor()
+        cur.execute(
+            """
+            UPDATE calendar_events
+            SET sync_status = 'deleted', last_synced_at = datetime('now', 'localtime')
+            WHERE student_id = ? AND gcal_event_id = ?
+            """,
+            (student_id, gcal_event_id)
+        )
+        return cur.rowcount > 0
+
+    if conn is not None:
+        return _op(conn)
+    with get_db_connection() as c:
+        return _op(c)
+
+
 def save_calendar_event(
     gcal_event_id: str,
     event_title: str,

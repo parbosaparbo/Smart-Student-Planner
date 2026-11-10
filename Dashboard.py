@@ -537,6 +537,50 @@ else:
             unsafe_allow_html=True
         )
 
+    # ── Google Calendar Quick Sync Card ──────────────────────────────────────────
+    try:
+        import google_calendar as gcal
+        student_key = student.get("student_name", "Student")
+        is_gcal_conn = gcal.is_connected(student_key)
+        ics_data = gcal.export_schedule_to_ics(schedule, student_name=student_key)
+
+        st.markdown("<div style='margin-top:0.8rem;'></div>", unsafe_allow_html=True)
+        gc_col1, gc_col2, gc_col3 = st.columns([2.5, 1, 1.2])
+        with gc_col1:
+            if is_gcal_conn:
+                g_email = gcal.get_connected_account_email(student_key)
+                email_display = f"**{g_email}**" if g_email and "@" in g_email else "Google Account"
+                st.markdown(f"📅 **Google Calendar:** Connected as {email_display} · <small style='color:{COLORS['success']}'>🔔 10-min reminders active</small>", unsafe_allow_html=True)
+            else:
+                st.markdown(f"📅 **Google Calendar:** <small style='color:{COLORS['text_muted']}'>Sync your study schedule &amp; reminders</small>", unsafe_allow_html=True)
+
+        with gc_col2:
+            if is_gcal_conn:
+                if st.button("⚡ Sync Calendar", key="dash_gcal_sync", width="stretch"):
+                    with st.spinner("Syncing schedule with Google Calendar..."):
+                        try:
+                            sync_r = gcal.sync_schedule_to_calendar(schedule, student_key, student_key)
+                            st.session_state["gcal_event_map"] = sync_r
+                            save_persistent_state(st.session_state)
+                            st.success(f"Synced {sync_r['created'] + sync_r['updated']} sessions!")
+                        except Exception as e:
+                            st.error(f"Sync error: {e}")
+            else:
+                if st.button("🔗 Connect", key="dash_gcal_conn", width="stretch", type="primary"):
+                    st.switch_page("pages/2_📅_Schedule_Generator.py")
+
+        with gc_col3:
+            st.download_button(
+                label="📥 Export .ics",
+                data=ics_data,
+                file_name=f"studymind_schedule_{date.today().strftime('%Y%m%d')}.ics",
+                mime="text/calendar",
+                width="stretch",
+                key="dash_dl_ics"
+            )
+    except Exception as gcal_dash_err:
+        pass
+
     # Quick mastery trend (if quiz data)
     if quiz_results:
         st.divider()

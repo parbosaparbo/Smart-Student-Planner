@@ -347,115 +347,144 @@ if "schedule" in st.session_state:
 
     # ── Google Calendar Sync Section ────────────────────────────────────────────
     st.divider()
-    st.subheader("📅 Google Calendar Sync")
+    st.subheader("📅 Google Calendar & Schedule Export")
 
     student_key = st.session_state.get("student_profile", {}).get("student_name", "Student")
     student_name = student_key
 
+    # Pre-generate .ics calendar data for offline fallback
+    ics_content = gcal.export_schedule_to_ics(schedule, student_name=student_name)
+
     if not gcal.is_configured():
-        st.info(
-            "**Google Calendar sync is not configured yet.**\n\n"
-            "To enable it:\n"
-            "1. Go to [Google Cloud Console](https://console.cloud.google.com/) → Create a project\n"
-            "2. Enable the **Google Calendar API**\n"
-            "3. Create **OAuth 2.0 Credentials** (Web application)\n"
-            "4. Add `http://localhost:8501` as an **Authorized redirect URI**\n"
-            "5. Copy the Client ID and Client Secret into your `.env` file:\n"
-            "   ```\n"
-            "   GOOGLE_CLIENT_ID=your_client_id\n"
-            "   GOOGLE_CLIENT_SECRET=your_client_secret\n"
-            "   ```\n"
-            "6. Restart the app.\n\n"
-            "💡 *You can still use the per-block \"Add to Google Calendar ↗\" links above without OAuth.*"
+        st.warning("⚠️ Google Calendar Developer credentials not yet configured.")
+        with st.expander("🛠️ Developer One-Time Setup Guide (Google Cloud & OAuth)", expanded=True):
+            st.markdown("""
+            **Developer Instructions (Configure Once):**
+            1. Open [Google Cloud Console](https://console.cloud.google.com/) and create a project (`studymind-ai`).
+            2. Enable the **Google Calendar API** (`APIs & Services` → `Library`).
+            3. Configure **OAuth Consent Screen**:
+               - User Type: **External**
+               - Scopes: `openid`, `userinfo.email`, `https://www.googleapis.com/auth/calendar.events`
+               - Test Users: Add student Gmail addresses for testing before public verification.
+            4. Create **OAuth 2.0 Client ID** (Desktop / Web application).
+            5. Download and save client JSON as `credentials.json` in the project root.
+            """)
+        st.download_button(
+            label="📥 Download .ics Calendar File (Use Offline / Outlook / Apple / Google)",
+            data=ics_content,
+            file_name=f"studymind_schedule_{date.today().strftime('%Y%m%d')}.ics",
+            mime="text/calendar",
+            width="stretch"
         )
     elif gcal.is_connected(student_key):
-        # Connected — show status and Sync Now / Disconnect buttons
-        gcal_col1, gcal_col2 = st.columns([3, 1])
-        with gcal_col1:
-            email = gcal.get_connected_account_email(student_key)
-            if email:
-                st.success(f"✅ Connected to Google Calendar as **{email}**")
-            else:
-                st.success("✅ Google Calendar connected")
-            st.caption("🔔 Reminders: 10-minute popup & email notifications will alert you on Android, iPhone & Desktop.")
-        with gcal_col2:
-            if st.button("🔌 Disconnect", width="stretch", key="gcal_disconnect"):
-                gcal.delete_token(student_key)
-                st.toast("Disconnected from Google Calendar.", icon="🔌")
-                st.rerun()
+        # ── Connected View ────────────────────────────────────────────────────────
+        email = gcal.get_connected_account_email(student_key)
+        account_label = f"**{email}**" if email and "@" in email else "your Google Account"
+        
+        st.markdown(f"""
+        <div style='background:linear-gradient(135deg,{COLORS["success"]}15,{COLORS["card_bg"]});
+                    border-left:4px solid {COLORS["success"]}; padding:1.2rem; border-radius:10px; margin-bottom:1rem;'>
+          <h4 style='margin:0; color:{COLORS["success"]};'>✅ Google Calendar Connected</h4>
+          <p style='margin:0.2rem 0 0; color:white;'>
+            Linked to {account_label} · 🔔 Native 10-minute reminders active for Android, iPhone &amp; Desktop.
+          </p>
+        </div>
+        """, unsafe_allow_html=True)
 
-        sync_col1, sync_col2 = st.columns(2)
-        with sync_col1:
-            if st.button("⚡ Sync Now", type="primary", width="stretch", key="gcal_sync_now"):
-                with st.spinner("Syncing schedule with 10-minute reminders to Google Calendar..."):
+        col_act1, col_act2, col_act3 = st.columns([1.5, 1.5, 1])
+        with col_act1:
+            if st.button("⚡ Sync Now (Google Calendar)", type="primary", width="stretch", key="gcal_sync_now"):
+                with st.spinner("Syncing schedule with Google Calendar (updating existing & removing obsolete slots)..."):
                     try:
                         result = gcal.sync_schedule_to_calendar(schedule, student_key, student_name)
                         st.session_state["gcal_event_map"] = result
                         save_persistent_state(st.session_state)
+                        
+                        msg = f"✅ Synced! **{result['created']}** created, **{result['updated']}** updated, **{result['deleted']}** obsolete removed."
+                        st.success(msg)
                         if result["errors"]:
-                            st.warning(
-                                f"⚠️ Synced with {len(result['errors'])} error(s):\n"
-                                + "\n".join(f"- {e}" for e in result["errors"][:5])
-                            )
+                            st.warning(f"⚠️ {len(result['errors'])} error(s) during sync: " + "; ".join(result["errors"][:3]))
                         else:
-                            st.success(
-                                f"✅ Synced! **{result['created']}** created, "
-                                f"**{result['updated']}** updated, "
-                                f"**{result['skipped']}** rest days skipped."
-                            )
                             st.balloons()
-                    except ValueError as e:
-                        st.error(f"❌ {e}")
-                    except Exception as e:
-                        st.error(f"❌ Sync failed: {e}")
-        with sync_col2:
-            if st.button("🗑️ Remove All Synced Events", width="stretch", key="gcal_delete_all"):
-                with st.spinner("Removing StudyMind events from Google Calendar..."):
-                    try:
-                        count = gcal.delete_all_synced_events(student_key)
-                        st.success(f"✅ Removed {count} events from Google Calendar.")
-                    except Exception as e:
-                        st.error(f"❌ Failed to remove events: {e}")
+                    except ValueError as ve:
+                        st.error(f"❌ {ve}")
+                    except Exception as sync_err:
+                        st.error(f"❌ Google Calendar sync error: {sync_err}")
 
-        # Show last sync summary if available
-        last_sync = st.session_state.get("gcal_event_map")
-        if last_sync and isinstance(last_sync, dict):
-            with st.expander("📊 Last Sync Summary"):
-                ls1, ls2, ls3, ls4 = st.columns(4)
-                ls1.metric("Created", last_sync.get("created", 0))
-                ls2.metric("Updated", last_sync.get("updated", 0))
-                ls3.metric("Skipped", last_sync.get("skipped", 0))
-                ls4.metric("Total Blocks", last_sync.get("total_blocks", 0))
-    else:
-        # Not connected — check if scopes changed on existing token
-        has_mismatch, missing_s = gcal.has_scope_mismatch(student_key)
-        if has_mismatch:
-            st.warning(
-                f"⚠️ **Google Calendar permissions updated:** StudyMind AI now requires updated scopes "
-                f"(`{', '.join(missing_s)}`). Please click Connect below to re-authenticate and regenerate your token with the new scopes."
+        with col_act2:
+            st.download_button(
+                label="📥 Download .ics File",
+                data=ics_content,
+                file_name=f"studymind_schedule_{date.today().strftime('%Y%m%d')}.ics",
+                mime="text/calendar",
+                width="stretch",
+                key="dl_ics_connected"
             )
 
-        # Not connected — show connect buttons & authorization flows
-        _muted = COLORS['text_muted']
-        st.markdown(
-            f"<p style='color:{_muted};'>Connect your Google account to automatically "
-            f"sync study sessions with <b>10-minute reminders</b> that work on Android &amp; iPhone even when your laptop is turned off.</p>",
-            unsafe_allow_html=True,
-        )
+        with col_act3:
+            if st.button("🔌 Disconnect", width="stretch", key="gcal_disconnect"):
+                gcal.delete_token(student_key)
+                st.toast("Google Calendar disconnected.", icon="🔌")
+                st.rerun()
 
-        c_btn1, c_btn2 = st.columns(2)
+        # Show Last Sync Metrics
+        last_sync = st.session_state.get("gcal_event_map")
+        if last_sync and isinstance(last_sync, dict):
+            with st.expander("📊 Google Calendar Sync Details", expanded=False):
+                s1, s2, s3, s4, s5 = st.columns(5)
+                s1.metric("Active Sessions", last_sync.get("total_blocks", 0))
+                s2.metric("Created", last_sync.get("created", 0))
+                s3.metric("Updated", last_sync.get("updated", 0))
+                s4.metric("Obsolete Removed", last_sync.get("deleted", 0))
+                s5.metric("Rest Days Skipped", last_sync.get("skipped", 0))
+                if last_sync.get("last_synced_at"):
+                    st.caption(f"Last synchronized: `{last_sync.get('last_synced_at')[:19].replace('T', ' ')}`")
+
+        if st.button("🗑️ Remove All StudyMind Events from Calendar", key="gcal_clean_all", help="Deletes only events created by StudyMind. Personal events are never touched."):
+            with st.spinner("Cleaning StudyMind events from Google Calendar..."):
+                try:
+                    count = gcal.delete_all_synced_events(student_key)
+                    st.success(f"✅ Removed {count} StudyMind events from your calendar.")
+                except Exception as del_err:
+                    st.error(f"❌ Could not remove events: {del_err}")
+
+    else:
+        # ── Disconnected Student View ─────────────────────────────────────────────
+        st.markdown(f"""
+        <div style='background:{COLORS["card_bg"]}; border:1px solid rgba(255,255,255,0.08);
+                    border-radius:10px; padding:1.2rem; margin-bottom:1rem;'>
+          <h4 style='margin:0 0 0.4rem; color:white;'>Synchronize with your Google Calendar</h4>
+          <p style='color:{COLORS["text_muted"]}; margin:0; font-size:0.92rem;'>
+            Connect your Gmail to auto-schedule study blocks &amp; spaced revisions with <b>10-minute popups and email alerts</b> that notify you on Android, iPhone &amp; laptop even when offline.
+          </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        c_btn1, c_btn2, c_btn3 = st.columns([1.5, 1.2, 1.3])
         with c_btn1:
             if st.button("🔗 Connect Google Calendar (Instant)", type="primary", width="stretch", key="gcal_connect_local"):
-                with st.spinner("Opening browser for Google authorization... Please grant permission in the opened tab."):
+                with st.spinner("Opening Google sign-in consent screen in your browser..."):
                     success, msg = gcal.connect_via_local_server(student_key)
                     if success:
                         st.session_state["gcal_just_connected"] = True
                         st.rerun()
                     else:
                         st.error(f"❌ Connection error: {msg}")
+
         with c_btn2:
-            if st.button("🌐 Browser Link / Paste Code", width="stretch", key="gcal_toggle_manual"):
+            if st.button("🌐 Browser Link / Enter Code", width="stretch", key="gcal_toggle_manual"):
                 st.session_state["show_gcal_auth"] = not st.session_state.get("show_gcal_auth", False)
+
+        with c_btn3:
+            st.download_button(
+                label="📥 Download .ics File",
+                data=ics_content,
+                file_name=f"studymind_schedule_{date.today().strftime('%Y%m%d')}.ics",
+                mime="text/calendar",
+                width="stretch",
+                key="dl_ics_disconnected",
+                help="Offline calendar export compatible with Google Calendar, Apple Calendar, and Outlook."
+            )
 
         if st.session_state.get("show_gcal_auth", False):
             try:
@@ -465,11 +494,11 @@ if "schedule" in st.session_state:
                     <div style='background:{COLORS["card_bg"]}; border-radius:10px; padding:1.2rem; border:1px solid rgba(255,255,255,0.1); margin:1rem 0;'>
                       <h4 style='margin:0 0 0.5rem;'>Sign in with Google</h4>
                       <p style='color:{COLORS["text_muted"]}; font-size:0.9rem;'>
-                        Click the button below to sign in. After authorizing, if the tab redirects to localhost, copy the URL or code and paste it below.
+                        Click the button below to sign in with your Google account. If your browser redirects to localhost, copy the code from the address bar and paste it below.
                       </p>
                       <a href='{auth_url}' target='_blank' style='display:inline-block; padding:0.6rem 1.5rem; 
                          background:{COLORS["primary"]}; color:white; border-radius:8px; 
-                         text-decoration:none; font-weight:600; margin-bottom:1rem;'>🔐 Open Google Sign-In ↗</a>
+                         text-decoration:none; font-weight:600; margin-bottom:1rem;'>🔐 Open Google Sign-In Screen ↗</a>
                     </div>
                     """,
                     unsafe_allow_html=True,
@@ -493,3 +522,10 @@ if "schedule" in st.session_state:
                         st.error(f"❌ Failed to verify code: {auth_err}")
             except Exception as e:
                 st.error(f"❌ Could not start Google authorization: {e}")
+
+        # Developer Diagnostics (tucked into clean expander)
+        dev_stat = gcal.get_developer_oauth_status()
+        with st.expander("🛠️ Developer Information & OAuth Details", expanded=False):
+            st.caption(f"**Client Type:** `{dev_stat.get('client_type')}` · **Client ID:** `{dev_stat.get('client_id_prefix')}`")
+            st.caption(f"**Redirect URIs:** `{', '.join(dev_stat.get('redirect_uris', []))}`")
+            st.caption(f"**Required Scopes:** `{', '.join(dev_stat.get('scopes', []))}`")

@@ -1,0 +1,837 @@
+{
+  "student_profile": {
+    "student_name": "Deshring Parbo",
+    "subject": "B.Tech Computer Science and Engineering - 7th Semester",
+    "exam_date": "2026-11-24",
+    "daily_hours": 3.0,
+    "preferred_times": [
+      "morning",
+      "afternoon"
+    ],
+    "blocked_days": [
+      "sunday"
+    ],
+    "current_level": "intermediate",
+    "known_topics": [],
+    "learning_style": "mixed"
+  },
+  "topic_tree": {
+    "subject": "B.Tech Computer Science and Engineering - 7th Semester",
+    "exam_type": "semester",
+    "has_electives": true,
+    "topics": [
+      {
+        "id": "t1",
+        "title": "Cloud Computing Fundamentals",
+        "difficulty": 3,
+        "priority": 4,
+        "estimated_hours": 8.0,
+        "is_elective": true,
+        "elective_group": "Program Elective-4",
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t1_s1",
+            "title": "Introduction to Cloud Computing",
+            "estimated_hours": 4.0,
+            "key_concepts": [
+              "Distributed to Cloud Shift",
+              "Principles and Characteristics",
+              "IaaS, PaaS, SaaS Models",
+              "Service-Oriented Computing"
+            ]
+          },
+          {
+            "id": "t1_s2",
+            "title": "Cloud Infrastructure and Security",
+            "estimated_hours": 4.0,
+            "key_concepts": [
+              "Client and Server Systems",
+              "Networks and Security",
+              "Accessing Cloud Platforms",
+              "Cloud Storage"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t2",
+        "title": "Working with Cloud Services",
+        "difficulty": 3,
+        "priority": 4,
+        "estimated_hours": 10.0,
+        "is_elective": true,
+        "elective_group": "Program Elective-4",
+        "prerequisites": [
+          "Cloud Computing Fundamentals"
+        ],
+        "subtopics": [
+          {
+            "id": "t2_s1",
+            "title": "Service Provisioning Models",
+            "estimated_hours": 5.0,
+            "key_concepts": [
+              "IaaS Conceptual Model",
+              "PaaS Conceptual Model and Functionalities",
+              "SaaS Conceptual Model",
+              "Service Provisioning Trends"
+            ]
+          },
+          {
+            "id": "t2_s2",
+            "title": "Cloud Applications and Case Studies",
+            "estimated_hours": 5.0,
+            "key_concepts": [
+              "Collaborative Applications",
+              "Calendars, Schedulers and Event Management",
+              "Project Management in Cloud",
+              "Microsoft Azure and Google App Engine",
+              "Open Source Clouds (OpenNebula, Eucalyptus)"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t3",
+        "title": "Principles of Management",
+        "difficulty": 2,
+        "priority": 3,
+        "estimated_hours": 9.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t3_s1",
+            "title": "Fundamentals of Management",
+            "estimated_hours": 4.5,
+            "key_concepts": [
+              "Characteristics and Importance of Management",
+              "Functions of Management",
+              "Planning, Organising, Directing, Staffing",
+              "Coordination and Controlling",
+              "Administration vs Management"
+            ]
+          },
+          {
+            "id": "t3_s2",
+            "title": "Motivation and Leadership",
+            "estimated_hours": 4.5,
+            "key_concepts": [
+              "Definition and Techniques of Motivation",
+              "Sound Motivational System Features",
+              "Principles and Functions of Leadership",
+              "Leadership Styles and Qualities"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t4",
+        "title": "Financial and Cost Accounting",
+        "difficulty": 3,
+        "priority": 3,
+        "estimated_hours": 11.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t4_s1",
+            "title": "Financial Management and Capitalisation",
+            "estimated_hours": 4.0,
+            "key_concepts": [
+              "Financial Planning",
+              "Fixed and Working Capital",
+              "Sources of Finance",
+              "Fund Flow Statement",
+              "Over and Under Capitalisation"
+            ]
+          },
+          {
+            "id": "t4_s2",
+            "title": "Cost Accounting and Marginal Costing",
+            "estimated_hours": 7.0,
+            "key_concepts": [
+              "Marginal Costing and Contribution",
+              "Profit-Volume Ratio and Break-Even Analysis",
+              "Margin of Safety",
+              "Elements of Cost and Cost Sheet",
+              "Raw Materials and Work-in-Progress Adjustments"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t5",
+        "title": "Project Work and Industrial Internship",
+        "difficulty": 4,
+        "priority": 5,
+        "estimated_hours": 24.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t5_s1",
+            "title": "Project-1 Implementation",
+            "estimated_hours": 18.0,
+            "key_concepts": [
+              "Problem Formulation",
+              "System Design and Implementation",
+              "Project Documentation"
+            ]
+          },
+          {
+            "id": "t5_s2",
+            "title": "Industrial Internship (SAI-Industry)",
+            "estimated_hours": 6.0,
+            "key_concepts": [
+              "Industrial Exposure",
+              "Practical Skill Application",
+              "Internship Reporting"
+            ]
+          }
+        ]
+      }
+    ],
+    "total_estimated_hours": 62.0,
+    "execution_time_seconds": 0.0014,
+    "cache_hit": true,
+    "sha256": "2f7f0993ce7163c24d9acb280875eabebbf4ac5cc423f3eaebfb22cf5a4fe047",
+    "tier_used": "Tier 2: PyMuPDF4LLM Structured Table Extraction",
+    "document_metrics": {
+      "num_pages": 15,
+      "total_tables": 16,
+      "has_electives": true,
+      "char_count": 5341
+    }
+  },
+  "subject": "B.Tech Computer Science and Engineering - 7th Semester",
+  "schedule": {
+    "schedule_summary": {
+      "total_study_hours": 30.0,
+      "rest_days": [
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-22",
+        "2026-11-23"
+      ],
+      "mock_test_days": [],
+      "revision_start_date": "2026-11-19",
+      "execution_time_seconds": 0.002
+    },
+    "daily_blocks": [
+      {
+        "date": "2026-11-10",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t5",
+            "topic_title": "Project Work and Industrial Internship",
+            "start_time": "09:00",
+            "duration_minutes": 90,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Project Work and Industrial Internship",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t5",
+            "topic_title": "Project Work and Industrial Internship",
+            "start_time": "11:30",
+            "duration_minutes": 90,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Project Work and Industrial Internship",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-11",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Cloud Computing Fundamentals",
+            "start_time": "09:00",
+            "duration_minutes": 90,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Cloud Computing Fundamentals",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Cloud Computing Fundamentals",
+            "start_time": "11:30",
+            "duration_minutes": 90,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Cloud Computing Fundamentals",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-12",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t2",
+            "topic_title": "Working with Cloud Services",
+            "start_time": "09:00",
+            "duration_minutes": 90,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Working with Cloud Services",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t2",
+            "topic_title": "Working with Cloud Services",
+            "start_time": "11:30",
+            "duration_minutes": 90,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Working with Cloud Services",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-13",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t4",
+            "topic_title": "Financial and Cost Accounting",
+            "start_time": "09:00",
+            "duration_minutes": 90,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Financial and Cost Accounting",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t4",
+            "topic_title": "Financial and Cost Accounting",
+            "start_time": "11:30",
+            "duration_minutes": 90,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Financial and Cost Accounting",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-14",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t3",
+            "topic_title": "Principles of Management",
+            "start_time": "09:00",
+            "duration_minutes": 90,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Principles of Management",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t3",
+            "topic_title": "Principles of Management",
+            "start_time": "11:30",
+            "duration_minutes": 90,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Principles of Management",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-15",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-16",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-17",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t5",
+            "topic_title": "Project Work and Industrial Internship",
+            "start_time": "09:00",
+            "duration_minutes": 90,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Project Work and Industrial Internship",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t5",
+            "topic_title": "Project Work and Industrial Internship",
+            "start_time": "11:30",
+            "duration_minutes": 90,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Project Work and Industrial Internship",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-18",
+        "day_type": "study",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Cloud Computing Fundamentals",
+            "start_time": "09:00",
+            "duration_minutes": 90,
+            "session_goal": "Part 1: Master core concepts and problem patterns of Cloud Computing Fundamentals",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Cloud Computing Fundamentals",
+            "start_time": "11:30",
+            "duration_minutes": 90,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Cloud Computing Fundamentals",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-19",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t5",
+            "topic_title": "Project Work and Industrial Internship",
+            "start_time": "09:00",
+            "duration_minutes": 90,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Project Work and Industrial Internship",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t5",
+            "topic_title": "Project Work and Industrial Internship",
+            "start_time": "11:30",
+            "duration_minutes": 90,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Project Work and Industrial Internship",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-20",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t1",
+            "topic_title": "Cloud Computing Fundamentals",
+            "start_time": "09:00",
+            "duration_minutes": 90,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Cloud Computing Fundamentals",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t1",
+            "topic_title": "Cloud Computing Fundamentals",
+            "start_time": "11:30",
+            "duration_minutes": 90,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Cloud Computing Fundamentals",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-21",
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "t2",
+            "topic_title": "Working with Cloud Services",
+            "start_time": "09:00",
+            "duration_minutes": 90,
+            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Working with Cloud Services",
+            "resources_tip": "Work through practice problems without looking at solutions."
+          },
+          {
+            "topic_id": "t2",
+            "topic_title": "Working with Cloud Services",
+            "start_time": "11:30",
+            "duration_minutes": 90,
+            "session_goal": "Part 2: Deep-dive and Feynman explanation of Working with Cloud Services",
+            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+          }
+        ]
+      },
+      {
+        "date": "2026-11-22",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-23",
+        "day_type": "rest",
+        "blocks": []
+      }
+    ]
+  },
+  "quiz_results": [
+    {
+      "topic_id": "cn",
+      "topic_title": "Computer Networks",
+      "score_pct": 40.0,
+      "correct": 2,
+      "total": 5,
+      "questions": [
+        {
+          "explanation": "TCP 3-way handshake error"
+        }
+      ],
+      "answers": {
+        "q1": "A"
+      }
+    },
+    {
+      "topic_id": "os",
+      "topic_title": "Operating Systems",
+      "score_pct": 60.0,
+      "correct": 3,
+      "total": 5,
+      "questions": [
+        {
+          "explanation": "Round robin scheduling"
+        }
+      ],
+      "answers": {
+        "q1": "B"
+      }
+    },
+    {
+      "topic_id": "dbms",
+      "topic_title": "Database Systems",
+      "score_pct": 85.0,
+      "correct": 4,
+      "total": 5,
+      "questions": [],
+      "answers": {}
+    }
+  ],
+  "mock_evaluation": {
+    "topic_performance": [
+      {
+        "topic_id": "cn",
+        "score_pct": 35.0,
+        "verdict": "critical",
+        "priority_action": "Revise TCP state machine"
+      },
+      {
+        "topic_id": "algo",
+        "score_pct": 50.0,
+        "verdict": "weak",
+        "priority_action": "Practice Dynamic Programming"
+      }
+    ]
+  },
+  "gcal_event_map": {
+    "created": 0,
+    "updated": 20,
+    "skipped": 4,
+    "errors": [],
+    "total_blocks": 20
+  },
+  "last_reschedule_result": {
+    "status": "success",
+    "updated_schedule": {
+      "subject": "GATE 2027 CS",
+      "daily_blocks": [
+        {
+          "date": "2026-11-09",
+          "day_type": "study",
+          "blocks": [
+            {
+              "topic_id": "past_session",
+              "topic_title": "Introduction to Discrete Math",
+              "duration_minutes": 90,
+              "start_time": "09:00",
+              "end_time": "10:30",
+              "completed": true
+            }
+          ]
+        },
+        {
+          "date": "2026-11-10",
+          "day_type": "study",
+          "blocks": [
+            {
+              "topic_id": "t1_study",
+              "topic_title": "Core Study: Computer Networks",
+              "duration_minutes": 120,
+              "start_time": "09:00",
+              "end_time": "11:00",
+              "completed": false
+            }
+          ]
+        },
+        {
+          "date": "2026-11-11",
+          "day_type": "revision",
+          "blocks": [
+            {
+              "topic_id": "cn",
+              "topic_title": "\ud83d\udd04 Revision: Computer Networks",
+              "duration_minutes": 60,
+              "session_goal": "Spaced Revision R1: Recover weak concept in Computer Networks (Score: 35.0%)",
+              "resources_tip": "Active recall & Feynman explanation: teach Computer Networks out loud.",
+              "is_revision": true,
+              "revision_round": 1,
+              "urgency": "critical",
+              "start_time": "09:00",
+              "end_time": "10:00"
+            },
+            {
+              "topic_id": "algo",
+              "topic_title": "\ud83d\udd04 Revision: algo",
+              "duration_minutes": 45,
+              "session_goal": "Spaced Revision R1: Recover weak concept in algo (Score: 50.0%)",
+              "resources_tip": "Active recall & Feynman explanation: teach algo out loud.",
+              "is_revision": true,
+              "revision_round": 1,
+              "urgency": "weak",
+              "start_time": "11:30",
+              "end_time": "12:15"
+            },
+            {
+              "topic_id": "os",
+              "topic_title": "\ud83d\udd04 Revision: Operating Systems",
+              "duration_minutes": 45,
+              "session_goal": "Spaced Revision R1: Recover weak concept in Operating Systems (Score: 60.0%)",
+              "resources_tip": "Active recall & Feynman explanation: teach Operating Systems out loud.",
+              "is_revision": true,
+              "revision_round": 1,
+              "urgency": "weak",
+              "start_time": "14:30",
+              "end_time": "15:15"
+            }
+          ]
+        },
+        {
+          "date": "2026-11-12",
+          "day_type": "study",
+          "blocks": [
+            {
+              "topic_id": "t2_study",
+              "topic_title": "Core Study: Operating Systems",
+              "duration_minutes": 120,
+              "start_time": "09:00",
+              "end_time": "11:00",
+              "completed": false
+            }
+          ]
+        },
+        {
+          "date": "2026-11-13",
+          "day_type": "study",
+          "blocks": [
+            {
+              "topic_id": "t3_study",
+              "topic_title": "Core Study: Database Systems",
+              "duration_minutes": 120,
+              "start_time": "09:00",
+              "end_time": "11:00",
+              "completed": false
+            }
+          ]
+        },
+        {
+          "date": "2026-11-14",
+          "day_type": "revision",
+          "blocks": [
+            {
+              "topic_id": "cn",
+              "topic_title": "\ud83d\udd04 Revision: Computer Networks",
+              "duration_minutes": 60,
+              "session_goal": "Spaced Revision R2: Recover weak concept in Computer Networks (Score: 35.0%)",
+              "resources_tip": "Active recall & Feynman explanation: teach Computer Networks out loud.",
+              "is_revision": true,
+              "revision_round": 2,
+              "urgency": "critical",
+              "start_time": "09:00",
+              "end_time": "10:00"
+            }
+          ]
+        },
+        {
+          "date": "2026-11-15",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-16",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-17",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-18",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-19",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-20",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-21",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-22",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-23",
+          "day_type": "rest",
+          "blocks": []
+        }
+      ],
+      "last_rescheduled_at": "2026-11-10T12:21:36.888185",
+      "total_study_blocks": 8,
+      "reschedule_summary": {
+        "weak_topics_count": 3,
+        "revisions_added": 4,
+        "changes": [
+          {
+            "action": "add_revision",
+            "topic_id": "cn",
+            "topic_title": "Computer Networks",
+            "date": "2026-11-11",
+            "round": 1,
+            "duration_minutes": 60,
+            "reason": "Weak topic auto-reschedule (score 35.0%)"
+          },
+          {
+            "action": "add_revision",
+            "topic_id": "cn",
+            "topic_title": "Computer Networks",
+            "date": "2026-11-14",
+            "round": 2,
+            "duration_minutes": 60,
+            "reason": "Weak topic auto-reschedule (score 35.0%)"
+          },
+          {
+            "action": "add_revision",
+            "topic_id": "algo",
+            "topic_title": "algo",
+            "date": "2026-11-11",
+            "round": 1,
+            "duration_minutes": 45,
+            "reason": "Weak topic auto-reschedule (score 50.0%)"
+          },
+          {
+            "action": "add_revision",
+            "topic_id": "os",
+            "topic_title": "Operating Systems",
+            "date": "2026-11-11",
+            "round": 1,
+            "duration_minutes": 45,
+            "reason": "Weak topic auto-reschedule (score 60.0%)"
+          }
+        ],
+        "recalculated_at": "2026-11-10 12:21:36"
+      }
+    },
+    "changes": [
+      {
+        "action": "add_revision",
+        "topic_id": "cn",
+        "topic_title": "Computer Networks",
+        "date": "2026-11-11",
+        "round": 1,
+        "duration_minutes": 60,
+        "reason": "Weak topic auto-reschedule (score 35.0%)"
+      },
+      {
+        "action": "add_revision",
+        "topic_id": "cn",
+        "topic_title": "Computer Networks",
+        "date": "2026-11-14",
+        "round": 2,
+        "duration_minutes": 60,
+        "reason": "Weak topic auto-reschedule (score 35.0%)"
+      },
+      {
+        "action": "add_revision",
+        "topic_id": "algo",
+        "topic_title": "algo",
+        "date": "2026-11-11",
+        "round": 1,
+        "duration_minutes": 45,
+        "reason": "Weak topic auto-reschedule (score 50.0%)"
+      },
+      {
+        "action": "add_revision",
+        "topic_id": "os",
+        "topic_title": "Operating Systems",
+        "date": "2026-11-11",
+        "round": 1,
+        "duration_minutes": 45,
+        "reason": "Weak topic auto-reschedule (score 60.0%)"
+      }
+    ],
+    "weak_topics": [
+      {
+        "topic_id": "cn",
+        "topic_title": "Computer Networks",
+        "attempts": 2,
+        "scores": [
+          40.0,
+          35.0
+        ],
+        "average_accuracy": 37.5,
+        "recent_accuracy": 35.0,
+        "repeated_mistakes_count": 2,
+        "missed_concepts": [
+          "TCP 3-way handshake error",
+          "Revise TCP state machine"
+        ],
+        "urgency": "critical",
+        "improvement_pct": -5.0
+      },
+      {
+        "topic_id": "algo",
+        "topic_title": "algo",
+        "attempts": 1,
+        "scores": [
+          50.0
+        ],
+        "average_accuracy": 50.0,
+        "recent_accuracy": 50.0,
+        "repeated_mistakes_count": 1,
+        "missed_concepts": [
+          "Practice Dynamic Programming"
+        ],
+        "urgency": "weak",
+        "improvement_pct": 0.0
+      },
+      {
+        "topic_id": "os",
+        "topic_title": "Operating Systems",
+        "attempts": 1,
+        "scores": [
+          60.0
+        ],
+        "average_accuracy": 60.0,
+        "recent_accuracy": 60.0,
+        "repeated_mistakes_count": 1,
+        "missed_concepts": [
+          "Round robin scheduling"
+        ],
+        "urgency": "weak",
+        "improvement_pct": 0.0
+      }
+    ],
+    "blocks_added": 4,
+    "hitl_message": "StudyMind AI has recalculated your study plan, automatically inserting 4 revision sessions for 3 weak topic(s) prioritizing lowest scores. All past records and completed sessions have been preserved intact."
+  }
+}

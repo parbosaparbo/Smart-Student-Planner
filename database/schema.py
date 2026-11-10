@@ -202,7 +202,20 @@ CREATE TABLE IF NOT EXISTS database_backups (
     created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 
--- 15. Flexible Application State & Key-Value Metadata
+-- 15. User OAuth Tokens (Encrypted per-student token storage)
+CREATE TABLE IF NOT EXISTS oauth_tokens (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id INTEGER NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+    provider TEXT DEFAULT 'google_calendar',
+    account_email TEXT DEFAULT '',
+    encrypted_token TEXT NOT NULL,
+    scopes TEXT DEFAULT '[]',              -- JSON array of granted scopes
+    created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    UNIQUE(student_id, provider)
+);
+
+-- 16. Flexible Application State & Key-Value Metadata
 CREATE TABLE IF NOT EXISTS app_state (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL,                   -- JSON or string
@@ -219,6 +232,7 @@ CREATE INDEX IF NOT EXISTS idx_schedules_student ON study_schedules(student_id, 
 CREATE INDEX IF NOT EXISTS idx_blocks_schedule_date ON schedule_blocks(schedule_id, date_str);
 CREATE INDEX IF NOT EXISTS idx_blocks_gcal ON schedule_blocks(gcal_event_id);
 CREATE INDEX IF NOT EXISTS idx_cal_events_student ON calendar_events(student_id, gcal_event_id);
+CREATE INDEX IF NOT EXISTS idx_oauth_tokens_student ON oauth_tokens(student_id, provider);
 CREATE INDEX IF NOT EXISTS idx_activities_student ON student_activities(student_id, timestamp);
 CREATE INDEX IF NOT EXISTS idx_revision_student ON revision_history(student_id, scheduled_date);
 """

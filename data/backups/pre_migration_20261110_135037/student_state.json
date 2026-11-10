@@ -1,0 +1,23 @@
+{
+  "student_profile": {
+    "student_name": "RoundtripStudent",
+    "daily_hours": 4.5,
+    "blocked_days": [
+      "Saturday"
+    ],
+    "preferred_times": [
+      "08:00",
+      "15:00"
+    ]
+  },
+  "subject": "System Design",
+  "daily_briefing": {
+    "headline": "Focus on Cache Eviction Policies"
+  },
+  "flashcards": [
+    {
+      "q": "What is LRU?",
+      "a": "Least Recently Used"
+    }
+  ]
+}

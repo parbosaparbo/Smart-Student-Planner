@@ -1,0 +1,662 @@
+{
+  "81b23f40417bc1c2069782db7ad5ea0182175c9acb4766ebfdeefbe071a70bc0": {
+    "subject": "GATE 2027 Computer Science and Information Technology",
+    "exam_type": "competitive",
+    "has_electives": false,
+    "topics": [
+      {
+        "id": "t1",
+        "title": "Engineering Mathematics",
+        "difficulty": 3,
+        "priority": 5,
+        "estimated_hours": 30.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t1_s1",
+            "title": "Discrete Mathematics",
+            "estimated_hours": 12.0,
+            "key_concepts": [
+              "Propositional and first order logic",
+              "Sets, relations, functions, partial orders and lattices",
+              "Monoids and Groups",
+              "Graph connectivity, matching, colouring",
+              "Combinatorics, counting, recurrence relations, generating functions"
+            ]
+          },
+          {
+            "id": "t1_s2",
+            "title": "Linear Algebra and Calculus",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Matrices, determinants, system of linear equations",
+              "Eigenvalues and eigenvectors, LU decomposition",
+              "Limits, continuity and differentiability",
+              "Maxima and minima, Mean value theorem, Integration"
+            ]
+          },
+          {
+            "id": "t1_s3",
+            "title": "Probability and Statistics",
+            "estimated_hours": 8.0,
+            "key_concepts": [
+              "Random variables",
+              "Uniform, normal, exponential, Poisson and binomial distributions",
+              "Mean, median, mode and standard deviation",
+              "Conditional probability and Bayes theorem"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t2",
+        "title": "Digital Logic",
+        "difficulty": 2,
+        "priority": 4,
+        "estimated_hours": 15.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t2_s1",
+            "title": "Boolean Algebra and Minimization",
+            "estimated_hours": 5.0,
+            "key_concepts": [
+              "Algebraic technique",
+              "Karnaugh map",
+              "Tabular method"
+            ]
+          },
+          {
+            "id": "t2_s2",
+            "title": "Combinational and Sequential Circuits",
+            "estimated_hours": 6.0,
+            "key_concepts": [
+              "Design of combinational circuits",
+              "Design of sequential circuits"
+            ]
+          },
+          {
+            "id": "t2_s3",
+            "title": "Number Representation and Arithmetic",
+            "estimated_hours": 4.0,
+            "key_concepts": [
+              "Fixed point representation",
+              "Floating point representation",
+              "Computer arithmetic"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t3",
+        "title": "Computer Organization and Architecture",
+        "difficulty": 4,
+        "priority": 5,
+        "estimated_hours": 25.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [
+          "t2"
+        ],
+        "subtopics": [
+          {
+            "id": "t3_s1",
+            "title": "Instruction Set and Control Unit Design",
+            "estimated_hours": 8.0,
+            "key_concepts": [
+              "Instruction set architecture",
+              "Addressing modes",
+              "ALU design",
+              "Hardwired control unit",
+              "Microprogrammed control unit"
+            ]
+          },
+          {
+            "id": "t3_s2",
+            "title": "Memory Hierarchy and Interfacing",
+            "estimated_hours": 9.0,
+            "key_concepts": [
+              "Memory hierarchy performance",
+              "Cache memory mapping",
+              "I/O interface",
+              "Interrupts and DMA"
+            ]
+          },
+          {
+            "id": "t3_s3",
+            "title": "Instruction Pipelining",
+            "estimated_hours": 8.0,
+            "key_concepts": [
+              "Pipelining concepts",
+              "Pipeline hazards",
+              "Performance metrics"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t4",
+        "title": "Programming and Data Structures",
+        "difficulty": 3,
+        "priority": 5,
+        "estimated_hours": 30.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t4_s1",
+            "title": "Programming in C",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "C syntax and constructs",
+              "Recursion"
+            ]
+          },
+          {
+            "id": "t4_s2",
+            "title": "Linear Data Structures",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Arrays",
+              "Stacks",
+              "Queues",
+              "Linked lists"
+            ]
+          },
+          {
+            "id": "t4_s3",
+            "title": "Trees and Graphs",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Trees",
+              "Binary search trees",
+              "Binary heaps",
+              "Graphs"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t5",
+        "title": "Algorithms",
+        "difficulty": 4,
+        "priority": 5,
+        "estimated_hours": 30.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [
+          "t1",
+          "t4"
+        ],
+        "subtopics": [
+          {
+            "id": "t5_s1",
+            "title": "Asymptotic Analysis, Searching and Sorting",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Searching and sorting algorithms",
+              "Hashing",
+              "Asymptotic worst case time and space complexity"
+            ]
+          },
+          {
+            "id": "t5_s2",
+            "title": "Algorithm Design Techniques",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Greedy algorithms",
+              "Dynamic programming",
+              "Divide-and-conquer"
+            ]
+          },
+          {
+            "id": "t5_s3",
+            "title": "Graph Algorithms",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "Graph traversals (BFS, DFS)",
+              "Minimum spanning trees",
+              "Shortest paths"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t6",
+        "title": "Theory of Computation",
+        "difficulty": 4,
+        "priority": 4,
+        "estimated_hours": 25.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [
+          "t1"
+        ],
+        "subtopics": [
+          {
+            "id": "t6_s1",
+            "title": "Regular Languages and Automata",
+            "estimated_hours": 9.0,
+            "key_concepts": [
+              "Regular expressions",
+              "Finite automata",
+              "Regular languages",
+              "Pumping lemma for regular languages"
+            ]
+          },
+          {
+            "id": "t6_s2",
+            "title": "Context-Free Grammars and PDA",
+            "estimated_hours": 8.0,
+            "key_concepts": [
+              "Context-free grammars",
+              "Push-down automata",
+              "Context-free languages"
+            ]
+          },
+          {
+            "id": "t6_s3",
+            "title": "Turing Machines and Undecidability",
+            "estimated_hours": 8.0,
+            "key_concepts": [
+              "Turing machines",
+              "Undecidability"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t7",
+        "title": "Compiler Design",
+        "difficulty": 4,
+        "priority": 3,
+        "estimated_hours": 20.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [
+          "t6"
+        ],
+        "subtopics": [
+          {
+            "id": "t7_s1",
+            "title": "Lexical Analysis and Parsing",
+            "estimated_hours": 8.0,
+            "key_concepts": [
+              "Lexical analysis",
+              "Parsing techniques",
+              "Syntax-directed translation"
+            ]
+          },
+          {
+            "id": "t7_s2",
+            "title": "Code Generation and Runtime Environments",
+            "estimated_hours": 6.0,
+            "key_concepts": [
+              "Runtime environments",
+              "Intermediate code generation"
+            ]
+          },
+          {
+            "id": "t7_s3",
+            "title": "Code Optimization and Data Flow Analysis",
+            "estimated_hours": 6.0,
+            "key_concepts": [
+              "Local optimisation",
+              "Data flow analyses",
+              "Constant propagation",
+              "Liveness analysis",
+              "Common subexpression elimination"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t8",
+        "title": "Operating System",
+        "difficulty": 3,
+        "priority": 4,
+        "estimated_hours": 25.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [
+          "t3"
+        ],
+        "subtopics": [
+          {
+            "id": "t8_s1",
+            "title": "Processes, Threads and Synchronization",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "System calls",
+              "Processes and threads",
+              "Inter-process communication",
+              "Concurrency and synchronization",
+              "Deadlock"
+            ]
+          },
+          {
+            "id": "t8_s2",
+            "title": "Scheduling and Memory Management",
+            "estimated_hours": 10.0,
+            "key_concepts": [
+              "CPU scheduling",
+              "I/O scheduling",
+              "Memory management",
+              "Virtual memory"
+            ]
+          },
+          {
+            "id": "t8_s3",
+            "title": "File Systems",
+            "estimated_hours": 5.0,
+            "key_concepts": [
+              "File systems design and implementation"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t9",
+        "title": "Databases",
+        "difficulty": 3,
+        "priority": 4,
+        "estimated_hours": 20.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [
+          "t1",
+          "t4"
+        ],
+        "subtopics": [
+          {
+            "id": "t9_s1",
+            "title": "Data Models and Relational Query Languages",
+            "estimated_hours": 8.0,
+            "key_concepts": [
+              "ER-model",
+              "Relational model",
+              "Relational algebra",
+              "Tuple calculus",
+              "SQL",
+              "Integrity constraints",
+              "Normal forms"
+            ]
+          },
+          {
+            "id": "t9_s2",
+            "title": "File Organization and Indexing",
+            "estimated_hours": 5.0,
+            "key_concepts": [
+              "File organization",
+              "B and B+ trees indexing"
+            ]
+          },
+          {
+            "id": "t9_s3",
+            "title": "Transactions and Concurrency Control",
+            "estimated_hours": 7.0,
+            "key_concepts": [
+              "Transactions",
+              "Concurrency control"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t10",
+        "title": "Computer Networks",
+        "difficulty": 4,
+        "priority": 4,
+        "estimated_hours": 25.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t10_s1",
+            "title": "Network Basics and Data Link Layer",
+            "estimated_hours": 8.0,
+            "key_concepts": [
+              "Principles of Layering",
+              "Circuit, packet, and virtual circuit switching",
+              "Performance metrics",
+              "Error detection",
+              "Medium Access Control (MAC)",
+              "Ethernet"
+            ]
+          },
+          {
+            "id": "t10_s2",
+            "title": "Network Layer Protocols and Routing",
+            "estimated_hours": 9.0,
+            "key_concepts": [
+              "Distance vector and link state routing",
+              "IPv4 fragmentation",
+              "CIDR Notation",
+              "Network Address Translation (NAT)"
+            ]
+          },
+          {
+            "id": "t10_s3",
+            "title": "Transport and Application Layers",
+            "estimated_hours": 8.0,
+            "key_concepts": [
+              "TCP flow control and congestion control",
+              "Socket API",
+              "DNS",
+              "HTTP"
+            ]
+          }
+        ]
+      }
+    ],
+    "total_estimated_hours": 245.0,
+    "execution_time_seconds": 25.0135,
+    "cache_hit": false,
+    "sha256": "81b23f40417bc1c2069782db7ad5ea0182175c9acb4766ebfdeefbe071a70bc0",
+    "tier_used": "Tier 2: PyMuPDF4LLM Structured Table Extraction",
+    "document_metrics": {
+      "num_pages": 2,
+      "total_tables": 3,
+      "has_electives": false,
+      "char_count": 3269
+    }
+  },
+  "2f7f0993ce7163c24d9acb280875eabebbf4ac5cc423f3eaebfb22cf5a4fe047": {
+    "subject": "B.Tech Computer Science and Engineering - 7th Semester",
+    "exam_type": "semester",
+    "has_electives": true,
+    "topics": [
+      {
+        "id": "t1",
+        "title": "Cloud Computing Fundamentals",
+        "difficulty": 3,
+        "priority": 4,
+        "estimated_hours": 8.0,
+        "is_elective": true,
+        "elective_group": "Program Elective-4",
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t1_s1",
+            "title": "Introduction to Cloud Computing",
+            "estimated_hours": 4.0,
+            "key_concepts": [
+              "Distributed to Cloud Shift",
+              "Principles and Characteristics",
+              "IaaS, PaaS, SaaS Models",
+              "Service-Oriented Computing"
+            ]
+          },
+          {
+            "id": "t1_s2",
+            "title": "Cloud Infrastructure and Security",
+            "estimated_hours": 4.0,
+            "key_concepts": [
+              "Client and Server Systems",
+              "Networks and Security",
+              "Accessing Cloud Platforms",
+              "Cloud Storage"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t2",
+        "title": "Working with Cloud Services",
+        "difficulty": 3,
+        "priority": 4,
+        "estimated_hours": 10.0,
+        "is_elective": true,
+        "elective_group": "Program Elective-4",
+        "prerequisites": [
+          "Cloud Computing Fundamentals"
+        ],
+        "subtopics": [
+          {
+            "id": "t2_s1",
+            "title": "Service Provisioning Models",
+            "estimated_hours": 5.0,
+            "key_concepts": [
+              "IaaS Conceptual Model",
+              "PaaS Conceptual Model and Functionalities",
+              "SaaS Conceptual Model",
+              "Service Provisioning Trends"
+            ]
+          },
+          {
+            "id": "t2_s2",
+            "title": "Cloud Applications and Case Studies",
+            "estimated_hours": 5.0,
+            "key_concepts": [
+              "Collaborative Applications",
+              "Calendars, Schedulers and Event Management",
+              "Project Management in Cloud",
+              "Microsoft Azure and Google App Engine",
+              "Open Source Clouds (OpenNebula, Eucalyptus)"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t3",
+        "title": "Principles of Management",
+        "difficulty": 2,
+        "priority": 3,
+        "estimated_hours": 9.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t3_s1",
+            "title": "Fundamentals of Management",
+            "estimated_hours": 4.5,
+            "key_concepts": [
+              "Characteristics and Importance of Management",
+              "Functions of Management",
+              "Planning, Organising, Directing, Staffing",
+              "Coordination and Controlling",
+              "Administration vs Management"
+            ]
+          },
+          {
+            "id": "t3_s2",
+            "title": "Motivation and Leadership",
+            "estimated_hours": 4.5,
+            "key_concepts": [
+              "Definition and Techniques of Motivation",
+              "Sound Motivational System Features",
+              "Principles and Functions of Leadership",
+              "Leadership Styles and Qualities"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t4",
+        "title": "Financial and Cost Accounting",
+        "difficulty": 3,
+        "priority": 3,
+        "estimated_hours": 11.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t4_s1",
+            "title": "Financial Management and Capitalisation",
+            "estimated_hours": 4.0,
+            "key_concepts": [
+              "Financial Planning",
+              "Fixed and Working Capital",
+              "Sources of Finance",
+              "Fund Flow Statement",
+              "Over and Under Capitalisation"
+            ]
+          },
+          {
+            "id": "t4_s2",
+            "title": "Cost Accounting and Marginal Costing",
+            "estimated_hours": 7.0,
+            "key_concepts": [
+              "Marginal Costing and Contribution",
+              "Profit-Volume Ratio and Break-Even Analysis",
+              "Margin of Safety",
+              "Elements of Cost and Cost Sheet",
+              "Raw Materials and Work-in-Progress Adjustments"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "t5",
+        "title": "Project Work and Industrial Internship",
+        "difficulty": 4,
+        "priority": 5,
+        "estimated_hours": 24.0,
+        "is_elective": false,
+        "elective_group": null,
+        "prerequisites": [],
+        "subtopics": [
+          {
+            "id": "t5_s1",
+            "title": "Project-1 Implementation",
+            "estimated_hours": 18.0,
+            "key_concepts": [
+              "Problem Formulation",
+              "System Design and Implementation",
+              "Project Documentation"
+            ]
+          },
+          {
+            "id": "t5_s2",
+            "title": "Industrial Internship (SAI-Industry)",
+            "estimated_hours": 6.0,
+            "key_concepts": [
+              "Industrial Exposure",
+              "Practical Skill Application",
+              "Internship Reporting"
+            ]
+          }
+        ]
+      }
+    ],
+    "total_estimated_hours": 62.0,
+    "execution_time_seconds": 27.9558,
+    "cache_hit": false,
+    "sha256": "2f7f0993ce7163c24d9acb280875eabebbf4ac5cc423f3eaebfb22cf5a4fe047",
+    "tier_used": "Tier 2: PyMuPDF4LLM Structured Table Extraction",
+    "document_metrics": {
+      "num_pages": 15,
+      "total_tables": 16,
+      "has_electives": true,
+      "char_count": 5341
+    }
+  }
+}
