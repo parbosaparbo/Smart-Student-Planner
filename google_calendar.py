@@ -18,19 +18,46 @@ import logging
 import os
 import re
 import secrets
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Set
 
-from dotenv import load_dotenv
-from cryptography.fernet import Fernet
-from google.oauth2.credentials import Credentials
-from google.auth.transport.requests import Request as GoogleAuthRequest
-from google_auth_oauthlib.flow import Flow, InstalledAppFlow
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
+# ── Optional dependency guard ──────────────────────────────────────────────────
+# These packages are required for Google Calendar OAuth & sync. On environments
+# where they are not installed (e.g. during Streamlit Cloud build before pip
+# finishes, or in minimal local setups), the module must still load so that the
+# stdlib-only export_schedule_to_ics() function remains accessible.
+_GCAL_DEPS_AVAILABLE = True
+_GCAL_DEPS_ERROR: Optional[str] = None
 
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    def load_dotenv(*a, **kw): pass  # noqa: E731
+
+try:
+    from cryptography.fernet import Fernet
+except ImportError:
+    _GCAL_DEPS_AVAILABLE = False
+    _GCAL_DEPS_ERROR = "cryptography package not installed"
+    Fernet = None  # type: ignore
+
+try:
+    from google.oauth2.credentials import Credentials
+    from google.auth.transport.requests import Request as GoogleAuthRequest
+    from google_auth_oauthlib.flow import Flow, InstalledAppFlow
+    from googleapiclient.discovery import build
+    from googleapiclient.errors import HttpError
+except ImportError as _e:
+    _GCAL_DEPS_AVAILABLE = False
+    _GCAL_DEPS_ERROR = str(_e)
+    Credentials = None           # type: ignore
+    GoogleAuthRequest = None     # type: ignore
+    Flow = None                  # type: ignore
+    InstalledAppFlow = None      # type: ignore
+    build = None                 # type: ignore
+    HttpError = Exception        # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -54,12 +81,18 @@ REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI", "http://localhost:8501")
 
 # ── Encryption & Secure Token Storage ──────────────────────────────────────────
 
-def _get_encryption_cipher() -> Fernet:
+def _get_encryption_cipher():
     """
     Returns a Fernet symmetric cipher for encrypting OAuth tokens.
     Uses GCAL_ENCRYPTION_KEY env var if set, otherwise generates/persists
     a secret key in data/.gcal_secret_key.
+    Raises RuntimeError if cryptography package is not installed.
     """
+    if not _GCAL_DEPS_AVAILABLE or Fernet is None:
+        raise RuntimeError(
+            f"Google Calendar dependencies not available: {_GCAL_DEPS_ERROR}. "
+            "Ensure cryptography, google-api-python-client, and google-auth packages are installed."
+        )
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     env_key = os.getenv("GCAL_ENCRYPTION_KEY", "").strip()
     if env_key:
@@ -98,6 +131,12 @@ def _decrypt_payload(encrypted_str: str) -> Optional[Dict[str, Any]]:
     """Decrypt a secure base64 string or parse legacy unencrypted JSON."""
     if not encrypted_str:
         return None
+    if not _GCAL_DEPS_AVAILABLE:
+        # No decryption available; try plain JSON for read-only fallback
+        try:
+            return json.loads(encrypted_str)
+        except Exception:
+            return None
     # 1. Try Fernet decryption
     try:
         cipher = _get_encryption_cipher()
@@ -218,7 +257,10 @@ def _client_config() -> Optional[Dict]:
 
 
 def is_configured() -> bool:
-    """Returns True if Google OAuth developer credentials are configured."""
+    """Returns True if Google OAuth developer credentials are configured.
+    Returns False (not raises) when google-auth packages are not installed."""
+    if not _GCAL_DEPS_AVAILABLE:
+        return False
     return _client_config() is not None
 
 
@@ -437,7 +479,10 @@ def get_valid_credentials(student_key: str = "") -> Optional[Credentials]:
 
 
 def is_connected(student_key: str = "") -> bool:
-    """Returns True if valid Google Calendar credentials exist."""
+    """Returns True if valid Google Calendar credentials exist.
+    Returns False (not raises) when google-auth packages are not installed."""
+    if not _GCAL_DEPS_AVAILABLE:
+        return False
     try:
         creds = load_token(student_key)
         return bool(creds and (creds.valid or creds.refresh_token or creds.token))
@@ -914,8 +959,8 @@ def export_schedule_to_ics(schedule: Dict[str, Any], student_name: str = "Studen
     Generates a standard RFC 5545 (.ics) file from a StudyMind schedule.
     Enables offline import into Apple Calendar, Outlook, Google Calendar,
     or mobile phone calendar apps without requiring active OAuth.
+    Uses only Python stdlib — works even when google-auth packages are not installed.
     """
-    from datetime import timezone
     now_stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     lines = [
         "BEGIN:VCALENDAR",
@@ -937,17 +982,26 @@ def export_schedule_to_ics(schedule: Dict[str, Any], student_name: str = "Studen
             continue
 
         for block in blocks:
-            topic_title = block.get("topic_title", "Study Session")
-            start_time = block.get("start_time", "09:00")
-            duration = int(block.get("duration_minutes", 60))
-            topic_id = block.get("topic_id", "unknown")
-            block_type = block.get("block_type", "normal")
-            goal = block.get("session_goal", "")
+            topic_title = block.get("topic_title", "") or "Study Session"
+            start_time  = block.get("start_time", "09:00") or "09:00"
+            topic_id    = block.get("topic_id", "unknown") or "unknown"
+            block_type  = block.get("block_type", "normal") or "normal"
+            goal        = block.get("session_goal", "") or ""
 
+            # Safely convert duration — default 60 min if missing or non-numeric
+            try:
+                duration = int(float(block.get("duration_minutes", 60)))
+            except (TypeError, ValueError):
+                duration = 60
+
+            # Safely parse start datetime — fall back to 09:00 on bad formats
             try:
                 dt_start = datetime.strptime(f"{date_str}T{start_time}:00", "%Y-%m-%dT%H:%M:%S")
-            except ValueError:
-                dt_start = datetime.strptime(f"{date_str}T09:00:00", "%Y-%m-%dT%H:%M:%S")
+            except (ValueError, TypeError):
+                try:
+                    dt_start = datetime.strptime(f"{date_str}T09:00:00", "%Y-%m-%dT%H:%M:%S")
+                except (ValueError, TypeError):
+                    continue  # skip block entirely if date is also invalid
             dt_end = dt_start + timedelta(minutes=duration)
 
             dtstart_str = dt_start.strftime("%Y%m%dT%H%M%S")
