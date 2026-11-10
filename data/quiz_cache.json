@@ -486,5 +486,366 @@
     "execution_time_seconds": 18.514,
     "validation_time_seconds": 0.0,
     "cached": false
+  },
+  "16d199b9e9ada58c": {
+    "topic_id": "t1",
+    "topic_title": "Engineering Mathematics",
+    "difficulty": 3,
+    "syllabus_context": "Subject: GATE 2027 Computer Science and Information Technology | Subtopics: Discrete Mathematics: Propositional and first order logic, Sets, relations, functions, partial orders and lattices, Monoids and Groups, Graph connectivity, matching, colouring, Combinatorics, counting, recurrence relations, generating functions; Linear Algebra and Calculus: Matrices, determinants, system of linear equations, Eigenvalues and eigenvectors, LU decomposition, Limits, continuity and differentiability, Maxima and minima, Mean value theorem, Integration; Probability and Statistics: Random variables, Uniform, normal, exponential, Poisson and binomial distributions, Mean, median, mode and standard deviation, Conditional probability and Bayes theorem",
+    "questions": [
+      {
+        "id": "q1",
+        "question": "A 3x3 matrix has eigenvalues 1, 2, and 3. What is the determinant of this matrix?",
+        "options": {
+          "A": "6",
+          "B": "5",
+          "C": "0",
+          "D": "1"
+        },
+        "correct_answer": "A",
+        "explanation": "The determinant of a matrix equals the product of its eigenvalues, which gives 1 * 2 * 3 = 6.",
+        "difficulty": 3,
+        "subtopic_tag": "Linear Algebra",
+        "concept_tested": "Linear Algebra",
+        "topic_id": "t1",
+        "topic_title": "Engineering Mathematics"
+      },
+      {
+        "id": "q2",
+        "question": "A fair coin is tossed 3 times. What is the probability of getting exactly two heads?",
+        "options": {
+          "A": "1/8",
+          "B": "3/8",
+          "C": "1/2",
+          "D": "3/4"
+        },
+        "correct_answer": "B",
+        "explanation": "Using the binomial distribution, the probability is given by C(3,2) * (1/2)^2 * (1/2)^1, which equals 3/8.",
+        "difficulty": 3,
+        "subtopic_tag": "Probability",
+        "concept_tested": "Probability",
+        "topic_id": "t1",
+        "topic_title": "Engineering Mathematics"
+      },
+      {
+        "id": "q3",
+        "question": "How many undirected edges are in a complete graph with 5 vertices, K5?",
+        "options": {
+          "A": "5",
+          "B": "10",
+          "C": "20",
+          "D": "25"
+        },
+        "correct_answer": "B",
+        "explanation": "A complete graph with n vertices has n(n-1)/2 edges, which evaluates to 5*4/2 = 10 for K5.",
+        "difficulty": 3,
+        "subtopic_tag": "Discrete Mathematics",
+        "concept_tested": "Discrete Mathematics",
+        "topic_id": "t1",
+        "topic_title": "Engineering Mathematics"
+      },
+      {
+        "id": "q4",
+        "question": "What is the absolute minimum value of the function f(x) = x^2 - 4x + 5 on the real line?",
+        "options": {
+          "A": "0",
+          "B": "1",
+          "C": "5",
+          "D": "-1"
+        },
+        "correct_answer": "B",
+        "explanation": "Completing the square gives f(x) = (x-2)^2 + 1, meaning the minimum value is 1 occurring at x = 2.",
+        "difficulty": 3,
+        "subtopic_tag": "Calculus",
+        "concept_tested": "Calculus",
+        "topic_id": "t1",
+        "topic_title": "Engineering Mathematics"
+      },
+      {
+        "id": "q5",
+        "question": "Let R be an equivalence relation on a set of 4 elements. What is the minimum possible number of elements in R?",
+        "options": {
+          "A": "1",
+          "B": "4",
+          "C": "7",
+          "D": "16"
+        },
+        "correct_answer": "B",
+        "explanation": "An equivalence relation must be reflexive, containing at least the 4 diagonal pairs (a,a) for a set of 4 elements.",
+        "difficulty": 3,
+        "subtopic_tag": "Discrete Mathematics",
+        "concept_tested": "Discrete Mathematics",
+        "topic_id": "t1",
+        "topic_title": "Engineering Mathematics"
+      }
+    ],
+    "time_limit_seconds": 375,
+    "execution_time_seconds": 12.79,
+    "validation_time_seconds": 0.0001,
+    "cached": false
+  },
+  "eb6496000ca1c000": {
+    "topic_id": "t1",
+    "topic_title": "Engineering Mathematics",
+    "difficulty": 1,
+    "syllabus_context": "Subject: GATE 2027 Computer Science and Information Technology | Subtopics: Discrete Mathematics: Propositional and first order logic, Sets, relations, functions, partial orders and lattices, Monoids and Groups, Graph connectivity, matching, colouring, Combinatorics, counting, recurrence relations, generating functions; Linear Algebra and Calculus: Matrices, determinants, system of linear equations, Eigenvalues and eigenvectors, LU decomposition, Limits, continuity and differentiability, Maxima and minima, Mean value theorem, Integration; Probability and Statistics: Random variables, Uniform, normal, exponential, Poisson and binomial distributions, Mean, median, mode and standard deviation, Conditional probability and Bayes theorem",
+    "questions": [
+      {
+        "id": "q1",
+        "question": "A GPU graphics pipeline uses a square matrix A with det(A) = 0. What can be concluded about matrix A?",
+        "options": {
+          "A": "Matrix A is invertible",
+          "B": "Matrix A is singular and non-invertible",
+          "C": "All eigenvalues of A are strictly positive",
+          "D": "Ax = b has a unique solution for any vector b"
+        },
+        "correct_answer": "B",
+        "explanation": "A square matrix with a determinant of zero is singular, which means its inverse does not exist.",
+        "difficulty": 1,
+        "subtopic_tag": "Matrices, determinants, system of linear equations",
+        "concept_tested": "Matrices, determinants, system of linear equations",
+        "topic_id": "t1",
+        "topic_title": "Engineering Mathematics"
+      }
+    ],
+    "time_limit_seconds": 75,
+    "execution_time_seconds": 15.574,
+    "validation_time_seconds": 0.0,
+    "cached": false
+  },
+  "cbd02441dedd1659": {
+    "topic_id": "t1",
+    "topic_title": "Engineering Mathematics",
+    "difficulty": 3,
+    "syllabus_context": "Subject: GATE 2027 Computer Science and Information Technology | Subtopics: Discrete Mathematics: Propositional and first order logic, Sets, relations, functions, partial orders and lattices, Monoids and Groups, Graph connectivity, matching, colouring, Combinatorics, counting, recurrence relations, generating functions; Linear Algebra and Calculus: Matrices, determinants, system of linear equations, Eigenvalues and eigenvectors, LU decomposition, Limits, continuity and differentiability, Maxima and minima, Mean value theorem, Integration; Probability and Statistics: Random variables, Uniform, normal, exponential, Poisson and binomial distributions, Mean, median, mode and standard deviation, Conditional probability and Bayes theorem",
+    "questions": [
+      {
+        "id": "q1",
+        "question": "Which core principle is fundamental to Engineering Mathematics (Scenario 1)?",
+        "options": {
+          "A": "Optimal resource management in Engineering Mathematics",
+          "B": "Unbounded linear complexity in Engineering Mathematics",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Engineering Mathematics.",
+        "difficulty": 3,
+        "subtopic_tag": "Engineering Mathematics",
+        "concept_tested": "Engineering Mathematics",
+        "topic_id": "t1",
+        "topic_title": "Engineering Mathematics"
+      },
+      {
+        "id": "q2",
+        "question": "Which core principle is fundamental to Engineering Mathematics (Scenario 2)?",
+        "options": {
+          "A": "Optimal resource management in Engineering Mathematics",
+          "B": "Unbounded linear complexity in Engineering Mathematics",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Engineering Mathematics.",
+        "difficulty": 3,
+        "subtopic_tag": "Engineering Mathematics",
+        "concept_tested": "Engineering Mathematics",
+        "topic_id": "t1",
+        "topic_title": "Engineering Mathematics"
+      },
+      {
+        "id": "q3",
+        "question": "Which core principle is fundamental to Engineering Mathematics (Scenario 3)?",
+        "options": {
+          "A": "Optimal resource management in Engineering Mathematics",
+          "B": "Unbounded linear complexity in Engineering Mathematics",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Engineering Mathematics.",
+        "difficulty": 3,
+        "subtopic_tag": "Engineering Mathematics",
+        "concept_tested": "Engineering Mathematics",
+        "topic_id": "t1",
+        "topic_title": "Engineering Mathematics"
+      },
+      {
+        "id": "q4",
+        "question": "Which core principle is fundamental to Engineering Mathematics (Scenario 4)?",
+        "options": {
+          "A": "Optimal resource management in Engineering Mathematics",
+          "B": "Unbounded linear complexity in Engineering Mathematics",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Engineering Mathematics.",
+        "difficulty": 3,
+        "subtopic_tag": "Engineering Mathematics",
+        "concept_tested": "Engineering Mathematics",
+        "topic_id": "t1",
+        "topic_title": "Engineering Mathematics"
+      }
+    ],
+    "time_limit_seconds": 300,
+    "execution_time_seconds": 25.54,
+    "validation_time_seconds": 0.0,
+    "cached": false
+  },
+  "cc0f7fc1bd16571b": {
+    "topic_id": "t1",
+    "topic_title": "Engineering Mathematics",
+    "difficulty": 3,
+    "syllabus_context": "",
+    "questions": [
+      {
+        "id": "q1",
+        "question": "Which core principle is fundamental to Engineering Mathematics (Scenario 1)?",
+        "options": {
+          "A": "Optimal resource management in Engineering Mathematics",
+          "B": "Unbounded linear complexity in Engineering Mathematics",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Engineering Mathematics.",
+        "difficulty": 3,
+        "subtopic_tag": "Engineering Mathematics",
+        "concept_tested": "Engineering Mathematics",
+        "topic_id": "t1",
+        "topic_title": "Engineering Mathematics"
+      },
+      {
+        "id": "q2",
+        "question": "Which core principle is fundamental to Engineering Mathematics (Scenario 2)?",
+        "options": {
+          "A": "Optimal resource management in Engineering Mathematics",
+          "B": "Unbounded linear complexity in Engineering Mathematics",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Engineering Mathematics.",
+        "difficulty": 3,
+        "subtopic_tag": "Engineering Mathematics",
+        "concept_tested": "Engineering Mathematics",
+        "topic_id": "t1",
+        "topic_title": "Engineering Mathematics"
+      },
+      {
+        "id": "q3",
+        "question": "Which core principle is fundamental to Engineering Mathematics (Scenario 3)?",
+        "options": {
+          "A": "Optimal resource management in Engineering Mathematics",
+          "B": "Unbounded linear complexity in Engineering Mathematics",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Engineering Mathematics.",
+        "difficulty": 3,
+        "subtopic_tag": "Engineering Mathematics",
+        "concept_tested": "Engineering Mathematics",
+        "topic_id": "t1",
+        "topic_title": "Engineering Mathematics"
+      }
+    ],
+    "time_limit_seconds": 225,
+    "execution_time_seconds": 8.282,
+    "validation_time_seconds": 0.0,
+    "cached": false
+  },
+  "a8e332dc14638e32": {
+    "topic_id": "t2",
+    "topic_title": "Digital Logic",
+    "difficulty": 3,
+    "syllabus_context": "",
+    "questions": [
+      {
+        "id": "q1",
+        "question": "Which core principle is fundamental to Digital Logic (Scenario 1)?",
+        "options": {
+          "A": "Optimal resource management in Digital Logic",
+          "B": "Unbounded linear complexity in Digital Logic",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Digital Logic.",
+        "difficulty": 3,
+        "subtopic_tag": "Digital Logic",
+        "concept_tested": "Digital Logic",
+        "topic_id": "t2",
+        "topic_title": "Digital Logic"
+      },
+      {
+        "id": "q2",
+        "question": "Which core principle is fundamental to Digital Logic (Scenario 2)?",
+        "options": {
+          "A": "Optimal resource management in Digital Logic",
+          "B": "Unbounded linear complexity in Digital Logic",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Digital Logic.",
+        "difficulty": 3,
+        "subtopic_tag": "Digital Logic",
+        "concept_tested": "Digital Logic",
+        "topic_id": "t2",
+        "topic_title": "Digital Logic"
+      },
+      {
+        "id": "q3",
+        "question": "Which core principle is fundamental to Digital Logic (Scenario 3)?",
+        "options": {
+          "A": "Optimal resource management in Digital Logic",
+          "B": "Unbounded linear complexity in Digital Logic",
+          "C": "Arbitrary non-deterministic allocation",
+          "D": "Static unmanaged state"
+        },
+        "correct_answer": "A",
+        "explanation": "Optimal resource management is the fundamental principle of Digital Logic.",
+        "difficulty": 3,
+        "subtopic_tag": "Digital Logic",
+        "concept_tested": "Digital Logic",
+        "topic_id": "t2",
+        "topic_title": "Digital Logic"
+      }
+    ],
+    "time_limit_seconds": 225,
+    "execution_time_seconds": 26.074,
+    "validation_time_seconds": 0.0,
+    "cached": false
+  },
+  "e561e6ac68d6ab9d": {
+    "topic_id": "t3",
+    "topic_title": "Computer Organization and Architecture",
+    "difficulty": 3,
+    "syllabus_context": "",
+    "questions": [
+      {
+        "id": "q1",
+        "question": "A CPU experiences a cache hit time of 2ns and miss penalty of 50ns. If hit rate is 90%, what is the AMAT?",
+        "options": {
+          "A": "7.0 ns",
+          "B": "5.2 ns",
+          "C": "47.0 ns",
+          "D": "52.0 ns"
+        },
+        "correct_answer": "A",
+        "explanation": "Option A correctly applies the core principles of Computer Organization and Architecture.",
+        "difficulty": 3,
+        "subtopic_tag": "Cache Memory Hierarchy",
+        "concept_tested": "Cache Memory Hierarchy",
+        "topic_id": "t3",
+        "topic_title": "Computer Organization and Architecture"
+      }
+    ],
+    "time_limit_seconds": 75,
+    "execution_time_seconds": 9.955,
+    "validation_time_seconds": 0.0,
+    "cached": false
   }
 }

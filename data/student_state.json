@@ -1,529 +1,29 @@
 {
   "student_profile": {
-    "student_name": "Student",
-    "subject": "GATE 2027 Computer Science and Information Technology",
-    "exam_date": "2026-11-22",
-    "daily_hours": 4.0,
-    "preferred_times": [
-      "morning",
-      "evening"
-    ],
+    "student_name": "TestStudent",
+    "daily_hours": 3.0,
     "blocked_days": [
       "sunday"
     ],
-    "current_level": "intermediate",
-    "known_topics": [],
-    "learning_style": "mixed"
+    "preferred_times": [
+      "morning",
+      "afternoon"
+    ]
   },
-  "topic_tree": {
-    "subject": "GATE 2027 Computer Science and Information Technology",
-    "exam_type": "competitive",
-    "has_electives": false,
-    "topics": [
-      {
-        "id": "t1",
-        "title": "Engineering Mathematics",
-        "difficulty": 3,
-        "priority": 5,
-        "estimated_hours": 30.0,
-        "is_elective": false,
-        "elective_group": null,
-        "prerequisites": [],
-        "subtopics": [
-          {
-            "id": "t1_s1",
-            "title": "Discrete Mathematics",
-            "estimated_hours": 12.0,
-            "key_concepts": [
-              "Propositional and first order logic",
-              "Sets, relations, functions, partial orders and lattices",
-              "Monoids and Groups",
-              "Graph connectivity, matching, colouring",
-              "Combinatorics, counting, recurrence relations, generating functions"
-            ]
-          },
-          {
-            "id": "t1_s2",
-            "title": "Linear Algebra and Calculus",
-            "estimated_hours": 10.0,
-            "key_concepts": [
-              "Matrices, determinants, system of linear equations",
-              "Eigenvalues and eigenvectors, LU decomposition",
-              "Limits, continuity and differentiability",
-              "Maxima and minima, Mean value theorem, Integration"
-            ]
-          },
-          {
-            "id": "t1_s3",
-            "title": "Probability and Statistics",
-            "estimated_hours": 8.0,
-            "key_concepts": [
-              "Random variables",
-              "Uniform, normal, exponential, Poisson and binomial distributions",
-              "Mean, median, mode and standard deviation",
-              "Conditional probability and Bayes theorem"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "t2",
-        "title": "Digital Logic",
-        "difficulty": 2,
-        "priority": 4,
-        "estimated_hours": 15.0,
-        "is_elective": false,
-        "elective_group": null,
-        "prerequisites": [],
-        "subtopics": [
-          {
-            "id": "t2_s1",
-            "title": "Boolean Algebra and Minimization",
-            "estimated_hours": 5.0,
-            "key_concepts": [
-              "Algebraic technique",
-              "Karnaugh map",
-              "Tabular method"
-            ]
-          },
-          {
-            "id": "t2_s2",
-            "title": "Combinational and Sequential Circuits",
-            "estimated_hours": 6.0,
-            "key_concepts": [
-              "Design of combinational circuits",
-              "Design of sequential circuits"
-            ]
-          },
-          {
-            "id": "t2_s3",
-            "title": "Number Representation and Arithmetic",
-            "estimated_hours": 4.0,
-            "key_concepts": [
-              "Fixed point representation",
-              "Floating point representation",
-              "Computer arithmetic"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "t3",
-        "title": "Computer Organization and Architecture",
-        "difficulty": 4,
-        "priority": 5,
-        "estimated_hours": 25.0,
-        "is_elective": false,
-        "elective_group": null,
-        "prerequisites": [
-          "t2"
-        ],
-        "subtopics": [
-          {
-            "id": "t3_s1",
-            "title": "Instruction Set and Control Unit Design",
-            "estimated_hours": 8.0,
-            "key_concepts": [
-              "Instruction set architecture",
-              "Addressing modes",
-              "ALU design",
-              "Hardwired control unit",
-              "Microprogrammed control unit"
-            ]
-          },
-          {
-            "id": "t3_s2",
-            "title": "Memory Hierarchy and Interfacing",
-            "estimated_hours": 9.0,
-            "key_concepts": [
-              "Memory hierarchy performance",
-              "Cache memory mapping",
-              "I/O interface",
-              "Interrupts and DMA"
-            ]
-          },
-          {
-            "id": "t3_s3",
-            "title": "Instruction Pipelining",
-            "estimated_hours": 8.0,
-            "key_concepts": [
-              "Pipelining concepts",
-              "Pipeline hazards",
-              "Performance metrics"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "t4",
-        "title": "Programming and Data Structures",
-        "difficulty": 3,
-        "priority": 5,
-        "estimated_hours": 30.0,
-        "is_elective": false,
-        "elective_group": null,
-        "prerequisites": [],
-        "subtopics": [
-          {
-            "id": "t4_s1",
-            "title": "Programming in C",
-            "estimated_hours": 10.0,
-            "key_concepts": [
-              "C syntax and constructs",
-              "Recursion"
-            ]
-          },
-          {
-            "id": "t4_s2",
-            "title": "Linear Data Structures",
-            "estimated_hours": 10.0,
-            "key_concepts": [
-              "Arrays",
-              "Stacks",
-              "Queues",
-              "Linked lists"
-            ]
-          },
-          {
-            "id": "t4_s3",
-            "title": "Trees and Graphs",
-            "estimated_hours": 10.0,
-            "key_concepts": [
-              "Trees",
-              "Binary search trees",
-              "Binary heaps",
-              "Graphs"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "t5",
-        "title": "Algorithms",
-        "difficulty": 4,
-        "priority": 5,
-        "estimated_hours": 30.0,
-        "is_elective": false,
-        "elective_group": null,
-        "prerequisites": [
-          "t1",
-          "t4"
-        ],
-        "subtopics": [
-          {
-            "id": "t5_s1",
-            "title": "Asymptotic Analysis, Searching and Sorting",
-            "estimated_hours": 10.0,
-            "key_concepts": [
-              "Searching and sorting algorithms",
-              "Hashing",
-              "Asymptotic worst case time and space complexity"
-            ]
-          },
-          {
-            "id": "t5_s2",
-            "title": "Algorithm Design Techniques",
-            "estimated_hours": 10.0,
-            "key_concepts": [
-              "Greedy algorithms",
-              "Dynamic programming",
-              "Divide-and-conquer"
-            ]
-          },
-          {
-            "id": "t5_s3",
-            "title": "Graph Algorithms",
-            "estimated_hours": 10.0,
-            "key_concepts": [
-              "Graph traversals (BFS, DFS)",
-              "Minimum spanning trees",
-              "Shortest paths"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "t6",
-        "title": "Theory of Computation",
-        "difficulty": 4,
-        "priority": 4,
-        "estimated_hours": 25.0,
-        "is_elective": false,
-        "elective_group": null,
-        "prerequisites": [
-          "t1"
-        ],
-        "subtopics": [
-          {
-            "id": "t6_s1",
-            "title": "Regular Languages and Automata",
-            "estimated_hours": 9.0,
-            "key_concepts": [
-              "Regular expressions",
-              "Finite automata",
-              "Regular languages",
-              "Pumping lemma for regular languages"
-            ]
-          },
-          {
-            "id": "t6_s2",
-            "title": "Context-Free Grammars and PDA",
-            "estimated_hours": 8.0,
-            "key_concepts": [
-              "Context-free grammars",
-              "Push-down automata",
-              "Context-free languages"
-            ]
-          },
-          {
-            "id": "t6_s3",
-            "title": "Turing Machines and Undecidability",
-            "estimated_hours": 8.0,
-            "key_concepts": [
-              "Turing machines",
-              "Undecidability"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "t7",
-        "title": "Compiler Design",
-        "difficulty": 4,
-        "priority": 3,
-        "estimated_hours": 20.0,
-        "is_elective": false,
-        "elective_group": null,
-        "prerequisites": [
-          "t6"
-        ],
-        "subtopics": [
-          {
-            "id": "t7_s1",
-            "title": "Lexical Analysis and Parsing",
-            "estimated_hours": 8.0,
-            "key_concepts": [
-              "Lexical analysis",
-              "Parsing techniques",
-              "Syntax-directed translation"
-            ]
-          },
-          {
-            "id": "t7_s2",
-            "title": "Code Generation and Runtime Environments",
-            "estimated_hours": 6.0,
-            "key_concepts": [
-              "Runtime environments",
-              "Intermediate code generation"
-            ]
-          },
-          {
-            "id": "t7_s3",
-            "title": "Code Optimization and Data Flow Analysis",
-            "estimated_hours": 6.0,
-            "key_concepts": [
-              "Local optimisation",
-              "Data flow analyses",
-              "Constant propagation",
-              "Liveness analysis",
-              "Common subexpression elimination"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "t8",
-        "title": "Operating System",
-        "difficulty": 3,
-        "priority": 4,
-        "estimated_hours": 25.0,
-        "is_elective": false,
-        "elective_group": null,
-        "prerequisites": [
-          "t3"
-        ],
-        "subtopics": [
-          {
-            "id": "t8_s1",
-            "title": "Processes, Threads and Synchronization",
-            "estimated_hours": 10.0,
-            "key_concepts": [
-              "System calls",
-              "Processes and threads",
-              "Inter-process communication",
-              "Concurrency and synchronization",
-              "Deadlock"
-            ]
-          },
-          {
-            "id": "t8_s2",
-            "title": "Scheduling and Memory Management",
-            "estimated_hours": 10.0,
-            "key_concepts": [
-              "CPU scheduling",
-              "I/O scheduling",
-              "Memory management",
-              "Virtual memory"
-            ]
-          },
-          {
-            "id": "t8_s3",
-            "title": "File Systems",
-            "estimated_hours": 5.0,
-            "key_concepts": [
-              "File systems design and implementation"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "t9",
-        "title": "Databases",
-        "difficulty": 3,
-        "priority": 4,
-        "estimated_hours": 20.0,
-        "is_elective": false,
-        "elective_group": null,
-        "prerequisites": [
-          "t1",
-          "t4"
-        ],
-        "subtopics": [
-          {
-            "id": "t9_s1",
-            "title": "Data Models and Relational Query Languages",
-            "estimated_hours": 8.0,
-            "key_concepts": [
-              "ER-model",
-              "Relational model",
-              "Relational algebra",
-              "Tuple calculus",
-              "SQL",
-              "Integrity constraints",
-              "Normal forms"
-            ]
-          },
-          {
-            "id": "t9_s2",
-            "title": "File Organization and Indexing",
-            "estimated_hours": 5.0,
-            "key_concepts": [
-              "File organization",
-              "B and B+ trees indexing"
-            ]
-          },
-          {
-            "id": "t9_s3",
-            "title": "Transactions and Concurrency Control",
-            "estimated_hours": 7.0,
-            "key_concepts": [
-              "Transactions",
-              "Concurrency control"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "t10",
-        "title": "Computer Networks",
-        "difficulty": 4,
-        "priority": 4,
-        "estimated_hours": 25.0,
-        "is_elective": false,
-        "elective_group": null,
-        "prerequisites": [],
-        "subtopics": [
-          {
-            "id": "t10_s1",
-            "title": "Network Basics and Data Link Layer",
-            "estimated_hours": 8.0,
-            "key_concepts": [
-              "Principles of Layering",
-              "Circuit, packet, and virtual circuit switching",
-              "Performance metrics",
-              "Error detection",
-              "Medium Access Control (MAC)",
-              "Ethernet"
-            ]
-          },
-          {
-            "id": "t10_s2",
-            "title": "Network Layer Protocols and Routing",
-            "estimated_hours": 9.0,
-            "key_concepts": [
-              "Distance vector and link state routing",
-              "IPv4 fragmentation",
-              "CIDR Notation",
-              "Network Address Translation (NAT)"
-            ]
-          },
-          {
-            "id": "t10_s3",
-            "title": "Transport and Application Layers",
-            "estimated_hours": 8.0,
-            "key_concepts": [
-              "TCP flow control and congestion control",
-              "Socket API",
-              "DNS",
-              "HTTP"
-            ]
-          }
-        ]
-      }
-    ],
-    "total_estimated_hours": 245.0,
-    "execution_time_seconds": 0.0028,
-    "cache_hit": true,
-    "sha256": "81b23f40417bc1c2069782db7ad5ea0182175c9acb4766ebfdeefbe071a70bc0",
-    "tier_used": "Tier 2: PyMuPDF4LLM Structured Table Extraction",
-    "document_metrics": {
-      "num_pages": 2,
-      "total_tables": 3,
-      "has_electives": false,
-      "char_count": 3269
-    }
-  },
-  "subject": "GATE 2027 Computer Science and Information Technology",
   "schedule": {
-    "schedule_summary": {
-      "total_study_hours": 39.0,
-      "rest_days": [
-        "2026-11-08",
-        "2026-11-14",
-        "2026-11-15",
-        "2026-11-21"
-      ],
-      "mock_test_days": [
-        "2026-11-20"
-      ],
-      "revision_start_date": "2026-11-17",
-      "execution_time_seconds": 0.001
-    },
+    "subject": "GATE 2027 CS",
     "daily_blocks": [
-      {
-        "date": "2026-11-08",
-        "day_type": "rest",
-        "blocks": []
-      },
       {
         "date": "2026-11-09",
         "day_type": "study",
         "blocks": [
           {
-            "topic_id": "t3",
-            "topic_title": "Computer Organization and Architecture",
+            "topic_id": "past_session",
+            "topic_title": "Introduction to Discrete Math",
+            "duration_minutes": 90,
             "start_time": "09:00",
-            "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts and problem patterns of Computer Organization and Architecture",
-            "resources_tip": "Work through practice problems without looking at solutions."
-          },
-          {
-            "topic_id": "t3",
-            "topic_title": "Computer Organization and Architecture",
-            "start_time": "11:30",
-            "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Organization and Architecture",
-            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+            "end_time": "10:30",
+            "completed": true
           }
         ]
       },
@@ -532,42 +32,54 @@
         "day_type": "study",
         "blocks": [
           {
-            "topic_id": "t5",
-            "topic_title": "Algorithms",
+            "topic_id": "t1_study",
+            "topic_title": "Core Study: Computer Networks",
+            "duration_minutes": 120,
             "start_time": "09:00",
-            "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts and problem patterns of Algorithms",
-            "resources_tip": "Work through practice problems without looking at solutions."
-          },
-          {
-            "topic_id": "t5",
-            "topic_title": "Algorithms",
-            "start_time": "11:30",
-            "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
-            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+            "end_time": "11:00",
+            "completed": false
           }
         ]
       },
       {
         "date": "2026-11-11",
-        "day_type": "study",
+        "day_type": "revision",
         "blocks": [
           {
-            "topic_id": "t1",
-            "topic_title": "Engineering Mathematics",
+            "topic_id": "cn",
+            "topic_title": "\ud83d\udd04 Revision: Computer Networks",
+            "duration_minutes": 60,
+            "session_goal": "Spaced Revision R1: Recover weak concept in Computer Networks (Score: 35.0%)",
+            "resources_tip": "Active recall & Feynman explanation: teach Computer Networks out loud.",
+            "is_revision": true,
+            "revision_round": 1,
+            "urgency": "critical",
             "start_time": "09:00",
-            "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts and problem patterns of Engineering Mathematics",
-            "resources_tip": "Work through practice problems without looking at solutions."
+            "end_time": "10:00"
           },
           {
-            "topic_id": "t1",
-            "topic_title": "Engineering Mathematics",
+            "topic_id": "algo",
+            "topic_title": "\ud83d\udd04 Revision: algo",
+            "duration_minutes": 45,
+            "session_goal": "Spaced Revision R1: Recover weak concept in algo (Score: 50.0%)",
+            "resources_tip": "Active recall & Feynman explanation: teach algo out loud.",
+            "is_revision": true,
+            "revision_round": 1,
+            "urgency": "weak",
             "start_time": "11:30",
-            "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Engineering Mathematics",
-            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+            "end_time": "12:15"
+          },
+          {
+            "topic_id": "os",
+            "topic_title": "\ud83d\udd04 Revision: Operating Systems",
+            "duration_minutes": 45,
+            "session_goal": "Spaced Revision R1: Recover weak concept in Operating Systems (Score: 60.0%)",
+            "resources_tip": "Active recall & Feynman explanation: teach Operating Systems out loud.",
+            "is_revision": true,
+            "revision_round": 1,
+            "urgency": "weak",
+            "start_time": "14:30",
+            "end_time": "15:15"
           }
         ]
       },
@@ -576,20 +88,12 @@
         "day_type": "study",
         "blocks": [
           {
-            "topic_id": "t4",
-            "topic_title": "Programming and Data Structures",
+            "topic_id": "t2_study",
+            "topic_title": "Core Study: Operating Systems",
+            "duration_minutes": 120,
             "start_time": "09:00",
-            "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts and problem patterns of Programming and Data Structures",
-            "resources_tip": "Work through practice problems without looking at solutions."
-          },
-          {
-            "topic_id": "t4",
-            "topic_title": "Programming and Data Structures",
-            "start_time": "11:30",
-            "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Programming and Data Structures",
-            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+            "end_time": "11:00",
+            "completed": false
           }
         ]
       },
@@ -598,27 +102,32 @@
         "day_type": "study",
         "blocks": [
           {
-            "topic_id": "t6",
-            "topic_title": "Theory of Computation",
+            "topic_id": "t3_study",
+            "topic_title": "Core Study: Database Systems",
+            "duration_minutes": 120,
             "start_time": "09:00",
-            "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts and problem patterns of Theory of Computation",
-            "resources_tip": "Work through practice problems without looking at solutions."
-          },
-          {
-            "topic_id": "t6",
-            "topic_title": "Theory of Computation",
-            "start_time": "11:30",
-            "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Theory of Computation",
-            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
+            "end_time": "11:00",
+            "completed": false
           }
         ]
       },
       {
         "date": "2026-11-14",
-        "day_type": "rest",
-        "blocks": []
+        "day_type": "revision",
+        "blocks": [
+          {
+            "topic_id": "cn",
+            "topic_title": "\ud83d\udd04 Revision: Computer Networks",
+            "duration_minutes": 60,
+            "session_goal": "Spaced Revision R2: Recover weak concept in Computer Networks (Score: 35.0%)",
+            "resources_tip": "Active recall & Feynman explanation: teach Computer Networks out loud.",
+            "is_revision": true,
+            "revision_round": 2,
+            "urgency": "critical",
+            "start_time": "09:00",
+            "end_time": "10:00"
+          }
+        ]
       },
       {
         "date": "2026-11-15",
@@ -627,138 +136,459 @@
       },
       {
         "date": "2026-11-16",
-        "day_type": "study",
-        "blocks": [
-          {
-            "topic_id": "t10",
-            "topic_title": "Computer Networks",
-            "start_time": "09:00",
-            "duration_minutes": 120,
-            "session_goal": "Part 1: Master core concepts and problem patterns of Computer Networks",
-            "resources_tip": "Work through practice problems without looking at solutions."
-          },
-          {
-            "topic_id": "t10",
-            "topic_title": "Computer Networks",
-            "start_time": "11:30",
-            "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Networks",
-            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
-          }
-        ]
+        "day_type": "rest",
+        "blocks": []
       },
       {
         "date": "2026-11-17",
-        "day_type": "revision",
-        "blocks": [
-          {
-            "topic_id": "t3",
-            "topic_title": "Computer Organization and Architecture",
-            "start_time": "09:00",
-            "duration_minutes": 120,
-            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Computer Organization and Architecture",
-            "resources_tip": "Work through practice problems without looking at solutions."
-          },
-          {
-            "topic_id": "t3",
-            "topic_title": "Computer Organization and Architecture",
-            "start_time": "11:30",
-            "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Computer Organization and Architecture",
-            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
-          }
-        ]
+        "day_type": "rest",
+        "blocks": []
       },
       {
         "date": "2026-11-18",
-        "day_type": "revision",
-        "blocks": [
-          {
-            "topic_id": "t5",
-            "topic_title": "Algorithms",
-            "start_time": "09:00",
-            "duration_minutes": 120,
-            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Algorithms",
-            "resources_tip": "Work through practice problems without looking at solutions."
-          },
-          {
-            "topic_id": "t5",
-            "topic_title": "Algorithms",
-            "start_time": "11:30",
-            "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Algorithms",
-            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
-          }
-        ]
+        "day_type": "rest",
+        "blocks": []
       },
       {
         "date": "2026-11-19",
-        "day_type": "revision",
-        "blocks": [
-          {
-            "topic_id": "t1",
-            "topic_title": "Engineering Mathematics",
-            "start_time": "09:00",
-            "duration_minutes": 120,
-            "session_goal": "Part 1: Active recall, weak spot recovery, and Feynman explanation of Engineering Mathematics",
-            "resources_tip": "Work through practice problems without looking at solutions."
-          },
-          {
-            "topic_id": "t1",
-            "topic_title": "Engineering Mathematics",
-            "start_time": "11:30",
-            "duration_minutes": 120,
-            "session_goal": "Part 2: Deep-dive and Feynman explanation of Engineering Mathematics",
-            "resources_tip": "Teach this concept out loud in 3 minutes to verify mental models."
-          }
-        ]
+        "day_type": "rest",
+        "blocks": []
       },
       {
         "date": "2026-11-20",
-        "day_type": "mock_test",
-        "blocks": [
-          {
-            "topic_id": "all",
-            "topic_title": "Full Exam Simulation",
-            "start_time": "09:00",
-            "duration_minutes": 180,
-            "session_goal": "Full timed mock test under strict exam conditions",
-            "resources_tip": "Do not look at notes. Flag questions where confidence was shaky."
-          }
-        ]
+        "day_type": "rest",
+        "blocks": []
       },
       {
         "date": "2026-11-21",
         "day_type": "rest",
         "blocks": []
+      },
+      {
+        "date": "2026-11-22",
+        "day_type": "rest",
+        "blocks": []
+      },
+      {
+        "date": "2026-11-23",
+        "day_type": "rest",
+        "blocks": []
+      }
+    ],
+    "last_rescheduled_at": "2026-11-10T12:25:38.829862",
+    "total_study_blocks": 8,
+    "reschedule_summary": {
+      "weak_topics_count": 3,
+      "revisions_added": 4,
+      "changes": [
+        {
+          "action": "add_revision",
+          "topic_id": "cn",
+          "topic_title": "Computer Networks",
+          "date": "2026-11-11",
+          "round": 1,
+          "duration_minutes": 60,
+          "reason": "Weak topic auto-reschedule (score 35.0%)"
+        },
+        {
+          "action": "add_revision",
+          "topic_id": "cn",
+          "topic_title": "Computer Networks",
+          "date": "2026-11-14",
+          "round": 2,
+          "duration_minutes": 60,
+          "reason": "Weak topic auto-reschedule (score 35.0%)"
+        },
+        {
+          "action": "add_revision",
+          "topic_id": "algo",
+          "topic_title": "algo",
+          "date": "2026-11-11",
+          "round": 1,
+          "duration_minutes": 45,
+          "reason": "Weak topic auto-reschedule (score 50.0%)"
+        },
+        {
+          "action": "add_revision",
+          "topic_id": "os",
+          "topic_title": "Operating Systems",
+          "date": "2026-11-11",
+          "round": 1,
+          "duration_minutes": 45,
+          "reason": "Weak topic auto-reschedule (score 60.0%)"
+        }
+      ],
+      "recalculated_at": "2026-11-10 12:25:38"
+    }
+  },
+  "quiz_results": [
+    {
+      "topic_id": "cn",
+      "topic_title": "Computer Networks",
+      "score_pct": 40.0,
+      "correct": 2,
+      "total": 5,
+      "questions": [
+        {
+          "explanation": "TCP 3-way handshake error"
+        }
+      ],
+      "answers": {
+        "q1": "A"
+      }
+    },
+    {
+      "topic_id": "os",
+      "topic_title": "Operating Systems",
+      "score_pct": 60.0,
+      "correct": 3,
+      "total": 5,
+      "questions": [
+        {
+          "explanation": "Round robin scheduling"
+        }
+      ],
+      "answers": {
+        "q1": "B"
+      }
+    },
+    {
+      "topic_id": "dbms",
+      "topic_title": "Database Systems",
+      "score_pct": 85.0,
+      "correct": 4,
+      "total": 5,
+      "questions": [],
+      "answers": {}
+    }
+  ],
+  "mock_evaluation": {
+    "topic_performance": [
+      {
+        "topic_id": "cn",
+        "score_pct": 35.0,
+        "verdict": "critical",
+        "priority_action": "Revise TCP state machine"
+      },
+      {
+        "topic_id": "algo",
+        "score_pct": 50.0,
+        "verdict": "weak",
+        "priority_action": "Practice Dynamic Programming"
       }
     ]
   },
   "gcal_event_map": {
-    "created": 0,
+    "created": 8,
     "updated": 0,
-    "skipped": 4,
-    "errors": [
-      "2026-11-09 09:00 t3: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-09 11:30 t3: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-10 09:00 t5: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-10 11:30 t5: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-11 09:00 t1: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-11 11:30 t1: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-12 09:00 t4: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-12 11:30 t4: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-13 09:00 t6: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-13 11:30 t6: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-16 09:00 t10: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-16 11:30 t10: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-17 09:00 t3: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-17 11:30 t3: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-18 09:00 t5: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-18 11:30 t5: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-19 09:00 t1: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-19 11:30 t1: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">",
-      "2026-11-20 09:00 all: <HttpError 400 when requesting https://www.googleapis.com/calendar/v3/calendars/primary/events?alt=json returned \"Invalid resource id value.\". Details: \"[{'domain': 'global', 'reason': 'invalid', 'message': 'Invalid resource id value.'}]\">"
+    "skipped": 9,
+    "errors": [],
+    "total_blocks": 8
+  },
+  "last_reschedule_result": {
+    "status": "success",
+    "updated_schedule": {
+      "subject": "GATE 2027 CS",
+      "daily_blocks": [
+        {
+          "date": "2026-11-09",
+          "day_type": "study",
+          "blocks": [
+            {
+              "topic_id": "past_session",
+              "topic_title": "Introduction to Discrete Math",
+              "duration_minutes": 90,
+              "start_time": "09:00",
+              "end_time": "10:30",
+              "completed": true
+            }
+          ]
+        },
+        {
+          "date": "2026-11-10",
+          "day_type": "study",
+          "blocks": [
+            {
+              "topic_id": "t1_study",
+              "topic_title": "Core Study: Computer Networks",
+              "duration_minutes": 120,
+              "start_time": "09:00",
+              "end_time": "11:00",
+              "completed": false
+            }
+          ]
+        },
+        {
+          "date": "2026-11-11",
+          "day_type": "revision",
+          "blocks": [
+            {
+              "topic_id": "cn",
+              "topic_title": "\ud83d\udd04 Revision: Computer Networks",
+              "duration_minutes": 60,
+              "session_goal": "Spaced Revision R1: Recover weak concept in Computer Networks (Score: 35.0%)",
+              "resources_tip": "Active recall & Feynman explanation: teach Computer Networks out loud.",
+              "is_revision": true,
+              "revision_round": 1,
+              "urgency": "critical",
+              "start_time": "09:00",
+              "end_time": "10:00"
+            },
+            {
+              "topic_id": "algo",
+              "topic_title": "\ud83d\udd04 Revision: algo",
+              "duration_minutes": 45,
+              "session_goal": "Spaced Revision R1: Recover weak concept in algo (Score: 50.0%)",
+              "resources_tip": "Active recall & Feynman explanation: teach algo out loud.",
+              "is_revision": true,
+              "revision_round": 1,
+              "urgency": "weak",
+              "start_time": "11:30",
+              "end_time": "12:15"
+            },
+            {
+              "topic_id": "os",
+              "topic_title": "\ud83d\udd04 Revision: Operating Systems",
+              "duration_minutes": 45,
+              "session_goal": "Spaced Revision R1: Recover weak concept in Operating Systems (Score: 60.0%)",
+              "resources_tip": "Active recall & Feynman explanation: teach Operating Systems out loud.",
+              "is_revision": true,
+              "revision_round": 1,
+              "urgency": "weak",
+              "start_time": "14:30",
+              "end_time": "15:15"
+            }
+          ]
+        },
+        {
+          "date": "2026-11-12",
+          "day_type": "study",
+          "blocks": [
+            {
+              "topic_id": "t2_study",
+              "topic_title": "Core Study: Operating Systems",
+              "duration_minutes": 120,
+              "start_time": "09:00",
+              "end_time": "11:00",
+              "completed": false
+            }
+          ]
+        },
+        {
+          "date": "2026-11-13",
+          "day_type": "study",
+          "blocks": [
+            {
+              "topic_id": "t3_study",
+              "topic_title": "Core Study: Database Systems",
+              "duration_minutes": 120,
+              "start_time": "09:00",
+              "end_time": "11:00",
+              "completed": false
+            }
+          ]
+        },
+        {
+          "date": "2026-11-14",
+          "day_type": "revision",
+          "blocks": [
+            {
+              "topic_id": "cn",
+              "topic_title": "\ud83d\udd04 Revision: Computer Networks",
+              "duration_minutes": 60,
+              "session_goal": "Spaced Revision R2: Recover weak concept in Computer Networks (Score: 35.0%)",
+              "resources_tip": "Active recall & Feynman explanation: teach Computer Networks out loud.",
+              "is_revision": true,
+              "revision_round": 2,
+              "urgency": "critical",
+              "start_time": "09:00",
+              "end_time": "10:00"
+            }
+          ]
+        },
+        {
+          "date": "2026-11-15",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-16",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-17",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-18",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-19",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-20",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-21",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-22",
+          "day_type": "rest",
+          "blocks": []
+        },
+        {
+          "date": "2026-11-23",
+          "day_type": "rest",
+          "blocks": []
+        }
+      ],
+      "last_rescheduled_at": "2026-11-10T12:21:36.888185",
+      "total_study_blocks": 8,
+      "reschedule_summary": {
+        "weak_topics_count": 3,
+        "revisions_added": 4,
+        "changes": [
+          {
+            "action": "add_revision",
+            "topic_id": "cn",
+            "topic_title": "Computer Networks",
+            "date": "2026-11-11",
+            "round": 1,
+            "duration_minutes": 60,
+            "reason": "Weak topic auto-reschedule (score 35.0%)"
+          },
+          {
+            "action": "add_revision",
+            "topic_id": "cn",
+            "topic_title": "Computer Networks",
+            "date": "2026-11-14",
+            "round": 2,
+            "duration_minutes": 60,
+            "reason": "Weak topic auto-reschedule (score 35.0%)"
+          },
+          {
+            "action": "add_revision",
+            "topic_id": "algo",
+            "topic_title": "algo",
+            "date": "2026-11-11",
+            "round": 1,
+            "duration_minutes": 45,
+            "reason": "Weak topic auto-reschedule (score 50.0%)"
+          },
+          {
+            "action": "add_revision",
+            "topic_id": "os",
+            "topic_title": "Operating Systems",
+            "date": "2026-11-11",
+            "round": 1,
+            "duration_minutes": 45,
+            "reason": "Weak topic auto-reschedule (score 60.0%)"
+          }
+        ],
+        "recalculated_at": "2026-11-10 12:21:36"
+      }
+    },
+    "changes": [
+      {
+        "action": "add_revision",
+        "topic_id": "cn",
+        "topic_title": "Computer Networks",
+        "date": "2026-11-11",
+        "round": 1,
+        "duration_minutes": 60,
+        "reason": "Weak topic auto-reschedule (score 35.0%)"
+      },
+      {
+        "action": "add_revision",
+        "topic_id": "cn",
+        "topic_title": "Computer Networks",
+        "date": "2026-11-14",
+        "round": 2,
+        "duration_minutes": 60,
+        "reason": "Weak topic auto-reschedule (score 35.0%)"
+      },
+      {
+        "action": "add_revision",
+        "topic_id": "algo",
+        "topic_title": "algo",
+        "date": "2026-11-11",
+        "round": 1,
+        "duration_minutes": 45,
+        "reason": "Weak topic auto-reschedule (score 50.0%)"
+      },
+      {
+        "action": "add_revision",
+        "topic_id": "os",
+        "topic_title": "Operating Systems",
+        "date": "2026-11-11",
+        "round": 1,
+        "duration_minutes": 45,
+        "reason": "Weak topic auto-reschedule (score 60.0%)"
+      }
     ],
-    "total_blocks": 19
+    "weak_topics": [
+      {
+        "topic_id": "cn",
+        "topic_title": "Computer Networks",
+        "attempts": 2,
+        "scores": [
+          40.0,
+          35.0
+        ],
+        "average_accuracy": 37.5,
+        "recent_accuracy": 35.0,
+        "repeated_mistakes_count": 2,
+        "missed_concepts": [
+          "TCP 3-way handshake error",
+          "Revise TCP state machine"
+        ],
+        "urgency": "critical",
+        "improvement_pct": -5.0
+      },
+      {
+        "topic_id": "algo",
+        "topic_title": "algo",
+        "attempts": 1,
+        "scores": [
+          50.0
+        ],
+        "average_accuracy": 50.0,
+        "recent_accuracy": 50.0,
+        "repeated_mistakes_count": 1,
+        "missed_concepts": [
+          "Practice Dynamic Programming"
+        ],
+        "urgency": "weak",
+        "improvement_pct": 0.0
+      },
+      {
+        "topic_id": "os",
+        "topic_title": "Operating Systems",
+        "attempts": 1,
+        "scores": [
+          60.0
+        ],
+        "average_accuracy": 60.0,
+        "recent_accuracy": 60.0,
+        "repeated_mistakes_count": 1,
+        "missed_concepts": [
+          "Round robin scheduling"
+        ],
+        "urgency": "weak",
+        "improvement_pct": 0.0
+      }
+    ],
+    "blocks_added": 4,
+    "hitl_message": "StudyMind AI has recalculated your study plan, automatically inserting 4 revision sessions for 3 weak topic(s) prioritizing lowest scores. All past records and completed sessions have been preserved intact."
   }
 }

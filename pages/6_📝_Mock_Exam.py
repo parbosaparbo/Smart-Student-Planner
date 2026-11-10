@@ -155,6 +155,17 @@ elif st.session_state.get("mock_submitted", False) and "mock_evaluation" not in 
             )
             evaluation = call_gemini_json(prompt, temperature=0.3)
             st.session_state["mock_evaluation"] = evaluation
+
+            # ── Automatic Weak-Topic Rescheduling Engine ──────────────────
+            try:
+                from core.weak_topic_manager import auto_reschedule_workflow
+                from storage import save_persistent_state
+                res = auto_reschedule_workflow(st.session_state, student_name=student_name)
+                st.session_state["mock_reschedule_result"] = res
+                save_persistent_state(st.session_state)
+            except Exception as res_err:
+                print(f"[MOCK AUTO-RESCHEDULE ERROR] {res_err}")
+
             st.rerun()
         except ValueError as e:
             st.error(f"❌ Evaluation failed: {e}")
@@ -237,6 +248,19 @@ if "mock_evaluation" in st.session_state:
         st.markdown(
             f"**{tp.get('topic_id','')}** · {tp.get('score_pct',0)}% · "
             f"**{tp.get('verdict','').upper()}** — {tp.get('priority_action','')}"
+        )
+
+    # Auto-rescheduling notification banner
+    res_info = st.session_state.get("mock_reschedule_result")
+    if res_info and res_info.get("status") == "success" and res_info.get("blocks_added", 0) > 0:
+        gcal_note = ""
+        if res_info.get("gcal_sync_result") and not res_info["gcal_sync_result"].get("error"):
+            tot = res_info["gcal_sync_result"].get("created", 0) + res_info["gcal_sync_result"].get("updated", 0)
+            gcal_note = f" · 📅 Google Calendar updated ({tot} events in sync)"
+        st.success(
+            f"🔄 **Automatic Rescheduling Complete**: StudyMind AI detected {len(res_info.get('weak_topics', []))} weak topic(s) "
+            f"and scheduled **{res_info['blocks_added']} spaced revision sessions** into your study calendar. "
+            f"Existing sessions preserved without overlaps{gcal_note}!"
         )
 
     if st.button("🔄 Take Another Mock Exam", width="stretch"):

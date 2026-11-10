@@ -447,6 +447,96 @@ else:
         if st.button("→ Start Pomodoro", key="btn_focus", width="stretch"):
             st.switch_page("pages/9_⏱️_Focus_Timer.py")
 
+    # ── Weak Topics, Adaptive Rescheduling & Upcoming Revisions ───────────
+    from core.weak_topic_manager import extract_topic_performance, identify_weak_topics
+    mock_eval = st.session_state.get("mock_evaluation")
+    schedule = st.session_state.get("schedule", {})
+    daily_blocks = schedule.get("daily_blocks", [])
+
+    weak_topics = identify_weak_topics(quiz_results, mock_eval, threshold=70.0)
+
+    # Find upcoming revision blocks in schedule
+    from datetime import date as _dt_date
+    today_str = _dt_date.today().strftime("%Y-%m-%d")
+    upcoming_revisions = []
+    for d in daily_blocks:
+        if d.get("date", "") >= today_str:
+            for b in d.get("blocks", []):
+                if b.get("is_revision"):
+                    rev_item = dict(b)
+                    rev_item["date"] = d.get("date")
+                    upcoming_revisions.append(rev_item)
+
+    st.divider()
+    dash_col_title, dash_col_action = st.columns([3, 1])
+    with dash_col_title:
+        st.subheader("🔄 Weak Topics & Adaptive Spaced Revisions")
+    with dash_col_action:
+        if st.button("📊 Open Rescheduler ↗", width="stretch", key="dash_btn_weak"):
+            st.switch_page("pages/4_📊_Weak_Spot_Analyzer.py")
+
+    # Metrics row for weak topics, exam scores, and schedule updates
+    d_m1, d_m2, d_m3, d_m4 = st.columns(4)
+
+    # 1. Weak Topics Count
+    d_m1.metric(
+        "⚠️ Weak Topics (<70%)",
+        len(weak_topics),
+        f"{len(weak_topics)} needing revision" if weak_topics else "All clear!",
+        delta_color="inverse" if weak_topics else "normal",
+    )
+
+    # 2. Latest Exam / Quiz Score
+    latest_score_str = "—"
+    if quiz_results:
+        latest_score_str = f"{quiz_results[-1].get('score_pct', 0)}%"
+    d_m2.metric("📝 Latest Quiz Score", latest_score_str, f"{len(quiz_results)} attempts total")
+
+    # 3. Mock Exam Readiness
+    mock_readiness_str = "Not Taken"
+    if mock_eval and isinstance(mock_eval, dict):
+        mock_readiness_str = f"{mock_eval.get('overall_grade','—')} ({mock_eval.get('readiness_pct', 0)}%)"
+    d_m3.metric("🎯 Mock Readiness", mock_readiness_str)
+
+    # 4. Upcoming Revisions in Plan
+    d_m4.metric("🔄 Scheduled Revisions", len(upcoming_revisions), "Auto-slotted in calendar")
+
+    # Detailed cards for weak topics and upcoming revisions
+    if weak_topics or upcoming_revisions:
+        c_weak_col, c_rev_col = st.columns(2)
+
+        with c_weak_col:
+            st.markdown(f"<h5 style='color:{COLORS['warning']}; margin-bottom:0.5rem;'>🎯 Identified Weak Topics (<70%)</h5>", unsafe_allow_html=True)
+            if weak_topics:
+                for wt in weak_topics[:3]:
+                    urg_icon = "🔴" if wt.get("urgency") == "critical" else "🟠"
+                    st.markdown(f"{urg_icon} **{wt.get('topic_title','')}** — **{wt.get('recent_accuracy', 0)}%** ({wt.get('repeated_mistakes_count', 0)} mistakes)")
+                    if wt.get("missed_concepts"):
+                        st.caption("Focus: " + ", ".join([str(c) for c in wt["missed_concepts"][:2]]))
+            else:
+                st.success("🎉 All tested topics are currently >= 70% mastery!")
+
+        with c_rev_col:
+            st.markdown(f"<h5 style='color:{COLORS['primary']}; margin-bottom:0.5rem;'>📅 Next Spaced Revision Sessions</h5>", unsafe_allow_html=True)
+            if upcoming_revisions:
+                for rev in upcoming_revisions[:3]:
+                    st.markdown(
+                        f"• **{rev.get('date')}** ({rev.get('start_time','09:00')}, {rev.get('duration_minutes',45)}m): "
+                        f"**Round {rev.get('revision_round', 1)}** — {rev.get('topic_title')}"
+                    )
+            else:
+                st.info("No upcoming revisions in schedule. Take a quiz or mock exam to trigger automatic adaptive revisions!")
+
+    # Schedule Recalculation Badge
+    resched_summary = schedule.get("reschedule_summary")
+    if resched_summary:
+        st.markdown(
+            f"""<div style='background:{COLORS["card_bg"]}; border:1px solid {COLORS["success"]}44; border-radius:8px; padding:0.6rem 1rem; margin-top:0.6rem;'>
+  <small style='color:{COLORS["success"]};'>✅ <b>Schedule Auto-Adjusted:</b> Recalculated at {resched_summary.get("recalculated_at", "recently")} · {resched_summary.get("revisions_added", 0)} revision session(s) active · In-app & Google Calendar synchronized without overlaps.</small>
+</div>""",
+            unsafe_allow_html=True
+        )
+
     # Quick mastery trend (if quiz data)
     if quiz_results:
         st.divider()

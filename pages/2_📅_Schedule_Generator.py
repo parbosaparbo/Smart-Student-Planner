@@ -225,23 +225,55 @@ if "schedule" in st.session_state:
                         "backgroundColor": b_color,
                         "borderColor": b_color,
                     })
+        # Import streamlit_calendar at module level to catch ImportError cleanly
+        _calendar_available = False
+        _calendar_import_error = None
         try:
-            from streamlit_calendar import calendar
-            cal_options = {
-                "headerToolbar": {
-                    "left": "prev,next today",
-                    "center": "title",
-                    "right": "dayGridMonth,timeGridWeek,timeGridDay",
-                },
-                "initialView": "dayGridMonth",
-                "navLinks": True,
-                "selectable": True,
-            }
-            calendar(events=calendar_events, options=cal_options, custom_css="""
-                .fc-event { border-radius: 4px; font-size: 0.85rem; padding: 2px 4px; }
-            """)
-        except Exception as e:
-            st.warning(f"Calendar view note: {e}")
+            from streamlit_calendar import calendar as st_calendar
+            _calendar_available = True
+        except ImportError as ie:
+            _calendar_import_error = ie
+        except Exception as ie:
+            _calendar_import_error = ie
+
+        if not _calendar_available:
+            st.warning(
+                f"📅 Calendar view requires the `streamlit-calendar` package.\n\n"
+                f"**Install it with:** `pip install streamlit-calendar`\n\n"
+                f"Error: `{_calendar_import_error}`"
+            )
+        elif not calendar_events:
+            st.info("📅 No schedule events to display. Generate a study schedule first!")
+        else:
+            try:
+                cal_options = {
+                    "headerToolbar": {
+                        "left": "prev,next today",
+                        "center": "title",
+                        "right": "dayGridMonth,timeGridWeek,timeGridDay",
+                    },
+                    "initialView": "dayGridMonth",
+                    "navLinks": True,
+                    "selectable": True,
+                }
+                st_calendar(events=calendar_events, options=cal_options, custom_css="""
+                    .fc-event { border-radius: 4px; font-size: 0.85rem; padding: 2px 4px; }
+                """)
+            except Exception as e:
+                st.error(f"📅 Calendar rendering error: `{type(e).__name__}: {e}`")
+                st.info("Switching to list view as fallback...")
+                # Fallback: show events as a simple table
+                import pandas as _pd
+                if calendar_events:
+                    df = _pd.DataFrame([
+                        {
+                            "Date": ev.get("start", "")[:10],
+                            "Time": ev.get("start", "")[11:16] if "T" in ev.get("start", "") else "All Day",
+                            "Event": ev.get("title", ""),
+                        }
+                        for ev in calendar_events
+                    ])
+                    st.dataframe(df, use_container_width=True, hide_index=True)
 
     else:
         for day in daily:
@@ -306,6 +338,12 @@ if "schedule" in st.session_state:
     with col_c:
         if st.button("➡️ Take a Quiz Now", width="stretch"):
             st.switch_page("pages/3_🎯_Quiz.py")
+
+    st.info(
+        "💡 **Need to adapt or reschedule?** If you score <70% on a quiz or want extra practice on any topic, "
+        "head over to **Page 4 (📊 Weak Spot Analyzer)** to automatically insert evidence-based spaced revision slots "
+        "(**Round 1: 1–2 days**, **Round 2: 4–6 days**) directly into your calendar without disturbing completed sessions!"
+    )
 
     # ── Google Calendar Sync Section ────────────────────────────────────────────
     st.divider()

@@ -46,6 +46,7 @@ def save_persistent_state(session_state: Dict[str, Any]) -> bool:
         "gcal_event_map",
         "completed_revisions",
         "revision_history",
+        "last_reschedule_result",
     ]
     data = {}
     for k in keys_to_persist:

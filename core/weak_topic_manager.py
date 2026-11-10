@@ -5,8 +5,9 @@ Handles:
 2. Topic-wise accuracy & repeated mistake tracking
 3. Priority-based spaced revision rescheduling (Days +1/+2 and Days +4/+5)
 4. Non-disturbance of completed past study sessions
-5. Student availability & blocked day compliance
-6. Revision completion tracking & mastery improvement delta
+5. Capacity-aware shifting of future sessions without exceeding daily hours
+6. Overlap-free sequential time allocation
+7. Automatic Google Calendar synchronization & in-app schedule updates
 """
 from datetime import date, datetime, timedelta
 import copy
@@ -178,6 +179,253 @@ def identify_weak_topics(
     return weak_list
 
 
+def assign_non_overlapping_times(blocks: List[Dict[str, Any]], preferred_times: List[str]) -> None:
+    """
+    Assigns sequential, non-overlapping start and end times to all blocks on a day.
+    Respects student's preferred study window and includes a 15-minute cognitive rest buffer.
+    """
+    base_slots = ["09:00", "11:30", "14:30", "17:30", "20:00"]
+    if "early_morning" in preferred_times:
+        base_slots = ["06:30", "08:30", "11:00", "15:00", "18:00"]
+    elif "evening" in preferred_times or "night" in preferred_times:
+        base_slots = ["10:00", "14:00", "17:30", "19:30", "21:30"]
+
+    current_end_dt = None
+
+    for idx, blk in enumerate(blocks):
+        # Preserve completed blocks with their fixed times
+        if blk.get("completed") and blk.get("start_time"):
+            try:
+                st_dt = datetime.strptime(blk["start_time"], "%H:%M")
+                dur = int(blk.get("duration_minutes", 60))
+                current_end_dt = st_dt + timedelta(minutes=dur)
+                blk["end_time"] = current_end_dt.strftime("%H:%M")
+                continue
+            except Exception:
+                pass
+
+        dur = int(blk.get("duration_minutes", 60))
+        default_start_str = base_slots[idx % len(base_slots)]
+        default_start_dt = datetime.strptime(default_start_str, "%H:%M")
+
+        if current_end_dt is None:
+            assigned_start_dt = default_start_dt
+        else:
+            min_start_dt = current_end_dt + timedelta(minutes=15)
+            if default_start_dt >= min_start_dt:
+                assigned_start_dt = default_start_dt
+            else:
+                assigned_start_dt = min_start_dt
+
+        blk["start_time"] = assigned_start_dt.strftime("%H:%M")
+        current_end_dt = assigned_start_dt + timedelta(minutes=dur)
+        blk["end_time"] = current_end_dt.strftime("%H:%M")
+
+
+def recalculate_future_schedule(
+    current_schedule: Dict[str, Any],
+    weak_topics: List[Dict[str, Any]],
+    student_profile: Dict[str, Any],
+    today_date: Optional[date] = None,
+) -> Dict[str, Any]:
+    """
+    Recalculates the entire remaining future study schedule:
+    1. Identifies weak topics and generates spaced revision sessions (Round 1: 1-2 days, Round 2: 4-6 days),
+       prioritizing lowest scores first.
+    2. Preserves all past sessions (date < today) and completed sessions.
+    3. Inserts revision sessions on optimal future dates.
+    4. Smoothly pushes uncompleted upcoming study blocks forward if daily capacity is exceeded.
+    5. Assigns sequential, non-overlapping start/end times respecting student preferences.
+    6. Never exceeds daily study-hour limits (daily_hours).
+    7. Respects blocked days (e.g. Sunday).
+    """
+    if today_date is None:
+        today_date = date.today()
+
+    today_str = today_date.strftime("%Y-%m-%d")
+    daily_hours = float((student_profile or {}).get("daily_hours", 4.0))
+    max_daily_minutes = int(daily_hours * 60)
+    blocked_days = [str(b).lower() for b in (student_profile or {}).get("blocked_days", ["sunday"])]
+    pref_times = (student_profile or {}).get("preferred_times", ["morning", "evening"])
+
+    # Sort weak topics: lowest score first, then highest repeated mistakes
+    sorted_weaks = sorted(
+        weak_topics,
+        key=lambda w: (
+            float(w.get("recent_accuracy", 100)),
+            -int(w.get("repeated_mistakes_count", 0)),
+            0 if w.get("urgency") == "critical" else 1
+        )
+    )
+
+    orig_daily = copy.deepcopy(current_schedule.get("daily_blocks", []))
+
+    # 1. Separate past days from future/today days
+    past_days = [d for d in orig_daily if d.get("date", "") < today_str]
+    future_days_orig = [d for d in orig_daily if d.get("date", "") >= today_str]
+
+    # Map future dates to completed blocks and uncompleted study blocks
+    existing_completed_by_date = {}
+    uncompleted_study_blocks = []
+    future_dates = []
+
+    for d in future_days_orig:
+        d_str = d.get("date")
+        if d_str:
+            future_dates.append(d_str)
+            existing_completed_by_date[d_str] = [
+                b for b in d.get("blocks", []) if b.get("completed")
+            ]
+            for b in d.get("blocks", []):
+                if not b.get("completed") and not b.get("is_revision"):
+                    uncompleted_study_blocks.append(b)
+
+    # 2. Plan Spaced Revisions for Weak Topics
+    revisions_by_date = {}
+    changes_log = []
+
+    for topic in sorted_weaks:
+        tid = topic.get("topic_id", "topic")
+        title = topic.get("topic_title", tid)
+        score = float(topic.get("recent_accuracy", 0))
+        urgency = topic.get("urgency", "weak")
+        mistakes = int(topic.get("repeated_mistakes_count", 0))
+
+        # Round 1: 1-2 days out
+        # Round 2: 4-6 days out for critical (<50% or mistakes >= 2)
+        intervals = [1]
+        if score < 50 or urgency == "critical" or mistakes >= 2:
+            intervals.append(4)
+
+        for round_num, days_ahead in enumerate(intervals, 1):
+            target_dt = today_date + timedelta(days=days_ahead)
+            # Skip blocked days
+            while target_dt.strftime("%A").lower() in blocked_days:
+                target_dt += timedelta(days=1)
+
+            target_date_str = target_dt.strftime("%Y-%m-%d")
+
+            dur = 60 if urgency == "critical" or score < 50 else 45
+            rev_block = {
+                "topic_id": tid,
+                "topic_title": f"🔄 Revision: {title}",
+                "duration_minutes": dur,
+                "session_goal": f"Spaced Revision R{round_num}: Recover weak concept in {title} (Score: {score}%)",
+                "resources_tip": f"Active recall & Feynman explanation: teach {title} out loud.",
+                "is_revision": True,
+                "revision_round": round_num,
+                "urgency": urgency,
+            }
+            revisions_by_date.setdefault(target_date_str, []).append(rev_block)
+            changes_log.append({
+                "action": "add_revision",
+                "topic_id": tid,
+                "topic_title": title,
+                "date": target_date_str,
+                "round": round_num,
+                "duration_minutes": dur,
+                "reason": f"Weak topic auto-reschedule (score {score}%)"
+            })
+
+    # 3. Assemble and pack future schedule starting from today
+    recalculated_future_days = []
+    current_dt = today_date
+    uncompleted_pool = list(uncompleted_study_blocks)
+
+    min_future_days = max(len(future_dates), 14)
+    day_count = 0
+
+    while (uncompleted_pool or day_count < min_future_days) and day_count < 60:
+        d_str = current_dt.strftime("%Y-%m-%d")
+        day_name = current_dt.strftime("%A").lower()
+        day_count += 1
+
+        is_blocked = day_name in blocked_days
+        if is_blocked:
+            recalculated_future_days.append({
+                "date": d_str,
+                "day_type": "rest",
+                "blocks": []
+            })
+            current_dt += timedelta(days=1)
+            continue
+
+        day_blocks = []
+        minutes_used = 0
+
+        # a. Preserve any completed blocks on this date
+        completed_here = existing_completed_by_date.get(d_str, [])
+        for cb in completed_here:
+            day_blocks.append(cb)
+            minutes_used += int(cb.get("duration_minutes", 60))
+
+        # b. Add scheduled revisions for this date
+        revs_here = revisions_by_date.get(d_str, [])
+        for rb in revs_here:
+            dur = int(rb.get("duration_minutes", 45))
+            if minutes_used + dur <= max_daily_minutes or not day_blocks:
+                day_blocks.append(rb)
+                minutes_used += dur
+            else:
+                # If day is full, push revision to next day
+                next_day_str = (current_dt + timedelta(days=1)).strftime("%Y-%m-%d")
+                revisions_by_date.setdefault(next_day_str, []).append(rb)
+
+        # c. Fill remaining capacity with uncompleted regular study blocks
+        while uncompleted_pool:
+            next_study = uncompleted_pool[0]
+            dur = int(next_study.get("duration_minutes", 60))
+            if minutes_used + dur <= max_daily_minutes:
+                day_blocks.append(uncompleted_pool.pop(0))
+                minutes_used += dur
+            else:
+                # Push remaining upcoming blocks to subsequent days
+                break
+
+        # Assign non-overlapping times
+        if day_blocks:
+            assign_non_overlapping_times(day_blocks, pref_times)
+            d_type = "revision" if any(b.get("is_revision") for b in day_blocks) else "study"
+        else:
+            d_type = "rest"
+
+        recalculated_future_days.append({
+            "date": d_str,
+            "day_type": d_type,
+            "blocks": day_blocks
+        })
+
+        current_dt += timedelta(days=1)
+
+    # Combine past days (untouched) + recalculated future days
+    final_daily = past_days + recalculated_future_days
+    final_daily.sort(key=lambda d: d.get("date", ""))
+
+    updated_schedule = copy.deepcopy(current_schedule)
+    updated_schedule["daily_blocks"] = final_daily
+    updated_schedule["last_rescheduled_at"] = datetime.now().isoformat()
+    updated_schedule["total_study_blocks"] = sum(len(d.get("blocks", [])) for d in final_daily)
+    updated_schedule["reschedule_summary"] = {
+        "weak_topics_count": len(weak_topics),
+        "revisions_added": len(changes_log),
+        "changes": changes_log,
+        "recalculated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    }
+
+    return {
+        "status": "success",
+        "updated_schedule": updated_schedule,
+        "changes": changes_log,
+        "weak_topics": sorted_weaks,
+        "blocks_added": len(changes_log),
+        "hitl_message": (
+            f"StudyMind AI has recalculated your study plan, automatically inserting {len(changes_log)} "
+            f"revision sessions for {len(weak_topics)} weak topic(s) prioritizing lowest scores. "
+            f"All past records and completed sessions have been preserved intact."
+        ),
+    }
+
+
 def schedule_spaced_revisions(
     current_schedule: Dict[str, Any],
     weak_topics: List[Dict[str, Any]],
@@ -185,133 +433,74 @@ def schedule_spaced_revisions(
     today_date: Optional[date] = None,
 ) -> Dict[str, Any]:
     """
-    Generates a spaced revision plan:
-    - Spacing algorithm:
-        Round 1: 1-2 days after today (Active Retrieval)
-        Round 2: 4-6 days after today (Delayed Spaced Consolidation)
-    - Non-disturbance: Past sessions (date < today) are untouched.
-    - Availability compliance: Respects daily_hours limit and blocked_days.
-    - Returns proposal dict with changes and updated schedule.
+    Backwards-compatible wrapper calling the full recalculation engine.
     """
-    if today_date is None:
-        today_date = date.today()
+    return recalculate_future_schedule(current_schedule, weak_topics, student_profile, today_date)
 
-    today_str = today_date.strftime("%Y-%m-%d")
-    daily_hours = float(student_profile.get("daily_hours", 4.0))
-    max_daily_minutes = int(daily_hours * 60)
-    blocked_days = [str(b).lower() for b in student_profile.get("blocked_days", ["sunday"])]
-    pref_times = student_profile.get("preferred_times", ["morning", "evening"])
 
-    # Determine default revision start time
-    time_slot = "10:00"
-    if "early_morning" in pref_times:
-        time_slot = "07:00"
-    elif "evening" in pref_times:
-        time_slot = "18:00"
-    elif "night" in pref_times:
-        time_slot = "20:30"
+def auto_reschedule_workflow(
+    session_state: Dict[str, Any],
+    student_name: str = "Student",
+    today_date: Optional[date] = None,
+    sync_gcal: bool = True,
+) -> Dict[str, Any]:
+    """
+    Complete end-to-end automatic weak-topic rescheduling workflow:
+    1. Analyzes latest quiz results & mock exam evaluations.
+    2. Identifies weak topics (< 70% threshold).
+    3. Recalculates the remaining future study schedule.
+    4. Updates session state & saves persistent state.
+    5. Syncs revised sessions to Google Calendar without creating duplicates.
+    """
+    from storage import save_persistent_state
 
-    updated_schedule = copy.deepcopy(current_schedule)
-    daily_blocks = updated_schedule.get("daily_blocks", [])
+    quiz_results = session_state.get("quiz_results", [])
+    mock_eval = session_state.get("mock_evaluation")
+    current_sched = session_state.get("schedule", {})
+    student_prof = session_state.get("student_profile", {})
 
-    # Index existing days by date
-    days_by_date = {d.get("date"): d for d in daily_blocks if d.get("date")}
+    if not current_sched or not current_sched.get("daily_blocks"):
+        return {
+            "status": "no_schedule",
+            "message": "No active study schedule found. Please generate a schedule in Schedule Generator first.",
+            "weak_topics": identify_weak_topics(quiz_results, mock_eval, threshold=70.0),
+        }
 
-    changes_applied = []
-    blocks_added = 0
+    weak_topics = identify_weak_topics(quiz_results, mock_eval, threshold=70.0)
+    if not weak_topics:
+        return {
+            "status": "no_weak_topics",
+            "message": "All tested topics are above 70% threshold. No rescheduling required.",
+            "weak_topics": [],
+        }
 
-    for topic in weak_topics:
-        tid = topic.get("topic_id", "topic")
-        title = topic.get("topic_title", tid)
-        urgency = topic.get("urgency", "weak")
-        mistakes = topic.get("repeated_mistakes_count", 0)
+    # Execute deterministic recalculation
+    recalc_result = recalculate_future_schedule(
+        current_schedule=current_sched,
+        weak_topics=weak_topics,
+        student_profile=student_prof,
+        today_date=today_date,
+    )
 
-        # Spaced intervals:
-        # Round 1 (1-2 days out)
-        # Round 2 (4-6 days out for critical topics or repeated mistakes)
-        intervals = [1]
-        if urgency == "critical" or mistakes >= 2:
-            intervals.append(4)
+    updated_schedule = recalc_result["updated_schedule"]
+    session_state["schedule"] = updated_schedule
+    session_state["last_reschedule_result"] = recalc_result
 
-        for round_num, days_ahead in enumerate(intervals, 1):
-            target_date = today_date + timedelta(days=days_ahead)
+    # Save to local persistence
+    save_persistent_state(session_state)
 
-            # Ensure not a blocked day
-            while target_date.strftime("%A").lower() in blocked_days:
-                target_date += timedelta(days=1)
+    # Google Calendar synchronization (if connected)
+    gcal_sync_result = None
+    if sync_gcal:
+        try:
+            import google_calendar as gcal
+            s_key = student_name or student_prof.get("student_name", "Student")
+            if gcal.is_connected(s_key):
+                gcal_sync_result = gcal.sync_schedule_to_calendar(updated_schedule, s_key, s_key)
+                session_state["gcal_event_map"] = gcal_sync_result
+                save_persistent_state(session_state)
+        except Exception as gcal_err:
+            gcal_sync_result = {"error": str(gcal_err)}
 
-            date_str = target_date.strftime("%Y-%m-%d")
-
-            # Check day capacity
-            day_data = days_by_date.get(date_str)
-            if not day_data:
-                day_data = {"date": date_str, "day_type": "revision", "blocks": []}
-                daily_blocks.append(day_data)
-                days_by_date[date_str] = day_data
-
-            current_minutes = sum(int(b.get("duration_minutes", 60)) for b in day_data.get("blocks", []))
-
-            # Determine duration based on urgency
-            duration = 60 if urgency == "critical" else 45
-            if current_minutes + duration > max_daily_minutes:
-                # Scale down duration to fit student's limit or shift to next day
-                duration = max(30, max_daily_minutes - current_minutes)
-
-            # Check if this topic is already scheduled on this day
-            already_scheduled = any(
-                b.get("topic_id") == tid and b.get("is_revision")
-                for b in day_data.get("blocks", [])
-            )
-            if already_scheduled:
-                continue
-
-            rev_goal = (
-                f"Spaced Recall R{round_num}: Fix repeated mistakes in {title}"
-                if mistakes > 0
-                else f"Spaced Revision R{round_num}: Reinforce weak spots in {title}"
-            )
-
-            rev_block = {
-                "topic_id": tid,
-                "topic_title": f"🔄 Revision: {title}",
-                "start_time": time_slot,
-                "duration_minutes": duration,
-                "session_goal": rev_goal,
-                "resources_tip": f"Feynman technique: explain core concepts of {title} without looking at notes.",
-                "is_revision": True,
-                "revision_round": round_num,
-                "urgency": urgency,
-            }
-
-            day_data.setdefault("blocks", []).append(rev_block)
-            if day_data.get("day_type") == "rest":
-                day_data["day_type"] = "revision"
-
-            blocks_added += 1
-            changes_applied.append({
-                "action": "add",
-                "topic_id": tid,
-                "topic_title": title,
-                "new_date": date_str,
-                "new_time": time_slot,
-                "duration_minutes": duration,
-                "round": round_num,
-                "reason": f"Spaced revision (accuracy {topic.get('recent_accuracy',0)}%, {mistakes} repeated mistakes)",
-            })
-
-    # Sort daily blocks chronologically
-    daily_blocks.sort(key=lambda d: d.get("date", ""))
-    updated_schedule["daily_blocks"] = daily_blocks
-
-    return {
-        "updated_schedule": updated_schedule,
-        "changes": changes_applied,
-        "blocks_added": blocks_added,
-        "total_weak_topics_handled": len(weak_topics),
-        "hitl_message": (
-            f"StudyMind AI has prepared {blocks_added} spaced revision sessions for "
-            f"{len(weak_topics)} weak topic(s) prioritizing lowest accuracy and repeated errors. "
-            f"Already completed sessions have been preserved intact."
-        ),
-    }
-
+    recalc_result["gcal_sync_result"] = gcal_sync_result
+    return recalc_result

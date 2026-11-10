@@ -1,26 +1,39 @@
 """
-StudyMind AI — Gemini API Client with MCP Tool Calling & Strict JSON Enforcement
+StudyMind AI — Modern Gemini API Client using google.genai SDK
+Provides:
+- Native JSON mode with strict validation and auto-repair
+- Live streaming with robust model fallback and transient error retries
+- Multi-turn conversation chat
+- Multimodal OCR support
+- FastMCP tool calling bridge
 """
 import functools
 import json
 import logging
 import os
 import re
+import time
 from typing import Any, Callable, Dict, Generator, List, Optional, Union
 
-import google.generativeai as genai
+from google import genai
+from google.genai import types, errors
+
 from config import GEMINI_API_KEY as DEFAULT_KEY, GEMINI_MODEL
 
 logger = logging.getLogger("StudyMind.GeminiClient")
 
-# Model fallback chain in case the primary model is rate-limited or deprecated
-FALLBACK_MODELS = [
+# Model fallback chain in case the primary model is busy, rate-limited, or unavailable
+_raw_models = [
     GEMINI_MODEL,
     "gemini-3.5-flash",
     "gemini-3.5-flash-lite",
-    "gemini-3-flash-preview",
-    "gemini-flash-latest",
+    "gemini-3.8-flash",
 ]
+# Deduplicate while preserving order
+FALLBACK_MODELS = list(dict.fromkeys([m for m in _raw_models if m]))
+
+# Cached genai.Client instance mapped by API key
+_client_cache: Dict[str, genai.Client] = {}
 
 
 def _safe_cache(func: Callable) -> Callable:
@@ -43,7 +56,9 @@ def get_api_key() -> str:
     try:
         import streamlit as st
         if st.session_state.get("gemini_api_key"):
-            return st.session_state["gemini_api_key"].strip()
+            key = st.session_state["gemini_api_key"].strip()
+            if key:
+                return key
     except Exception:
         pass
     env_k = os.getenv("GEMINI_API_KEY", "").strip()
@@ -52,41 +67,39 @@ def get_api_key() -> str:
     return (DEFAULT_KEY or "").strip()
 
 
-def _init_model(
-    temperature: float = 0.7,
-    json_mode: bool = False,
-    max_tokens: int = 4096,
-    tools: Optional[List[Any]] = None,
-    system_prompt: Optional[str] = None,
-    preferred_model: Optional[str] = None,
-):
+def get_genai_client(api_key: Optional[str] = None) -> genai.Client:
     """
-    Initialize and return a Gemini model instance with automatic model fallback
-    if quota is exhausted on the primary model.
+    Returns an initialized google.genai.Client with the current API key.
+    Reuses existing client instances for connection pooling.
     """
-    api_key = get_api_key()
-    if not api_key:
-        raise ValueError("GEMINI_API_KEY is not set. Enter your key in the sidebar or add it to .env.")
+    key = (api_key or get_api_key()).strip()
+    if not key:
+        raise ValueError(
+            "GEMINI_API_KEY is not set. Enter your key in the sidebar or add it to .env."
+        )
 
-    genai.configure(api_key=api_key)
-    config_dict = {
-        "temperature": temperature,
-        "top_p": 0.9,
-        "top_k": 32,
-        "max_output_tokens": max_tokens,
-    }
-    if json_mode:
-        config_dict["response_mime_type"] = "application/json"
+    if key not in _client_cache:
+        _client_cache[key] = genai.Client(api_key=key)
+    return _client_cache[key]
 
-    generation_config = genai.GenerationConfig(**config_dict)
 
-    model_to_use = preferred_model or GEMINI_MODEL
-    return genai.GenerativeModel(
-        model_name=model_to_use,
-        generation_config=generation_config,
-        tools=tools,
-        system_instruction=system_prompt,
-    )
+def _is_permanent_error(err_str: str) -> bool:
+    """Determine if an API error is permanent (do not retry)."""
+    s = err_str.upper()
+    return any(term in s for term in [
+        "API_KEY_INVALID", "API KEY NOT VALID", "PERMISSION_DENIED",
+        "INVALID_ARGUMENT", "400", "401", "403"
+    ]) and "RESOURCE_EXHAUSTED" not in s and "429" not in s
+
+
+def _is_transient_error(err_str: str) -> bool:
+    """Determine if an API error is transient (can retry with backoff)."""
+    s = err_str.upper()
+    return any(term in s for term in [
+        "RESOURCE_EXHAUSTED", "429", "UNAVAILABLE", "503",
+        "DEADLINE_EXCEEDED", "504", "TIMEOUT", "CONNECTTIMEOUT",
+        "READTIMEOUT", "INTERNAL", "500", "RESET BY PEER"
+    ])
 
 
 def _strip_to_json(text: str) -> str:
@@ -117,7 +130,6 @@ def _repair_truncated_json(raw: str) -> str:
     by removing incomplete trailing tokens and balancing unclosed brackets and braces.
     """
     s = _strip_to_json(raw)
-    # Remove trailing unclosed key or partial value
     s = re.sub(r',\s*"[^"]*"?\s*:?\s*[^,}\]]*$', '', s)
     s = re.sub(r',\s*$', '', s)
 
@@ -156,26 +168,47 @@ def _repair_truncated_json(raw: str) -> str:
 
 def _execute_with_model_fallback(generate_fn: Callable) -> Any:
     """
-    Executes a Gemini call against primary model and automatically falls back to secondary models
-    if 429 RESOURCE_EXHAUSTED or 404 NOT_FOUND occurs.
+    Executes a Gemini generation function against the fallback model chain.
+    Applies exponential backoff for transient errors (429, 503, 504) and fails
+    immediately on permanent authentication errors.
     """
     last_error = None
     for model_name in FALLBACK_MODELS:
-        try:
-            return generate_fn(model_name)
-        except Exception as e:
-            err_msg = str(e)
-            if "RESOURCE_EXHAUSTED" in err_msg or "429" in err_msg or "404" in err_msg or "NOT_FOUND" in err_msg:
-                logger.warning(f"Model '{model_name}' hit rate limit/unavailable. Trying next model... ({err_msg[:80]})")
+        # Retry transient errors up to 2 times per model with backoff
+        for attempt in range(2):
+            try:
+                return generate_fn(model_name)
+            except Exception as e:
+                err_msg = str(e)
                 last_error = e
-                continue
-            elif "API_KEY_INVALID" in err_msg or "400" in err_msg or "403" in err_msg:
-                raise ValueError(
-                    f"Gemini API Key Error: {err_msg}\n\n"
-                    "💡 Please verify your API key at https://aistudio.google.com/ "
-                    "(Google AI Studio keys typically begin with 'AIzaSy...')."
-                )
-            raise e
+
+                # Check for permanent authentication/permission errors
+                if _is_permanent_error(err_msg):
+                    raise ValueError(
+                        f"Gemini API Error ({err_msg[:120]})\n\n"
+                        "💡 Please verify your API key at https://aistudio.google.com/ "
+                        "(Google AI Studio keys typically begin with 'AIzaSy...')."
+                    )
+
+                # Check for transient errors
+                if _is_transient_error(err_msg):
+                    wait_time = 1.0 * (attempt + 1)
+                    logger.warning(
+                        f"Model '{model_name}' encountered transient error ({err_msg[:60]}). "
+                        f"Retrying in {wait_time}s (attempt {attempt+1}/2)..."
+                    )
+                    time.sleep(wait_time)
+                    continue
+
+                # 404 NOT_FOUND or unknown model error: do not retry same model, move to next
+                if "NOT_FOUND" in err_msg.upper() or "404" in err_msg:
+                    logger.warning(f"Model '{model_name}' not available (404). Trying next fallback model...")
+                    break
+
+                # Other unknown error: log and try next model
+                logger.warning(f"Model '{model_name}' failed with {type(e).__name__}: {err_msg[:80]}. Trying next model...")
+                break
+
     raise last_error or RuntimeError("All Gemini fallback models exhausted.")
 
 
@@ -184,10 +217,20 @@ def call_gemini_json(prompt: str, temperature: float = 0.3, max_tokens: int = 40
     """
     Call Gemini in native constrained JSON mode with automatic model fallback.
     """
+    client = get_genai_client()
+
     def _call(model_name: str):
-        model = _init_model(temperature=temperature, json_mode=True, max_tokens=max_tokens, preferred_model=model_name)
-        response = model.generate_content(prompt, request_options={"timeout": 20})
-        raw = response.text
+        config = types.GenerateContentConfig(
+            temperature=temperature,
+            response_mime_type="application/json",
+            max_output_tokens=max_tokens,
+        )
+        response = client.models.generate_content(
+            model=model_name,
+            contents=prompt,
+            config=config,
+        )
+        raw = response.text or ""
         cleaned = _strip_to_json(raw)
         try:
             return json.loads(cleaned)
@@ -202,64 +245,147 @@ def call_gemini_json(prompt: str, temperature: float = 0.3, max_tokens: int = 40
 
 
 @_safe_cache
-def call_gemini_text(prompt: str, temperature: float = 0.8) -> str:
+def call_gemini_text(prompt: str, temperature: float = 0.8, max_tokens: int = 4096) -> str:
     """
     Call Gemini and return plain text (for chatbot, briefing, onboarding).
     """
+    client = get_genai_client()
+
     def _call(model_name: str):
-        model = _init_model(temperature=temperature, preferred_model=model_name)
-        response = model.generate_content(prompt, request_options={"timeout": 20})
-        return response.text
+        config = types.GenerateContentConfig(
+            temperature=temperature,
+            max_output_tokens=max_tokens,
+        )
+        response = client.models.generate_content(
+            model=model_name,
+            contents=prompt,
+            config=config,
+        )
+        return response.text or ""
 
     return _execute_with_model_fallback(_call)
 
 
 def call_gemini_chat(messages: list, system_prompt: str = "", temperature: float = 0.8) -> str:
     """
-    Multi-turn chat call. messages = [{"role": "user"|"model", "content": "..."}]
+    Multi-turn chat call. messages = [{"role": "user"|"model"|"assistant", "content": "..."}]
     """
-    def _call(model_name: str):
-        api_key = get_api_key()
-        if not api_key:
-            raise ValueError("GEMINI_API_KEY is not set.")
+    client = get_genai_client()
 
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel(
-            model_name=model_name,
-            generation_config=genai.GenerationConfig(temperature=temperature, max_output_tokens=8192),
-            system_instruction=system_prompt if system_prompt else None,
+    contents = []
+    for m in messages:
+        role = "model" if m.get("role") in ("model", "assistant") else "user"
+        contents.append(
+            types.Content(
+                role=role,
+                parts=[types.Part.from_text(text=m.get("content", ""))]
+            )
         )
 
-        history = []
-        for m in messages[:-1]:
-            role = "user" if m["role"] == "user" else "model"
-            history.append({"role": role, "parts": [m["content"]]})
-
-        chat = model.start_chat(history=history)
-        last_msg = messages[-1]["content"] if messages else ""
-        response = chat.send_message(last_msg)
-        return response.text
+    def _call(model_name: str):
+        config = types.GenerateContentConfig(
+            temperature=temperature,
+            max_output_tokens=8192,
+            system_instruction=system_prompt if system_prompt else None,
+        )
+        response = client.models.generate_content(
+            model=model_name,
+            contents=contents,
+            config=config,
+        )
+        return response.text or ""
 
     return _execute_with_model_fallback(_call)
 
 
-def call_gemini_stream(prompt: str, temperature: float = 0.8) -> Generator[str, None, None]:
+def call_gemini_stream(
+    prompt: str,
+    temperature: float = 0.7,
+    system_prompt: Optional[str] = None,
+) -> Generator[str, None, None]:
     """
     Call Gemini with stream=True. Yields text chunks live as they arrive.
     Compatible with Streamlit's st.write_stream().
+
+    Features:
+    - In-generator model fallback: if a model fails at the start of streaming (504, 503, 429),
+      it seamlessly tries the next fallback model.
+    - Non-streaming fallback: if streaming fails completely, it returns the complete
+      text response without crashing the UI.
     """
-    api_key = get_api_key()
-    if not api_key:
-        raise ValueError("GEMINI_API_KEY is not set.")
+    client = get_genai_client()
+    config = types.GenerateContentConfig(
+        temperature=temperature,
+        max_output_tokens=4096,
+        system_instruction=system_prompt if system_prompt else None,
+    )
 
-    def _call(model_name: str):
-        model = _init_model(temperature=temperature, preferred_model=model_name)
-        return model.generate_content(prompt, stream=True)
+    yielded_any = False
+    last_error = None
 
-    stream_resp = _execute_with_model_fallback(_call)
-    for chunk in stream_resp:
-        if chunk.text:
-            yield chunk.text
+    for model_name in FALLBACK_MODELS:
+        try:
+            stream = client.models.generate_content_stream(
+                model=model_name,
+                contents=prompt,
+                config=config,
+            )
+
+            # Peek first chunk to verify stream establishes connection
+            stream_iter = iter(stream)
+            try:
+                first_chunk = next(stream_iter)
+            except StopIteration:
+                # Empty stream
+                continue
+
+            if first_chunk.text:
+                yielded_any = True
+                yield first_chunk.text
+
+            for chunk in stream_iter:
+                try:
+                    if chunk.text:
+                        yielded_any = True
+                        yield chunk.text
+                except (ValueError, StopIteration):
+                    continue
+                except Exception as chunk_err:
+                    logger.warning(f"Stream interrupted mid-generation on {model_name}: {chunk_err}")
+                    break
+
+            if yielded_any:
+                return
+
+        except Exception as e:
+            err_msg = str(e)
+            last_error = e
+
+            # If chunks were already yielded to the user, we cannot restart the stream
+            if yielded_any:
+                logger.warning(f"Streaming error after partial response: {err_msg[:80]}")
+                return
+
+            if _is_permanent_error(err_msg):
+                raise ValueError(
+                    f"Gemini API Key Error: {err_msg[:120]}\n\n"
+                    "💡 Please verify your API key in the sidebar or update your .env file."
+                )
+
+            logger.warning(f"Streaming failed on '{model_name}' ({err_msg[:80]}). Switching to fallback model...")
+            continue
+
+    # Final safety: If streaming never yielded anything, attempt safe non-streaming call
+    if not yielded_any:
+        logger.info("Attempting non-streaming fallback for chat response...")
+        try:
+            fallback_text = call_gemini_text(prompt, temperature=temperature)
+            if fallback_text:
+                yield fallback_text
+                return
+        except Exception as text_fallback_err:
+            logger.error(f"Non-streaming fallback also failed: {text_fallback_err}")
+            raise last_error or text_fallback_err
 
 
 def call_gemini_with_mcp(
@@ -276,16 +402,79 @@ def call_gemini_with_mcp(
     from mcp_client import mcp_client
 
     tools = mcp_client.get_tool_callables(tool_names)
+    client = get_genai_client()
 
     def _call(model_name: str):
-        model = _init_model(
+        config = types.GenerateContentConfig(
             temperature=temperature,
             tools=tools if tools else None,
-            system_prompt=system_prompt,
-            preferred_model=model_name,
+            system_instruction=system_prompt,
         )
-        chat = model.start_chat(enable_automatic_function_calling=True)
-        response = chat.send_message(prompt)
-        return response.text
+        response = client.models.generate_content(
+            model=model_name,
+            contents=prompt,
+            config=config,
+        )
+        return response.text or ""
 
     return _execute_with_model_fallback(_call)
+
+
+# ── Backwards-Compatible Model Adapter (for multimodal OCR in syllabus_parser) ──
+
+class _GenAIModelCompat:
+    """
+    Adapter allowing legacy code expecting a GenerativeModel interface
+    to run transparently on the modern google.genai Client.
+    """
+
+    def __init__(self, client: genai.Client, model_name: str, config: types.GenerateContentConfig):
+        self.client = client
+        self.model_name = model_name
+        self.config = config
+
+    def generate_content(self, contents: Any, **kwargs):
+        # Convert legacy dict parts (e.g. {"mime_type": ..., "data": bytes}) to types.Part
+        converted_contents = []
+        if isinstance(contents, list):
+            for c in contents:
+                if isinstance(c, dict) and "data" in c and "mime_type" in c:
+                    converted_contents.append(
+                        types.Part.from_bytes(data=c["data"], mime_type=c["mime_type"])
+                    )
+                else:
+                    converted_contents.append(c)
+        else:
+            converted_contents = contents
+
+        return self.client.models.generate_content(
+            model=self.model_name,
+            contents=converted_contents,
+            config=self.config,
+        )
+
+
+def _init_model(
+    temperature: float = 0.7,
+    json_mode: bool = False,
+    max_tokens: int = 4096,
+    tools: Optional[List[Any]] = None,
+    system_prompt: Optional[str] = None,
+    preferred_model: Optional[str] = None,
+) -> _GenAIModelCompat:
+    """
+    Backward-compatibility shim for core/syllabus_parser.py and legacy calls.
+    Returns a _GenAIModelCompat wrapper powered by google.genai.
+    """
+    client = get_genai_client()
+    config = types.GenerateContentConfig(
+        temperature=temperature,
+        top_p=0.9,
+        top_k=32,
+        max_output_tokens=max_tokens,
+        response_mime_type="application/json" if json_mode else None,
+        tools=tools,
+        system_instruction=system_prompt,
+    )
+    model_name = preferred_model or GEMINI_MODEL
+    return _GenAIModelCompat(client, model_name, config)

@@ -166,9 +166,6 @@ if st.session_state.get("quiz_submitted", False):
 </div>
 """, unsafe_allow_html=True)
 
-    if score_pct < 70:
-        st.warning(f"⚠️ Score below 70% — triggering auto-reschedule recommendation for **{quiz.get('topic_title','')}**")
-
     # Store quiz result for weak spot analysis
     quiz_result = {
         "topic_id":    quiz.get("topic_id",""),
@@ -179,6 +176,7 @@ if st.session_state.get("quiz_submitted", False):
         "time_taken":  time_taken,
         "answers":     answers,
         "questions":   questions,
+        "timestamp":   time.strftime("%Y-%m-%d %H:%M:%S"),
     }
     if "quiz_results" not in st.session_state:
         st.session_state["quiz_results"] = []
@@ -189,6 +187,37 @@ if st.session_state.get("quiz_submitted", False):
         st.session_state["quiz_results"][idx] = quiz_result
     else:
         st.session_state["quiz_results"].append(quiz_result)
+
+    save_persistent_state(st.session_state)
+
+    # ── Automatic Weak-Topic Rescheduling Engine ──────────────────────────────
+    if score_pct < 70:
+        with st.spinner("Analyzing mastery & auto-rescheduling spaced revisions..."):
+            from core.weak_topic_manager import auto_reschedule_workflow
+            student_n = student.get("student_name", "Student") if "student" in locals() else "Student"
+            res = auto_reschedule_workflow(st.session_state, student_name=student_n)
+
+            if res.get("status") == "success" and res.get("blocks_added", 0) > 0:
+                gcal_msg = ""
+                if res.get("gcal_sync_result") and not res["gcal_sync_result"].get("error"):
+                    g_created = res["gcal_sync_result"].get("created", 0)
+                    g_updated = res["gcal_sync_result"].get("updated", 0)
+                    gcal_msg = f" · 📅 Google Calendar updated ({g_created + g_updated} events in sync)"
+
+                st.success(
+                    f"🔄 **Auto-Rescheduling Active**: Added **{res['blocks_added']} spaced revision sessions** "
+                    f"for **{quiz.get('topic_title','')}** into your schedule (Round 1: 1–2 days, Round 2: 4–6 days). "
+                    f"Existing sessions preserved without overlaps{gcal_msg}!"
+                )
+            elif res.get("status") == "no_schedule":
+                st.warning(
+                    f"⚠️ Score is **{score_pct}%** (< 70%). "
+                    "Generate a study plan in **📅 Schedule Generator** so revision sessions can be automatically inserted into your calendar."
+                )
+    else:
+        st.success(
+            f"🎉 **Great job!** {score_pct}% is above the 70% mastery threshold. Keep up the momentum!"
+        )
 
     st.divider()
     st.subheader("📋 Answer Review")

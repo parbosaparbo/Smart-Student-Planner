@@ -422,11 +422,11 @@ def _make_event_id(student_key: str, date_str: str, start_time: str, topic_id: s
     """
     Creates a deterministic, stable event ID from study block metadata.
     Used to find and update existing events instead of creating duplicates.
-    Google Calendar event IDs must be 5-1024 chars, lowercase alphanumeric + hyphen only.
+    Google Calendar event IDs must be 5-1024 chars, strictly base32hex (characters 0-9 and a-v only).
     """
     raw = f"{student_key}:{date_str}:{start_time}:{topic_id}"
     h = hashlib.md5(raw.encode()).hexdigest()[:20]
-    return f"studymind{h}"
+    return f"smai{h}"
 
 
 def _build_event_body(
@@ -592,6 +592,13 @@ def sync_schedule_to_calendar(
                         "is invalid or was deleted from Google Cloud Console. Please update credentials.json "
                         "with valid OAuth credentials from Google Cloud Console."
                     )
+                if "insufficientpermissions" in err_msg.lower() or "insufficient authentication scopes" in err_msg.lower():
+                    # Stop loop immediately on permissions error instead of failing 21 times
+                    raise ValueError(
+                        "Google Calendar API Error: 403 Forbidden (insufficientPermissions). "
+                        "The connected Google token does not have permission to write calendar events. "
+                        "Please click 'Disconnect' and reconnect your Google Calendar to grant required event scopes."
+                    )
                 result["errors"].append(f"{date_str} {start_time} {topic_id}: {e}")
 
     return result
@@ -645,7 +652,7 @@ def get_connected_account_email(student_key: str = "") -> Optional[str]:
         if not creds:
             return None
 
-        # 1. OpenID id_token claims (zero latency)
+        # 1. OpenID id_token claims (zero network latency)
         try:
             if hasattr(creds, "id_token") and creds.id_token:
                 if isinstance(creds.id_token, dict) and creds.id_token.get("email"):
@@ -660,22 +667,22 @@ def get_connected_account_email(student_key: str = "") -> Optional[str]:
         except Exception:
             pass
 
-        # 2. Primary Calendar ID is always the user's Google email
+        # 2. OAuth2 userinfo endpoint (matching openid / userinfo.email scopes — no 403)
+        try:
+            oauth2_service = build("oauth2", "v2", credentials=creds, cache_discovery=False)
+            info = oauth2_service.userinfo().get().execute()
+            if info.get("email"):
+                return info.get("email")
+        except Exception:
+            pass
+
+        # 3. Fallback: Primary Calendar ID (only if full calendar scope is granted)
         try:
             service = build("calendar", "v3", credentials=creds, cache_discovery=False)
             cal = service.calendars().get(calendarId="primary").execute()
             cal_id = cal.get("id")
             if cal_id and "@" in cal_id:
                 return cal_id
-        except Exception:
-            pass
-
-        # 3. OAuth2 userinfo
-        try:
-            oauth2_service = build("oauth2", "v2", credentials=creds, cache_discovery=False)
-            info = oauth2_service.userinfo().get().execute()
-            if info.get("email"):
-                return info.get("email")
         except Exception:
             pass
 

@@ -155,30 +155,82 @@ if "weak_analysis" in st.session_state:
                     st.markdown(f"- {step}")
 
 # ── 3. Spaced Revision Rescheduler ─────────────────────────────────────────────
+st.divider()
+st.subheader("🔄 Automated Spaced Revision Rescheduler")
+_muted = COLORS['text_muted']
+st.markdown(
+    f"<p style='color:{_muted};'>"
+    f"StudyMind AI schedules evidence-based spaced revisions at optimal intervals "
+    f"(<b>Round 1: 1–2 days</b> for active retrieval consolidation, "
+    f"<b>Round 2: 4–6 days</b> for long-term retention). "
+    f"Already completed sessions remain completely untouched."
+    f"</p>",
+    unsafe_allow_html=True,
+)
+
+has_schedule = "schedule" in st.session_state and st.session_state["schedule"].get("daily_blocks")
 weak_topics_list = identify_weak_topics(quiz_results, mock_evaluation, threshold=70.0)
 
-if weak_topics_list and "schedule" in st.session_state:
-    st.divider()
-    st.subheader("🔄 Automated Spaced Revision Rescheduler")
-    _muted = COLORS['text_muted']
-    st.markdown(
-        f"<p style='color:{_muted};'>"
-        f"StudyMind AI detected <b>{len(weak_topics_list)} topic(s)</b> requiring revision. "
-        f"Using evidence-based spaced repetition, revisions are scheduled at optimal intervals "
-        f"(<b>Round 1: 1-2 days</b> for immediate consolidation, <b>Round 2: 4-6 days</b> for long-term retention). "
-        f"Already completed sessions remain untouched."
-        f"</p>",
-        unsafe_allow_html=True,
-    )
+if not has_schedule:
+    st.info("💡 **Schedule Required**: Please generate a study plan first in **📅 Schedule Generator** so revision sessions can be automatically inserted.")
+else:
+    curr_sched = st.session_state["schedule"]
 
-    if st.button("⚡ Generate Spaced Revision Schedule", type="primary", width="stretch", key="btn_gen_spaced"):
-        with st.spinner("Calculating optimal spaced revision slots with non-disturbance verification..."):
-            try:
-                curr_sched = st.session_state["schedule"]
-                proposal = reschedule_spaced_revisions(curr_sched, weak_topics_list, student)
-                st.session_state["spaced_reschedule_proposal"] = proposal
-            except Exception as e:
-                st.error(f"❌ Rescheduling error: {e}")
+    if weak_topics_list:
+        st.warning(
+            f"⚠️ **{len(weak_topics_list)} Weak Topic(s) Detected (< 70% mastery)**: "
+            + ", ".join([f"**{t['topic_title']}** ({t.get('recent_accuracy', 0)}%)" for t in weak_topics_list[:4]])
+        )
+        if st.button("⚡ Auto-Generate Spaced Revisions for Weak Topics", type="primary", width="stretch", key="btn_gen_spaced"):
+            with st.spinner("Calculating optimal spaced revision slots with non-disturbance verification..."):
+                try:
+                    proposal = reschedule_spaced_revisions(curr_sched, weak_topics_list, student)
+                    st.session_state["spaced_reschedule_proposal"] = proposal
+                except Exception as e:
+                    st.error(f"❌ Rescheduling error: {e}")
+    else:
+        st.success("🎉 **All tested topics are above 70% mastery!** No critical weaknesses currently detected.")
+
+    # On-demand manual topic rescheduler
+    with st.expander("🎯 Schedule Revision for Any Topic On-Demand", expanded=not bool(weak_topics_list)):
+        st.caption("Want extra practice or a refresher on a specific topic? Choose any topic to automatically slot spaced revisions into your schedule.")
+        
+        # Build available topic choices
+        syllabus_topics = []
+        if "topic_tree" in st.session_state and st.session_state["topic_tree"]:
+            for top in st.session_state["topic_tree"].get("topics", []):
+                syllabus_topics.append(top.get("title", top.get("id", "")))
+        
+        # Fallback to schedule topics if syllabus tree not loaded
+        if not syllabus_topics:
+            for d in curr_sched.get("daily_blocks", []):
+                for b in d.get("blocks", []):
+                    title = b.get("topic_title")
+                    if title and title not in syllabus_topics:
+                        syllabus_topics.append(title)
+        
+        if syllabus_topics:
+            selected_topic = st.selectbox("Select Topic to Reschedule", syllabus_topics, key="sel_manual_resched")
+            reason_input = st.text_input("Reason / Focus Area (optional)", "Targeted concept reinforcement & practice", key="reason_manual_resched")
+            
+            if st.button("📅 Insert Spaced Revision Slots", type="primary", width="stretch", key="btn_manual_resched"):
+                with st.spinner("Slotting spaced revisions into your calendar..."):
+                    manual_weak = [{
+                        "topic_id": selected_topic,
+                        "topic_title": selected_topic,
+                        "recent_accuracy": 55.0,
+                        "repeated_mistakes_count": 1,
+                        "urgency": "weak",
+                        "missed_concepts": [reason_input],
+                    }]
+                    try:
+                        proposal = reschedule_spaced_revisions(curr_sched, manual_weak, student)
+                        st.session_state["spaced_reschedule_proposal"] = proposal
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"❌ Rescheduling error: {e}")
+        else:
+            st.info("Upload a syllabus or generate a schedule to select topics for on-demand revision.")
 
 if "spaced_reschedule_proposal" in st.session_state:
     prop = st.session_state["spaced_reschedule_proposal"]
